@@ -1,0 +1,92 @@
+<%= stylesheet_link_tag 'registration', media: 'all', 'data-turbolinks-track': 'reload' %>
+<p id=”alert”><%= alert %></p>
+<div id="block">
+  <p>
+    <span class="title">
+      Мы рады приветствовать Вас в YouCRM.
+    </span>
+  </p>
+  <p>
+    <span class="title">
+      Войдите в CRM своей компании, если таковой не существует - создайте новую и сделайте свой бизнес успешнее!
+    </span>
+  </p>
+  <div id="buttons">
+    <div>
+      <button class="menu" id="menu1" onclick="hidden_block();">
+        <span class="menu_text" id="menu_text1">Авторизоваться</span>
+      </button>
+    </div>
+    <div>
+      <button class="menu" id="menu2" onclick="hidden_block2();">
+        <span class="menu_text" id="menu_text2">Создать CRM</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="block_registration" class="hidden">
+  <div id="popup-login" class="popup popup-login" style="opacity: 1; display: block;">
+    <p class="heading">CRM</p>
+    <form  method="POST" id="popup-login-form" class="pl-login form-required no-disable" action="/authorization">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <p class="error-message validate-error-hide validate-error-login"></p>
+      <div class="login-input">
+        <div class="login-loader"></div>
+        <p><input type="text" name="company" class="textInput required" placeholder="Компания" required maxlength="50"></p>
+        <p><input type="email" name="email" class="textInput required" placeholder="Почта" required maxlength="50"></p>
+        <p>
+          <input type="password" name="password" class="textInput" placeholder="Пароль"
+                 autocomplete="new-password" required maxlength="50" minlength="6">
+        </p>
+      </div>
+      <div class="submit submit-with-social">
+        <button name="submit_login" type="submit" id="menu3" class="log">
+          <span class="menu_text" id="menu_text3">Войти<b></b><b></b></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="create_room" class="hidden">
+  <div id="popup-login" class="popup popup-login" style="opacity: 1; display: block;">
+    <p class="heading">Создание CRM</p>
+    <form  method="POST" id="popup-login-form" class="pl-login form-required no-disable" action="/create_room">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <p class="error-message validate-error-hide validate-error-login">
+        Создавая CRM вы становитесь ее владельцем и получаете все необходимые права
+      </p>
+      <div class="login-input">
+        <div class="login-loader"></div>
+        <p><input type="text" name="company" class="textInput required" placeholder="Компания" required maxlength="50"></p>
+        <p><input type="email" name="email" class="textInput" placeholder="Почта" required maxlength="50"></p>
+        <p>
+          <input type="password" name="password" class="textInput" placeholder="Пароль"
+                 autocomplete="new-password" minlength="6" required maxlength="50">
+        </p>
+        <input type="password" name="password_confirmation" class="textInput"
+               placeholder="Повтор пароля" autocomplete="new-password" minlength="6" required maxlength="50">
+        <p><input type="text" name="name" class="textInput required" placeholder="Ваше имя" required maxlength="50"></p>
+        <p><input type="text" name="surname" class="textInput required" placeholder="Ваша фамилия" required maxlength="50"></p>
+      </div>
+      <div class="submit submit-with-social">
+        <button name="submit_login" type="submit" id="menu4" class="log">
+          <span class="menu_text" id="menu_text4">Войти<b></b><b></b></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+    function hidden_block() {
+        document.getElementById('block').style.display = 'none';
+        document.getElementById('block_registration').classList.remove("hidden");
+    }
+
+    function hidden_block2() {
+        document.getElementById('block').style.display = 'none';
+        document.getElementById('create_room').classList.remove("hidden");
+    }
+</script>
