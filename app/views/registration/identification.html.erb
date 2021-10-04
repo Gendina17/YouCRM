@@ -1,6 +1,6 @@
 <%= stylesheet_link_tag 'registration', media: 'all', 'data-turbolinks-track': 'reload' %>
 <p id=”alert”><%= alert %></p>
-<div id="block">
+<div id="block_main" class="block">
   <p>
     <span class="title">
       Мы рады приветствовать Вас в YouCRM.
@@ -25,7 +25,7 @@
   </div>
 </div>
 
-<div id="block_registration" class="hidden">
+<div id="block_registration" class="hidden block">
   <div id="popup-login" class="popup popup-login" style="opacity: 1; display: block;">
     <p class="heading" id="heading">CRM</p>
     <form  method="POST" id="popup-login-form" class="pl-login form-required no-disable" action="/authorization">
@@ -50,7 +50,7 @@
   </div>
 </div>
 
-<div id="block_password" class="hidden">
+<div id="block_password" class="hidden block">
   <div id="popup-login" class="popup popup-login" style="opacity: 1; display: block;">
     <p class="heading" id="heading_pas">CRM</p>
     <form  method="GET" id="popup-login-form" class="pl-login form-required no-disable" action="/send_password">
@@ -71,7 +71,7 @@
   </div>
 </div>
 
-<div id="create_room" class="hidden">
+<div id="create_room" class="hidden block">
   <div id="popup-login" class="popup popup-login" style="opacity: 1; display: block;">
     <p class="heading">Создание CRM</p>
     <form  method="POST" id="popup-login-form" class="pl-login form-required no-disable" action="/create_room">
@@ -103,12 +103,12 @@
 
 <script>
     function hidden_block() {
-        document.getElementById('block').style.display = 'none';
+        document.getElementById('block_main').style.display = 'none';
         document.getElementById('block_registration').classList.remove("hidden");
     }
 
     function hidden_block2() {
-        document.getElementById('block').style.display = 'none';
+        document.getElementById('block_main').style.display = 'none';
         document.getElementById('create_room').classList.remove("hidden");
     }
 
