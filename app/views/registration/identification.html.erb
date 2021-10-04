@@ -45,14 +45,14 @@
           <span class="menu_text" id="menu_text3">Войти<b></b><b></b></span>
         </button>
       </div>
-      <p><a onclick="password_block();">Забыл свой пароль</a></p>
+      <a onclick="password_block();" id="link_password">Не помню пароль</a>
     </form>
   </div>
 </div>
 
 <div id="block_password" class="hidden">
   <div id="popup-login" class="popup popup-login" style="opacity: 1; display: block;">
-    <p class="heading" id="heading">CRM</p>
+    <p class="heading" id="heading_pas">CRM</p>
     <form  method="GET" id="popup-login-form" class="pl-login form-required no-disable" action="/send_password">
       <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
       <p class="error-message validate-error-hide validate-error-login"></p>
@@ -66,7 +66,7 @@
           <span class="menu_text" id="menu_text3">Востановить пароль<b></b><b></b></span>
         </button>
       </div>
-      <p><a onclick="password_notification();">Вспомнил! Авторизоваться</a></p>
+     <a onclick="hidden_block3();" id="link_auth">Вспомнил! Авторизоваться</a>
     </form>
   </div>
 </div>
@@ -76,7 +76,7 @@
     <p class="heading">Создание CRM</p>
     <form  method="POST" id="popup-login-form" class="pl-login form-required no-disable" action="/create_room">
       <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-      <p class="error-message validate-error-hide validate-error-login">
+      <p class="error-message validate-error-hide validate-error-login message">
         Создавая CRM вы становитесь ее владельцем и получаете все необходимые права
       </p>
       <div class="login-input">
@@ -94,7 +94,7 @@
       </div>
       <div class="submit submit-with-social">
         <button name="submit_login" type="submit" id="menu4" class="log">
-          <span class="menu_text" id="menu_text4">Войти<b></b><b></b></span>
+          <span class="menu_text" id="menu_text4">Создать<b></b><b></b></span>
         </button>
       </div>
     </form>
@@ -113,12 +113,18 @@
     }
 
     function password_notification() {
-        document.getElementById('heading').innerText = "Письмо для восстановления пароля отправлено вам на почту";
+        document.getElementById('heading_pas').innerText = "Письмо для восстановления пароля отправлено вам на почту";
     }
 
     function password_block() {
         document.getElementById('block_registration').style.display = 'none';
         document.getElementById('block_password').classList.remove("hidden");
+        document.getElementById('block_password').style.display = 'block';
+    }
+
+    function hidden_block3() {
+        document.getElementById('block_password').style.display = 'none';
+        document.getElementById('block_registration').style.display = 'block';
     }
 
 </script>

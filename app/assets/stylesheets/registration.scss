@@ -15,7 +15,7 @@ body {
   background: white;
 }
 
-#block:before, #block_registration:before, #create_room:before {
+#block:before, #block_registration:before, #create_room:before, #block_password:before, #block_new_password:before {
   width: 100%;
   height: 8px;
   top: 100%;
@@ -25,7 +25,7 @@ body {
   background: url(https://park.mail.ru/static/core/pub/park/img/ubox-bottom.png) repeat-x 0 -13px;
 }
 
-#block:after, #block_registration:after, #create_room:after {
+#block:after, #block_registration:after, #create_room:after, #block_password:after, #block_new_password:after {
   width: 6px;
   height: 100%;
   top: -2px;
@@ -36,7 +36,7 @@ body {
 }
 
 #block:after, #block:before, #block_registration:after, #block_registration:before,
-#create_room:after, #create_room:before {
+#create_room:after, #create_room:before, #block_password:before, #block_password:after, #block_new_password:before,  #block_new_password:after {
   display: block;
   content: '';
   position: absolute;
@@ -208,8 +208,8 @@ form {
 
 #create_room {
   border: 3px double black;
-  max-height: 520px;
-  height: 520px;
+  max-height: 600px;
+  height: 600px;
   width: 300px;
   max-width: 300px;
   padding: 20px;
@@ -222,4 +222,68 @@ form {
 }
 .name:hover::after {
   content: attr(data-title);
+}
+
+#link_password {
+  position: absolute;
+  top: 93%;
+  margin-left: 8%;
+  font: 400 16px/20px pf_isotext_proregular,Arial,Helvetica,sans-serif;
+  text-decoration: black;
+  color: darkgray;
+  cursor: pointer;
+}
+
+#link_password:hover {
+  border-bottom: 1px solid black;
+  color: black;
+}
+
+.message {
+  padding: 5px;
+}
+
+#block_password {
+  border: 3px double black;
+  max-height: 290px;
+  height: 290px;
+  width: 300px;
+  max-width: 300px;
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  left: 40%;
+  text-align: center;
+  background: white;
+}
+
+#link_auth {
+  position: absolute;
+  top: 93%;
+  left: 38%;
+  font: 400 16px/20px pf_isotext_proregular,Arial,Helvetica,sans-serif;
+  text-decoration: black;
+  color: darkgray;
+  cursor: pointer;
+}
+
+#link_auth:hover {
+  border-bottom: 1px solid black;
+  color: black;
+}
+
+#block_new_password {
+  border: 3px double black;
+  max-height: 240px;
+  height: 240px;
+  width: 300px;
+  max-width: 300px;
+  padding: 20px;
+  position: absolute;
+  top: 45%;
+  transform: translate(0, -50%);
+  left: 40%;
+  text-align: center;
+  background: white;
 }

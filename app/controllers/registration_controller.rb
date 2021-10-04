@@ -56,7 +56,7 @@ class RegistrationController < ApplicationController
   def new_password
     @token = params[:id]
     @user = User.find_by_confirm_token(@token)
-    # redirect_to identification_url, alert: 'К сожалению, произошла какая-то ошибка' if @user.blank?
+    redirect_to identification_url, alert: 'К сожалению, произошла какая-то ошибка' if @user.blank?
   end
 
   def password_recovery
