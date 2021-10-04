@@ -3,6 +3,11 @@ class UserMailer < ApplicationMailer
 
   def registration_confirmation(user)
     @user = user
-    mail(to: "#{user.name} <#{user.email}>", subject: "Please confirm your registration")
+    mail(to: "#{user.name} <#{user.email}>", subject: "Подтверждение регистрации YouCRM")
+  end
+
+  def password_recovery(user)
+    @user = user
+    mail(to: "#{user.name} <#{user.email}>", subject: "Восстановление пароля YouCRM")
   end
 end

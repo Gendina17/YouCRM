@@ -1,4 +1,9 @@
-Hi, <%= @user.name %>>
+<p><h3>Приветствуем, <%= @user.name %>!</h3></p>
+<p>Для окончании регистрации, пожалуйста, перейдите по ссылке ниже.</p>
 
-Thanks ror registering ! To confirm your registration, please click the link below:
-<%= confirm_email_registration_url(@user.confirm_token) %>>
+<p>
+  <a href="<%= confirm_email_registration_url(@user.confirm_token) %>">
+    Подтвердить регистрацию YouCrm
+  </a>
+</p>
+<p> Благодарим Вас, что выбрали наш сервис YouCRM ❤</p>

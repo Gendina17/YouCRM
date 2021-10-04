@@ -27,7 +27,7 @@
 
 <div id="block_registration" class="hidden">
   <div id="popup-login" class="popup popup-login" style="opacity: 1; display: block;">
-    <p class="heading">CRM</p>
+    <p class="heading" id="heading">CRM</p>
     <form  method="POST" id="popup-login-form" class="pl-login form-required no-disable" action="/authorization">
       <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
       <p class="error-message validate-error-hide validate-error-login"></p>
@@ -45,6 +45,28 @@
           <span class="menu_text" id="menu_text3">Войти<b></b><b></b></span>
         </button>
       </div>
+      <p><a onclick="password_block();">Забыл свой пароль</a></p>
+    </form>
+  </div>
+</div>
+
+<div id="block_password" class="hidden">
+  <div id="popup-login" class="popup popup-login" style="opacity: 1; display: block;">
+    <p class="heading" id="heading">CRM</p>
+    <form  method="GET" id="popup-login-form" class="pl-login form-required no-disable" action="/send_password">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <p class="error-message validate-error-hide validate-error-login"></p>
+      <div class="login-input">
+        <div class="login-loader"></div>
+        <p><input type="text" name="company" class="textInput required" placeholder="Компания" required maxlength="50"></p>
+        <p><input type="email" name="email" class="textInput required" placeholder="Почта" required maxlength="50"></p>
+      </div>
+      <div class="submit submit-with-social">
+        <button name="submit_login" type="submit" id="menu3" class="log">
+          <span class="menu_text" id="menu_text3">Востановить пароль<b></b><b></b></span>
+        </button>
+      </div>
+      <p><a onclick="password_notification();">Вспомнил! Авторизоваться</a></p>
     </form>
   </div>
 </div>
@@ -89,4 +111,14 @@
         document.getElementById('block').style.display = 'none';
         document.getElementById('create_room').classList.remove("hidden");
     }
+
+    function password_notification() {
+        document.getElementById('heading').innerText = "Письмо для восстановления пароля отправлено вам на почту";
+    }
+
+    function password_block() {
+        document.getElementById('block_registration').style.display = 'none';
+        document.getElementById('block_password').classList.remove("hidden");
+    }
+
 </script>

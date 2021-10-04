@@ -49,9 +49,31 @@ class RegistrationController < ApplicationController
       sign_in user
       redirect_to root_url
     else
-      redirect_to root_url
+      redirect_to identification_url, alert: ''
     end
+  end
 
+  def new_password
+    @token = params[:id]
+    @user = User.find_by_confirm_token(@token)
+    # redirect_to identification_url, alert: 'К сожалению, произошла какая-то ошибка' if @user.blank?
+  end
+
+  def password_recovery
+    user = User.find_by_confirm_token(params[:id])
+    user.update(params.permit(:password))
+    user.email_activate
+    sign_in user
+    redirect_to root_url
+  end
+
+  def send_password
+    user = User.joins(:company).where("companies.name = ?", params[:company])
+               .where(email: params[:email])
+               .first
+    user.confirm_token = SecureRandom.urlsafe_base64.to_s
+    user.save!(validate: false)
+    UserMailer.password_recovery(user).deliver_now
   end
 
   private

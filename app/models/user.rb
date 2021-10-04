@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   has_secure_password
 
-  validates :email, presence: true, uniqueness: true
+  validates :email, presence: true
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
   validates :name, :surname, presence: true, length: { maximum: 30 }
   validates :password, confirmation: true, length: { minimum: 6 }
@@ -23,8 +23,6 @@ class User < ApplicationRecord
     self.confirm_token = nil
     save!(validate: false)
   end
-
-  private
 
   def confirmation_token
     if self.confirm_token.blank?
