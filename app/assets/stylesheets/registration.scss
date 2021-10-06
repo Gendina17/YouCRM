@@ -2,20 +2,15 @@ body {
   background: #e8e8e8;
 }
 
-#block {
+.block {
   border: 3px double black;
-  max-height: 150px;
-  height: 150px;
   padding: 20px;
   position: absolute;
-  top: 48%;
-  transform: translate(0, -60%);
-  left: 24%;
   text-align: center;
   background: white;
 }
 
-#block:before, #block_registration:before, #create_room:before {
+.block:before {
   width: 100%;
   height: 8px;
   top: 100%;
@@ -25,7 +20,7 @@ body {
   background: url(https://park.mail.ru/static/core/pub/park/img/ubox-bottom.png) repeat-x 0 -13px;
 }
 
-#block:after, #block_registration:after, #create_room:after {
+.block:after {
   width: 6px;
   height: 100%;
   top: -2px;
@@ -35,12 +30,59 @@ body {
   background: url(https://park.mail.ru/static/core/pub/park/img/ubox-right.png) repeat-x -11px 0;
 }
 
-#block:after, #block:before, #block_registration:after, #block_registration:before,
-#create_room:after, #create_room:before {
+.block:after, .block:before {
   display: block;
   content: '';
   position: absolute;
   overflow: hidden;
+}
+
+#block_main {
+  max-height: 150px;
+  height: 150px;
+  top: 48%;
+  transform: translate(0, -60%);
+  left: 24%;
+}
+
+#block_registration {
+  max-height: 350px;
+  height: 350px;
+  width: 300px;
+  max-width: 300px;
+  top: 50%;
+  transform: translate(0, -50%);
+  left: 40%;
+}
+
+#create_room {
+  max-height: 590px;
+  height: 590px;
+  width: 300px;
+  max-width: 300px;
+  top: 45%;
+  transform: translate(0, -50%);
+  left: 40%;
+}
+
+#block_password {
+  max-height: 290px;
+  height: 290px;
+  width: 300px;
+  max-width: 300px;
+  top: 50%;
+  transform: translate(0, -50%);
+  left: 40%;
+}
+
+#block_new_password {
+  max-height: 240px;
+  height: 240px;
+  width: 300px;
+  max-width: 300px;
+  top: 45%;
+  transform: translate(0, -50%);
+  left: 40%;
 }
 
 p {
@@ -82,10 +124,8 @@ p {
   white-space: nowrap;
 }
 
-.menu_text:before, {
-  cursor: pointer;
-}
 .menu_text:before {
+  cursor: pointer;
   content: '';
   position: absolute;
   top: 3px;
@@ -119,21 +159,6 @@ p {
   font-size: 16px;
 }
 
-#block_registration {
-  border: 3px double black;
-  max-height: 350px;
-  height: 350px;
-  width: 300px;
-  max-width: 300px;
-  padding: 20px;
-  position: absolute;
-  top: 50%;
-  transform: translate(0, -50%);
-  left: 40%;
-  text-align: center;
-  background: white;
-}
-
 .popup {
   display: none;
   top: 50%;
@@ -145,7 +170,6 @@ p {
   color: #1c1c1c;
 }
 
-
 .popup .heading {
   padding: 0 0 10px;
   border-bottom: #cfcfcf 1px dotted;
@@ -155,6 +179,7 @@ p {
   text-align: center;
   text-transform: uppercase;
 }
+
 form {
   display: block;
   margin-top: 0em;
@@ -206,20 +231,40 @@ form {
   display: none;
 }
 
-#create_room {
-  border: 3px double black;
-  max-height: 520px;
-  height: 520px;
-  width: 300px;
-  max-width: 300px;
-  padding: 20px;
-  position: absolute;
-  top: 45%;
-  transform: translate(0, -50%);
-  left: 40%;
-  text-align: center;
-  background: white;
-}
 .name:hover::after {
   content: attr(data-title);
+}
+
+#link_password {
+  position: absolute;
+  top: 93%;
+  margin-left: 8%;
+  font: 400 16px/20px pf_isotext_proregular,Arial,Helvetica,sans-serif;
+  text-decoration: black;
+  color: darkgray;
+  cursor: pointer;
+}
+
+#link_password:hover {
+  border-bottom: 1px solid black;
+  color: black;
+}
+
+.message {
+  padding: 5px;
+}
+
+#link_auth {
+  position: absolute;
+  top: 93%;
+  left: 38%;
+  font: 400 16px/20px pf_isotext_proregular,Arial,Helvetica,sans-serif;
+  text-decoration: black;
+  color: darkgray;
+  cursor: pointer;
+}
+
+#link_auth:hover {
+  border-bottom: 1px solid black;
+  color: black;
 }

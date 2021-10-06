@@ -1,6 +1,6 @@
 <%= stylesheet_link_tag 'registration', media: 'all', 'data-turbolinks-track': 'reload' %>
-<p id=”alert”><%= alert %></p>
-<div id="block">
+
+<div id="block_main" class="block">
   <p>
     <span class="title">
       Мы рады приветствовать Вас в YouCRM.
@@ -25,54 +25,94 @@
   </div>
 </div>
 
-<div id="block_registration" class="hidden">
+<div id="block_registration" class="hidden block">
   <div id="popup-login" class="popup popup-login" style="opacity: 1; display: block;">
-    <p class="heading">CRM</p>
-    <form  method="POST" id="popup-login-form" class="pl-login form-required no-disable" action="/authorization">
+    <p class="heading" id="heading">CRM</p>
+    <form id="popup-login-form1" class="pl-login form-required no-disable" name="authForm">
       <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-      <p class="error-message validate-error-hide validate-error-login"></p>
+      <p class="error-message validate-error-hide validate-error-login" id="error"></p>
       <div class="login-input">
         <div class="login-loader"></div>
-        <p><input type="text" name="company" class="textInput required" placeholder="Компания" required maxlength="50"></p>
-        <p><input type="email" name="email" class="textInput required" placeholder="Почта" required maxlength="50"></p>
+        <p>
+          <input type="text" name="company" class="textInput required" placeholder="Компания" required maxlength="50">
+        </p>
+        <p>
+          <input type="email" name="email" class="textInput required" placeholder="Почта" required maxlength="50">
+        </p>
         <p>
           <input type="password" name="password" class="textInput" placeholder="Пароль"
                  autocomplete="new-password" required maxlength="50" minlength="6">
         </p>
       </div>
       <div class="submit submit-with-social">
-        <button name="submit_login" type="submit" id="menu3" class="log">
+        <button name="submit_login" id="menu3" class="log" type="submit">
           <span class="menu_text" id="menu_text3">Войти<b></b><b></b></span>
         </button>
       </div>
+      <a onclick="password_block();" id="link_password">Не помню пароль</a>
     </form>
   </div>
 </div>
 
-<div id="create_room" class="hidden">
+<div id="block_password" class="hidden block">
+  <div id="popup-login" class="popup popup-login" style="opacity: 1; display: block;">
+    <p class="heading" id="heading_pas">CRM</p>
+    <form id="popup-login-form2" class="pl-login form-required no-disable" name="passForm">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <p class="error-message validate-error-hide validate-error-login" id="pass_error"></p>
+      <div class="login-input">
+        <div class="login-loader"></div>
+        <p>
+          <input type="text" name="company" class="textInput required" placeholder="Компания" required maxlength="50">
+        </p>
+        <p>
+          <input type="email" name="email" class="textInput required" placeholder="Почта" required maxlength="50">
+        </p>
+      </div>
+      <div class="submit submit-with-social">
+        <button name="submit_login" type="submit" id="menu3" class="log">
+          <span class="menu_text" id="menu_text3">Востановить пароль<b></b><b></b></span>
+        </button>
+      </div>
+     <a onclick="hidden_block3();" id="link_auth">Вспомнил! Авторизоваться</a>
+    </form>
+  </div>
+</div>
+
+<div id="create_room" class="hidden block">
   <div id="popup-login" class="popup popup-login" style="opacity: 1; display: block;">
     <p class="heading">Создание CRM</p>
-    <form  method="POST" id="popup-login-form" class="pl-login form-required no-disable" action="/create_room">
+    <form  id="popup-login-form3" class="pl-login form-required no-disable" name="regForm">
       <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-      <p class="error-message validate-error-hide validate-error-login">
+      <p class="error-message validate-error-hide validate-error-login message" id="reg_error">
         Создавая CRM вы становитесь ее владельцем и получаете все необходимые права
       </p>
       <div class="login-input">
         <div class="login-loader"></div>
-        <p><input type="text" name="company" class="textInput required" placeholder="Компания" required maxlength="50"></p>
-        <p><input type="email" name="email" class="textInput" placeholder="Почта" required maxlength="50"></p>
+        <p>
+          <input type="text" name="company" class="textInput required" placeholder="Компания" required maxlength="50">
+        </p>
+        <p>
+          <input type="email" name="email" class="textInput" placeholder="Почта" required maxlength="50">
+        </p>
         <p>
           <input type="password" name="password" class="textInput" placeholder="Пароль"
                  autocomplete="new-password" minlength="6" required maxlength="50">
         </p>
-        <input type="password" name="password_confirmation" class="textInput"
-               placeholder="Повтор пароля" autocomplete="new-password" minlength="6" required maxlength="50">
-        <p><input type="text" name="name" class="textInput required" placeholder="Ваше имя" required maxlength="50"></p>
-        <p><input type="text" name="surname" class="textInput required" placeholder="Ваша фамилия" required maxlength="50"></p>
+        <p>
+          <input type="password" name="password_confirmation" class="textInput"
+                 placeholder="Повтор пароля" autocomplete="new-password" minlength="6" required maxlength="50">
+        </p>
+        <p>
+          <input type="text" name="name" class="textInput required" placeholder="Ваше имя" required maxlength="50">
+        </p>
+        <p>
+          <input type="text" name="surname" class="textInput required" placeholder="Ваша фамилия" required maxlength="50">
+        </p>
       </div>
       <div class="submit submit-with-social">
         <button name="submit_login" type="submit" id="menu4" class="log">
-          <span class="menu_text" id="menu_text4">Войти<b></b><b></b></span>
+          <span class="menu_text" id="menu_text4">Создать<b></b><b></b></span>
         </button>
       </div>
     </form>
@@ -81,12 +121,123 @@
 
 <script>
     function hidden_block() {
-        document.getElementById('block').style.display = 'none';
+        document.getElementById('block_main').style.display = 'none';
         document.getElementById('block_registration').classList.remove("hidden");
     }
 
     function hidden_block2() {
-        document.getElementById('block').style.display = 'none';
+        document.getElementById('block_main').style.display = 'none';
         document.getElementById('create_room').classList.remove("hidden");
     }
+
+    function password_notification() {
+        document.getElementById('heading_pas').innerText = "Письмо для восстановления пароля отправлено вам на почту";
+    }
+
+    function password_block() {
+        document.getElementById('block_registration').style.display = 'none';
+        document.getElementById('block_password').classList.remove("hidden");
+        document.getElementById('block_password').style.display = 'block';
+    }
+
+    function hidden_block3() {
+        document.getElementById('block_password').style.display = 'none';
+        document.getElementById('block_registration').style.display = 'block';
+    }
+
+    document.forms.authForm.onsubmit = function (e){
+        e.preventDefault();
+
+        var company = document.forms.authForm.company.value;
+        var email = document.forms.authForm.email.value;
+        var password = document.forms.authForm.password.value;
+        var token = document.forms.authForm.authenticity_token.value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/authorization");
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        body = 'company=' + encodeURIComponent(company) +
+            '&email=' + encodeURIComponent(email) +
+            '&password=' + encodeURIComponent(password) +
+            '&authenticity_token=' + encodeURIComponent(token);
+
+        xhr.onreadystatechange = function (){
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById('error').innerText = xhr.responseText;
+                document.getElementById('error').style.padding = "5px";
+                document.getElementById('block_registration').style.height = "400px";
+                document.getElementById('block_registration').style.maxHeight = "400px";
+            }
+        }
+        xhr.send(body)
+    };
+
+    document.forms.passForm.onsubmit = function (e){
+        e.preventDefault();
+
+        var company = document.forms.passForm.company.value;
+        var email = document.forms.passForm.email.value;
+        var token = document.forms.passForm.authenticity_token.value
+
+        var xhr = new XMLHttpRequest();
+
+        var params = 'company=' + encodeURIComponent(company) +
+            '&email=' + encodeURIComponent(email) +
+            '&authenticity_token=' + encodeURIComponent(token);
+
+        xhr.open("GET", "/send_password?" + params)
+
+        xhr.onreadystatechange = function (){
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById('pass_error').innerText = xhr.responseText;
+                document.getElementById('pass_error').style.padding = "5px";
+                document.getElementById('block_password').style.height = "360px";
+                document.getElementById('block_password').style.maxHeight = "360px";
+            }
+        }
+        xhr.send()
+    };
+
+    document.forms.regForm.onsubmit = function (e){
+        e.preventDefault();
+
+        var company = document.forms.regForm.company.value;
+        var email = document.forms.regForm.email.value;
+        var name = document.forms.regForm.name.value;
+        var surname = document.forms.regForm.surname.value;
+        var password = document.forms.regForm.password.value;
+        var password_confirmation = document.forms.regForm.password_confirmation.value;
+        var token = document.forms.regForm.authenticity_token.value
+
+        if (password != password_confirmation)
+        {
+            document.getElementById('reg_error').innerText = "Введенные пароли не совпадают"
+            document.getElementById('create_room').style.height = "530px";
+            document.getElementById('create_room').style.maxHeight = "530px";
+            return
+        }
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("POST", "/create_room")
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        body = 'company=' + encodeURIComponent(company) +
+            '&email=' + encodeURIComponent(email) +
+            '&name=' + encodeURIComponent(name) +
+            '&surname=' + encodeURIComponent(surname) +
+            '&password_confirmation=' + encodeURIComponent(password_confirmation) +
+            '&password=' + encodeURIComponent(password) +
+            '&authenticity_token=' + encodeURIComponent(token);
+
+        xhr.onreadystatechange = function (){
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById('reg_error').innerText = xhr.responseText;
+                document.getElementById('create_room').style.height = "590px";
+                document.getElementById('create_room').style.maxHeight = "590px";
+            }
+        }
+        xhr.send(body)
+    };
 </script>
