@@ -34,7 +34,7 @@ class RegistrationController < ApplicationController
     else
       if user.email_confirmed
         sign_in user
-        redirect_to root_path
+        render json: true
       else
         render json:  'Вы не закончили регистрацию, подтвердите свой профиль'
       end

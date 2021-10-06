@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   root 'main#index'
   get '/', to: 'main#index'
+  get '/settings', to: 'main#settings'
 
   get '/identification', to: 'registration#identification'
   get '/send_password', to: 'registration#send_password'

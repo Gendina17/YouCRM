@@ -1,0 +1,128 @@
+
+
+<div id="dd">
+
+<div class="sidenav">
+  <a href="#"><img src="/assets/person-plus.svg" class="icon" onclick="hidden_block('aaaaaa');"> Добавить пользователя</a>
+  <a href="#"><img src="/assets/key.svg" class="icon" onclick="hidden_block('prava');">Создать должность и права</a>
+  <a href="#"><img src="/assets/sliders.svg" class="icon">Настроить CRM</a>
+  <a href="#">Админка</a>
+</div>
+</div>
+<div class="main" id="main">
+  <p><h1><--- ВЫБЕРИТЕЕЕЕЕЕ</h1></p>
+</div>
+<div id="aaaaaa">
+  <div id="create_room" class="block">
+    <div id="popup-login" class="popup popup-login" style="opacity: 1; display: block;">
+      <p class="heading">Создание пользователя</p>
+      <form  id="popup-login-form3" class="pl-login form-required no-disable" name="regForm">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <p class="error-message validate-error-hide validate-error-login message" id="reg_error">
+
+        </p>
+        <div class="login-input">
+          <div class="login-loader"></div>
+
+          <p>
+            <input type="email" name="email" class="textInput" placeholder="Почта" required maxlength="50">
+          </p>
+          <p>
+            <input type="password" name="password" class="textInput" placeholder="Пароль"
+                   autocomplete="new-password" minlength="6" required maxlength="50">
+          </p>
+          <p>
+            <input type="password" name="password_confirmation" class="textInput"
+                   placeholder="Повтор пароля" autocomplete="new-password" minlength="6" required maxlength="50">
+          </p>
+          <p>
+            <input type="text" name="name" class="textInput required" placeholder="Имя" required maxlength="50">
+          </p>
+          <p>
+            <input type="text" name="surname" class="textInput required" placeholder="Фамилия" required maxlength="50">
+          </p>
+          <p>
+            <input type="text" name="surname" class="textInput required" placeholder="Должность или рава подуматьььь" required maxlength="50">
+          </p>
+        </div>
+        <div class="submit submit-with-social">
+          <button name="submit_login" type="submit" id="menu4" class="log">
+            <span class="menu_text" id="menu_text4">Создать<b></b><b></b></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+  <div class="hidden" id="prava">
+     длялялялялялляляляляля
+    <p> ща чет настроим все дела ляллялялялялялял</p>
+  </div>
+
+
+
+
+
+
+<style>
+    body {
+        font-family: "Lato", sans-serif;
+        background: #e8e8e8;
+    }
+
+    .sidenav {
+        height: 100%;
+        width: 270px;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background:#fff;
+        overflow-x: hidden;
+        padding-top: 20px;
+        box-shadow: 0 0 10px 1px grey;
+        border-right: 4px solid;
+        border-image: linear-gradient(45deg, rgb(241, 171, 199), #515cff) 1;
+    }
+
+
+.hidden {
+    display: none;
+}
+
+    .sidenav a {
+        padding: 6px 8px 6px 16px;
+        text-decoration: none;
+        font-size: 18px;
+        color: #818181;
+        display: block;
+    }
+
+    .sidenav a:hover {
+        color: #111;
+    }
+
+    .main {
+        margin-left: 270px; /* То же, что и ширина боковой навигации */
+        font-size: 28px; /* Увеличенный текст для включения прокрутки */
+        /*padding: 0px 10px;*/
+
+    }
+.icon {
+    width: 25px;
+    height: 25px;
+}
+    @media screen and (max-height: 450px) {
+        .sidenav {padding-top: 15px;}
+        .sidenav a {font-size: 18px;}
+    }
+</style>
+
+<script>
+    function hidden_block(name) {
+        document.getElementById('main').innerHTML = ""
+        document.getElementById('main').innerHTML = document.getElementById(name).innerHTML ;
+    }
+</script>

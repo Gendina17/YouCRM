@@ -164,6 +164,10 @@
 
         xhr.onreadystatechange = function (){
             if (xhr.readyState == 4 && xhr.status == 200) {
+                if (xhr.responseText == 'true')
+                {
+                    location.replace("http://localhost:3000/");
+                }
                 document.getElementById('error').innerText = xhr.responseText;
                 document.getElementById('error').style.padding = "5px";
                 document.getElementById('block_registration').style.height = "400px";
