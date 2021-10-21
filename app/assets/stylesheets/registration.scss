@@ -268,3 +268,23 @@ form {
   border-bottom: 1px solid black;
   color: black;
 }
+
+.password {
+  width: 300px;
+  margin: 15px auto;
+  position: relative;
+}
+
+.password-control {
+  position: absolute;
+  top: 11px;
+  right: 24px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url(https://snipp.ru/demo/495/view.svg) 0 0 no-repeat;
+}
+
+.password-control.view {
+  background: url(https://snipp.ru/demo/495/no-view.svg) 0 0 no-repeat;
+}

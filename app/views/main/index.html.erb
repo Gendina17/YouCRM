@@ -1,0 +1,414 @@
+<%= stylesheet_link_tag 'main', media: 'all', 'data-turbolinks-track': 'reload' %>
+<header id="header" class="header w">
+  <div class="header__inner" style="flex-direction: row-reverse">
+
+    <a href="#header" data-target="toggle" class="header__door button2 button3">
+
+
+
+      <div>
+<img src="../assets/bell.png" width="50px" class="bell">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill bir " viewBox="0 0 16 16">
+          <circle cx="8" cy="8" r="8"/>
+        </svg>
+
+      </div>
+
+<%if @current_user.state.present? %>
+        <div id="state" onclick="show_states();">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-circle-fill <%= @current_user.state%>" viewBox="0 0 16 16">
+          <circle cx="8" cy="8" r="8"/>
+        </svg> <%= @current_user.state%>
+        </div>
+        <div id="states" class="hidden">
+<% else %>
+      <div id="states">
+      <% end %>
+<a id="inactive" onclick="change_state('inactive');">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill " viewBox="0 0 16 16">
+        <circle cx="8" cy="8" r="8"/>
+      </svg>
+</a>
+<a id="busy" onclick="change_state('busy');">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="yellow" class="bi bi-circle-fill" viewBox="0 0 16 16">
+        <circle cx="8" cy="8" r="8"/>
+      </svg>
+</a>
+<a id="active" onclick="change_state('active');">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-circle-fill" viewBox="0 0 16 16">
+        <circle cx="8" cy="8" r="8"/>
+      </svg>
+</a>
+      </div>
+
+
+
+      <nav class="four">
+
+        <ul class="topmenu">
+
+          <li><a href="#">
+
+
+            <div class="qqq">
+              <div class="aaa">
+                <img class="www" src="../assets/avatar<%= rand(5) + 1 %>.jpeg">
+                <span><%= @current_user.name %> <%= @current_user.surname %></span>
+              </div>
+              <div class="sdd">
+                <img src="../assets/arrow.svg">
+              </div>
+
+            </div>
+          </a>
+
+            <ul class="submenu">
+              <li><a class="a" href="/settings">Настройки</a></li>
+              <li><a class="a">Профиль</a></li>
+              <li><a class="a">Лента</a></li>
+              <li><a class="a">Задачи</a></li>
+              <li><a class="a">Выход</a></li>
+            </ul>
+          </li>
+
+        </ul>
+
+      </nav>
+
+
+
+
+      <nav class="four">
+
+        <ul class="topmenu">
+
+          <li><a href="#">
+
+
+            <div class="qqq">
+              <div class="aaa">
+                _____________юсеры_______________
+              </div>
+
+
+            </div>
+          </a>
+
+            <ul class="submenu">
+              <% @users.each do |user| %>
+              <li><a class="a" href="#win1" onclick="show_user('<%= user.name %>', '<%= user.surname %> ', '<%= user.state%>');">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-circle-fill <%= user.state%>" viewBox="0 0 16 16">
+                  <circle cx="8" cy="8" r="8"/>
+                </svg> <%= user.state%>
+
+                <%= user.name %> <%= user.surname %> одмен
+              </a>
+              </li>
+                <% end %>
+            </ul>
+          </li>
+
+        </ul>
+
+      </nav>
+
+
+
+
+
+
+    </a>
+
+
+
+    <a href="#" class="button2 button3 button-login trigger-login"><%= @company.name %></a>
+
+  </div>
+
+
+
+
+
+        <div class="nav__menu sel-header-menu">
+        </div>
+
+  <div class="dm-overlay" id="win1">
+    <div class="dm-table">
+      <div class="dm-cell">
+        <div class="dm-modal">
+          <a href="#close" class="close"></a>
+          <h3 id="user_title">Пользователь Гендина Нина одмен активна </h3>
+          <div class="pl-left">
+            <img src="../assets/avatar<%= rand(5) + 1 %>.jpeg">
+          </div>
+          <p>Окно выводится строго по центру, по горизонтали и по вертикали, внутри контейнера с относительным позиционированием. В данном примере показана возможность использования встроенных миниатюр, разположенных слева в div-контейнере с выделенным классом <code>.pl-left</code></p>
+          <p>Размер блока миниатюр определил в 25% от родительского контейнера, тем самым обеспечив возможность пропорционального изменения, при просмотре на экранах различных пользовательских устройств.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+
+
+<input type="checkbox" id="asruk-tkilasun" aria-hidden="true">
+<nav class="mudsarulopas">
+  <label for="asruk-tkilasun" class="asruk-tkilasun" onclick></label>
+  <section>
+    <div class="one_task" data-toggle="modal" data-target="#exampleModal">
+      <p>Это уже делаем под описание, смотря какой характер работы задействован.</p><p>Здесь отлично смотрится заголовок</p>
+      <p>Это уже делаем под описание, смотря какой характер работы задействован.</p><p>Здесь отлично смотрится заголовок</p>
+
+    </div>
+
+    <div class="one_task">
+      <p>Это уже делаем под описание, смотря какой характер работы задействован.</p><p>Здесь отлично смотрится заголовок</p>
+      <p>Это уже делаем под описание, смотря какой характер работы задействован.</p><p>Здесь отлично смотрится заголовок</p>
+
+    </div>
+
+    <div class="one_task">
+      <p>Это уже делаем под описание, смотря какой характер работы задействован.</p><p>Здесь отлично смотрится заголовок</p>
+      <p>Это уже делаем под описание, смотря какой характер работы задействован.</p><p>Здесь отлично смотрится заголовок</p>
+
+    </div>
+
+    <div class="one_task">
+      <p>Это уже делаем под описание, смотря какой характер работы задействован.</p><p>Здесь отлично смотрится заголовок</p>
+      <p>Это уже делаем под описание, смотря какой характер работы задействован.</p><p>Здесь отлично смотрится заголовок</p>
+
+    </div>
+
+  </section>
+</nav>
+
+<div class="modal fade sizet cent" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog sizet" role="document">
+    <div class="modal-content sizet color">
+      <div class="modal-header sizet color2">
+        <h5 class="modal-title sizet" id="exampleModalLabel">Order</h5>
+        <a   class="krest" data-dismiss="modal" aria-label="Close" >
+          <img src="assets/крест.png" width="40" >
+        </a>
+      </div>
+      <div id="tuda" class="modal-body">
+        Это уже делаем под описание, смотря какой характер работы задействован.
+
+        Здесь отлично смотрится заголовок
+
+        Это уже делаем под описание, смотря какой характер работы задействован.
+
+        Здесь отлично смотрится заголовок
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+
+<script>
+    function change_state(state) {
+        var xhr = new XMLHttpRequest();
+
+        var params = 'state=' + encodeURIComponent(state);
+
+        xhr.open("GET", "/change_state?" + params)
+
+        xhr.onreadystatechange = function (){
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById('states').style.display = 'none';
+
+                document.getElementById('state').innerHTML = `<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" class=\"bi bi-circle-fill ${xhr.responseText}\" viewBox=\"0 0 16 16\"> <circle cx=\"8\" cy=\"8\" r=\"8\"/> </svg> ${xhr.responseText}`
+                document.getElementById('state').style.display = 'block';
+            }
+        }
+        xhr.send()
+    }
+
+    function show_states() {
+        document.getElementById('state').style.display = 'none';
+        document.getElementById('states').style.display = 'block';
+    }
+
+    function show_user(name, surname, state) {
+        document.getElementById('user_title').innerHTML = `Пользователь ${surname} ${name} одмен ${state}`;
+    }
+</script>
+<style>
+  .active {
+      fill: green;
+  }
+
+  .busy {
+      fill: yellow;
+  }
+  .inactive {
+      fill: red;
+  }
+  .hidden {
+      display: none;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* слой затемнения */
+
+  .dm-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      overflow: auto;
+      width: 100%;
+      height: 100%;
+      z-index: 1000;
+  }
+  /* активируем модальное окно */
+
+  .dm-overlay:target {
+      display: block;
+      -webkit-animation: fade .6s;
+      -moz-animation: fade .6s;
+      animation: fade .6s;
+  }
+  /* блочная таблица */
+
+  .dm-table {
+      display: table;
+      width: 100%;
+      height: 100%;
+  }
+  /* ячейка блочной таблицы */
+
+  .dm-cell {
+      display: table-cell;
+      padding: 0 1em;
+      vertical-align: middle;
+      text-align: center;
+  }
+  /* модальный блок */
+
+  .dm-modal {
+      display: inline-block;
+      padding: 20px;
+      max-width: 50em;
+      background: #607d8b;
+      -webkit-box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.22), 0px 19px 60px rgba(0, 0, 0, 0.3);
+      -moz-box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.22), 0px 19px 60px rgba(0, 0, 0, 0.3);
+      box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.22), 0px 19px 60px rgba(0, 0, 0, 0.3);
+      color: #cfd8dc;
+      text-align: left;
+  }
+  /* изображения в модальном окне */
+
+  .dm-modal img {
+      width: 100%;
+      height: auto;
+  }
+  /* миниатюры изображений */
+
+  .pl-left {
+      width: 25%;
+      height: auto;
+  }
+
+  /* миниатюра слева */
+
+  .pl-left {
+      float: left;
+      margin: 5px 15px 5px 0;
+  }
+
+  /* рисуем кнопарь закрытия */
+
+  .close {
+      z-index: 9999;
+      float: right;
+      width: 30px;
+      height: 30px;
+      color: #cfd8dc;
+      text-align: center;
+      text-decoration: none;
+      line-height: 26px;
+      cursor: pointer;
+  }
+  .close:after {
+      display: block;
+      border: 2px solid #cfd8dc;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%;
+      content: 'X';
+      -webkit-transition: all 0.6s;
+      -moz-transition: all 0.6s;
+      transition: all 0.6s;
+      -webkit-transform: scale(0.85);
+      -moz-transform: scale(0.85);
+      -ms-transform: scale(0.85);
+      transform: scale(0.85);
+  }
+  /* кнопка закрытия при наведении */
+
+  .close:hover:after {
+      border-color: #fff;
+      color: #fff;
+      -webkit-transform: scale(1);
+      -moz-transform: scale(1);
+      -ms-transform: scale(1);
+      transform: scale(1);
+  }
+
+  /* движуха при появлении блоков с содержанием */
+
+  @-moz-keyframes fade {
+      from {
+          opacity: 0;
+      }
+      to {
+          opacity: 1
+      }
+  }
+  @-webkit-keyframes fade {
+      from {
+          opacity: 0;
+      }
+      to {
+          opacity: 1
+      }
+  }
+  @keyframes fade {
+      from {
+          opacity: 0;
+      }
+      to {
+          opacity: 1
+      }
+  }
+
+</style>

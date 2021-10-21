@@ -1,0 +1,173 @@
+body {
+  font-family: "Lato", sans-serif;
+  background: #ffffff;
+}
+
+.sidenav {
+  height: 100%;
+  width: 270px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background: #e8e8e8;
+  overflow-x: hidden;
+  padding-top: 20px;
+  box-shadow: 0 0 10px 1px grey;
+  //border-right: 12px solid;
+  //border-image: linear-gradient(45deg, #fff, #2c2a2a) 1;
+  //border-image: url("https://park.mail.ru/static/core/pub/park/img/ubox-right.png") 90 10;
+}
+
+.hidden {
+  display: none;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 19px;
+  color: #575151;
+  display: block;
+}
+
+.sidenav a svg{
+  margin-right: 7px;
+}
+
+.sidenav a:hover {
+  color: #111;
+}
+
+.main {
+  margin-left: 270px; /* То же, что и ширина боковой навигации */
+  font-size: 28px; /* Увеличенный текст для включения прокрутки */
+  /*padding: 0px 10px;*/
+
+}
+.icon {
+  width: 25px;
+  height: 25px;
+}
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+
+#emoji {
+  background-color: white;
+  height: 300px;
+  width: 300px;
+  max-width: 300px;
+  max-height: 300px;
+  overflow: auto;
+}
+
+
+
+
+
+
+.input-file-row-1:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+
+.input-file-row-1{
+  display: inline-block;
+  margin-top: 25px;
+  position: relative;
+}
+
+html[xmlns] .input-file-row-1{
+  display: block;
+}
+
+* html .input-file-row-1 {
+  height: 1%;
+}
+
+.upload-file-container {
+  position: relative;
+  width: 100px;
+  height: 137px;
+  overflow: hidden;
+  background: url(http://i.imgur.com/AeUEdJb.png) top center no-repeat;
+  float: left;
+  margin-left: 23px;
+}
+
+.upload-file-container:first-child {
+  margin-left: 0;
+}
+
+.upload-file-container > img {
+  width: 93px;
+  height: 93px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+}
+
+.upload-file-container-text{
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: #719d2b;
+  line-height: 17px;
+  text-align: center;
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100px;
+  height: 35px;
+}
+
+.upload-file-container-text > span{
+  border-bottom: 1px solid #719d2b;
+  cursor: pointer;
+}
+
+.upload-file-container input  {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  font-size: 1px;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  margin: 0;
+  padding: 0;
+  border: none;
+  width: 70px;
+  height: 50px;
+  cursor: pointer;
+}
+.emoji {
+  cursor: pointer;
+}
+
+
+
+
+
+.nothing_selected {
+  font-size: 31px;
+  line-height: 31px;
+  padding: 30px 0 35px;
+  text-align: center;
+  color: #848484;
+  border: 5px dashed;
+  margin: 90px 90px 0;
+}
+
+// добавление пользователя
+
+#add_users *  {
+  color: #575151;
+
+}

@@ -1,3 +1,280 @@
-// Place all the styles related to the Main controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: https://sass-lang.com/
+.header__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header__door {
+  line-height: normal!important;
+  overflow: hidden;
+  border-right-width: 1px!important;
+  z-index: 1001;
+}
+
+a, body {
+  color: #1c1c1c!important;
+}
+
+a {
+  cursor: pointer!important;
+  text-decoration: none!important;
+}
+
+.nav__menu {
+  position: relative;
+  background: url(https://park.mail.ru/static/core/pub/park/img/hrb.png) repeat-x;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+ul {
+  list-style: none;
+  margin: 0!important;
+  padding: 0!important;
+}
+
+.topmenu > li {
+  display: inline-block;
+  margin-right: 20px;
+  position: relative;
+}
+
+.topmenu > li:last-child {
+  margin-right: 0;
+}
+
+.a {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  outline: none;
+  font-family: 'Lora', serif;
+  transition: .5s linear;
+}
+
+.submenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  -webkit-transition: 0.5s ease-in-out;
+  -moz-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
+}
+
+header {
+  background: #e8e8e8;
+}
+body {
+  margin: 0px;
+}
+
+.submenu li a {
+  border-bottom: 1px solid rgba(255,255,255,.3);
+  color: white!important;
+}
+
+.four .submenu {
+  -webkit-transform: scaleY(0);
+  -ms-transform: scaleY(0);
+  transform: scaleY(0);
+  -webkit-transform-origin: 0 0;
+  -ms-transform-origin: 0 0;
+  transform-origin: 0 0;
+  background: grey;
+}
+
+.four ul li:hover .submenu {
+  -webkit-transform: scaleY(1);
+  -ms-transform: scaleY(1);
+  transform: scaleY(1);
+}
+
+.four ul{
+  color: white;
+}
+
+.ttt {
+  fill: red;
+}
+
+.aaa {
+  border-right: 1px solid grey;
+  border-left: 1px solid grey;
+
+}
+
+.www {
+  width: 50px;
+}
+
+.sdd {
+  border-right: 1px solid grey;
+}
+
+.qqq {
+  display: flex;
+}
+
+
+
+
+
+.bell {
+  display: block;
+}
+
+.bir {
+  position: absolute;
+  top: 10px;
+  right: 6px;
+}
+
+
+
+
+
+
+
+
+@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300&subset=latin,cyrillic);
+*, ::after, ::before {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin:0;
+  padding:0;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif!important;
+  font-size: 17px!important;
+  font-weight: 300!important;
+  line-height: 1.7!important;
+}
+
+.mudsarulopas {
+  width: 349px;
+  position: fixed;
+  padding: 0;
+  top: 19%;
+  margin-top: -99.7px;
+  right: 0;
+  background: #2b99bb;
+  -webkit-transform: translateX(100%);
+  -moz-transform: translateX(100%);
+  transform: translateX(100%);
+  -webkit-transition: 0.34s;
+  -moz-transition: 0.34s;
+  transition: 0.34s;
+  z-index: 9998;
+  height: 900px;
+}
+
+.mudsarulopas:hover {background: #3c8eaf;}
+.mudsarulopas > section {
+  padding: 15px;
+  color: #f5f5f5
+}
+
+.asruk-tkilasun {
+  position: absolute;
+  right: 99.8%;
+  top: 41%;
+  margin-top: -24px;
+  left: -24px;
+  padding: 1em 0;
+  background: inherit;
+  border-bottom-left-radius: 7px;
+  border-top-left-radius: 7px;
+  color: #f7f3f1;
+  font-size: 1.4em;
+  line-height: 1;
+  text-align: center;
+}
+
+.asruk-tkilasun:after {
+  content: url("../../assets/images/bell.png");
+  font: normal 18px/1 'FontAwesome';
+  text-decoration: inherit;
+}
+
+.asruk-tkilasun:hover{
+  cursor: pointer;
+  color:#fff;
+}
+
+[id='asruk-tkilasun'] {
+  position: absolute;
+  right:0;
+  display:none;
+}
+
+[id='asruk-tkilasun']:checked ~ .mudsarulopas {
+  -webkit-transform: translateX(0);
+  -moz-transform: translateX(0);
+  transform: translateX(0);
+}
+
+[id='asruk-tkilasun']:checked ~ .mudsarulopas > .asruk-tkilasun:after {
+  content:'\f2b7';
+  font: normal 18px/1 'FontAwesome';
+}
+
+body {
+  -webkit-animation: bugfix infinite 1s;
+  animation: bugfix infinite 1s;
+}
+
+@-webkit-keyframes bugfix {
+  to { padding: 0; }
+}
+
+@media (max-width: 350px) {
+  .mudsarulopas {
+    width: 100%;
+  }
+}
+
+.one_task {
+  background: white;
+  color: black;
+  border-radius: 20px;
+  margin-top: 20px;
+}
+
+
+
+
+
+.sizet {
+  width: 1200px !important;
+  max-width: 1200px !important;
+}
+
+.cent {
+  margin-left: 350px;
+  margin-top: 100px;
+}
+
+.color {
+  background-color: #f4f6f8;
+}
+
+.color2 {
+  background-color: white;
+}
+
+#exampleModalLabel {
+  font-size: 150%;
+  margin-top: 15px;
+  background: #2b99bb;
+}
+
+

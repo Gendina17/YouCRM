@@ -1,21 +1,99 @@
 
+<%= stylesheet_link_tag 'settings', media: 'all', 'data-turbolinks-track': 'reload' %>
 
-<div id="dd">
+<!--------------------Меню----------------------------------->
+
+<div>
 
 <div class="sidenav">
-  <a href="#"><img src="/assets/person-plus.svg" class="icon" onclick="hidden_block('aaaaaa');"> Добавить пользователя</a>
-  <a href="#"><img src="/assets/key.svg" class="icon" onclick="hidden_block('prava');">Создать должность и права</a>
-  <a href="#"><img src="/assets/sliders.svg" class="icon">Настроить CRM</a>
-  <a href="#">Админка</a>
+  <a href="#" onclick="hidden_block('block1');">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+      <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+      <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+    </svg>
+    Добавить пользователя
+  </a>
+  <a href="#" onclick="hidden_block('prava');">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill" viewBox="0 0 16 16">
+      <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+    </svg>
+    Создать должность и права
+  </a>
+  <a href="#">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sliders" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"/>
+    </svg>
+    Настроить CRM
+  </a>
+  <a href="#">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart-line" viewBox="0 0 16 16">
+      <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2zm1 12h2V2h-2v12zm-3 0V7H7v7h2zm-5 0v-3H2v3h2z"/>
+    </svg>
+    Админка
+  </a>
+  <a href="#">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-text" viewBox="0 0 16 16">
+      <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+      <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
+    </svg>
+    Лента
+  </a>
+  <a href="#" onclick="hidden_block('tasks');">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-task" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5H2zM3 3H2v1h1V3z"/>
+      <path d="M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9z"/>
+      <path fill-rule="evenodd" d="M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5V7zM2 7h1v1H2V7zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5H2zm1 .5H2v1h1v-1z"/>
+    </svg>
+    Задачи
+  </a>
+  <a href="#" onclick="hidden_block('chat');">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots" viewBox="0 0 16 16">
+      <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+      <path d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9.06 9.06 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.437 10.437 0 0 1-.524 2.318l-.003.011a10.722 10.722 0 0 1-.244.637c-.079.186.074.394.273.362a21.673 21.673 0 0 0 .693-.125zm.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6c0 3.193-3.004 6-7 6a8.06 8.06 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a10.97 10.97 0 0 0 .398-2z"/>
+    </svg>
+    Чат
+  </a>
+  <a href="#" onclick="hidden_block('profile');">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+    <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
+  </svg>
+    Профиль
+  </a>
 </div>
 </div>
+
+<!---------------------------------------------------------------------------------------------------------->
+
+
+
+<!----------------------Главная ----------------------------------------->
+
 <div class="main" id="main">
-  <p><h1><--- ВЫБЕРИТЕЕЕЕЕЕ</h1></p>
+  <div class="nothing_selected">Выберите нужную категорию</div>
 </div>
-<div id="aaaaaa">
-  <div id="create_room" class="block">
-    <div id="popup-login" class="popup popup-login" style="opacity: 1; display: block;">
-      <p class="heading">Создание пользователя</p>
+<!---------------------------------------------------------------------------------------------------------->
+
+
+<!----------------------блок для добавления пользователя--------------------------------------->
+<div id="block1" class="hidden">
+<div id="add_users">
+
+
+<p onclick="yuyu();">Пользователи компании <%= @company.name %></p>
+  <input placeholder="Найти...." id="my-input">
+  <ul id="user-list">
+    <%@users.each do |user| %>
+    <li id="<%= rand(500) + 1 %>">
+      <a href="#win1" onclick="show_user('<%= user.name %>', '<%= user.surname %> ', '<%= user.state%>');">
+      <span id="name"><%= user.name %></span>
+      <span id="surname"><%= user.surname %></span>
+    </a>
+    </li>
+    <% end %>
+  </ul>
+
+      <p class="heading">Создать нового пользователя</p>
+
       <form  id="popup-login-form3" class="pl-login form-required no-disable" name="regForm">
         <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
         <p class="error-message validate-error-hide validate-error-login message" id="reg_error">
@@ -51,78 +129,390 @@
           </button>
         </div>
       </form>
-    </div>
-  </div>
+
 
 </div>
+</div>
+<!---------------------------------------------------------------------------------------------------------->
+
+<!---------------------блок права------------------------------------------------->
 
   <div class="hidden" id="prava">
+
      длялялялялялляляляляля
-    <p> ща чет настроим все дела ляллялялялялялял</p>
+    <p> ща чет настроим все дела ляллялялялялялял мб загрузка логотипа</p>
   </div>
+<!---------------------------------------------------------------------------------------------------------->
+
+<!--------------------блок задач------------------------------------------------>
+
+<div class="hidden" id="tasks">
+  <div class="tasks">
+  </div>
+  <div class="new_task">
+    <form>
+      <input type="text" name="title"><br>
+      <textarea name="body"></textarea><br>
+      <input type="date" name="time"><br>
+      <select>
+<option>нина</option>
+        <option>коля</option>
+      </select><br>
+      <input type="submit">
+    </form>
+  </div>
+</div>
+<!---------------------------------------------------------------------------------------------------------->
+
+<!----------------------Профиль пользователя------------------------------------------------->
+
+<div class="hidden" id="profile">
+  <form name="" method="post" action="#" enctype="multipart/form-data" class="feedback-form-1">
+
+
+    <fieldset>
+
+      <div class="input-file-row-1">
+
+        <div class="upload-file-container">
+          <img id="image" src="#" alt="" />
+          <div class="upload-file-container-text">
+            <span>Add<br />photo</span>
+            <input type="file" name="pic[]" class="photo" id="imgInput">
+          </div>
+        </div>
+
+      </div>
+    </fieldset>
+    <span><%= @current_user.email %></span>
+<span>Должность: одмен</span>
+    <input type="text" name="name" value="<%= @current_user.name %>" placeholder="Имя"><br>
+    <input type="text" name="surname" value="<%= @current_user.surname %>" placeholder="Фамилия"><br>
+    <input type="text" name="mood" value="<%= @current_user.mood %>" onclick="show_emojis('emoji')" id="mood" placeholder="Статус"><br>
+    <input type="submit">
+  </form>
 
 
 
+  <div id="emoji" class="hidden">
 
 
+  </div>
+</div>
 
-<style>
-    body {
-        font-family: "Lato", sans-serif;
-        background: #e8e8e8;
-    }
+<!---------------------------------------------------------------------------------------------------------->
 
-    .sidenav {
-        height: 100%;
-        width: 270px;
-        position: fixed;
-        z-index: 1;
-        top: 0;
-        left: 0;
-        background:#fff;
-        overflow-x: hidden;
-        padding-top: 20px;
-        box-shadow: 0 0 10px 1px grey;
-        border-right: 4px solid;
-        border-image: linear-gradient(45deg, rgb(241, 171, 199), #515cff) 1;
-    }
-
-
-.hidden {
-    display: none;
-}
-
-    .sidenav a {
-        padding: 6px 8px 6px 16px;
-        text-decoration: none;
-        font-size: 18px;
-        color: #818181;
-        display: block;
-    }
-
-    .sidenav a:hover {
-        color: #111;
-    }
-
-    .main {
-        margin-left: 270px; /* То же, что и ширина боковой навигации */
-        font-size: 28px; /* Увеличенный текст для включения прокрутки */
-        /*padding: 0px 10px;*/
-
-    }
-.icon {
-    width: 25px;
-    height: 25px;
-}
-    @media screen and (max-height: 450px) {
-        .sidenav {padding-top: 15px;}
-        .sidenav a {font-size: 18px;}
-    }
-</style>
+<!----------------------------окно юзера---------------------------------------->
+<div class="dm-overlay" id="win1">
+  <div class="dm-table">
+    <div class="dm-cell">
+      <div class="dm-modal">
+        <a href="#close" class="close"></a>
+        <h3 id="user_title">Пользователь Гендина Нина одмен активна </h3>
+        <div class="pl-left">
+          <img src="../assets/avatar<%= rand(5) + 1 %>.jpeg">
+        </div>
+        <p>Окно выводится строго по центру, по горизонтали и по вертикали, внутри контейнера с относительным позиционированием. В данном примере показана возможность использования встроенных миниатюр, разположенных слева в div-контейнере с выделенным классом <code>.pl-left</code></p>
+        <p>Размер блока миниатюр определил в 25% от родительского контейнера, тем самым обеспечив возможность пропорционального изменения, при просмотре на экранах различных пользовательских устройств.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!---------------------------------------------------------------------------------------------------------->
 
 <script>
     function hidden_block(name) {
         document.getElementById('main').innerHTML = ""
         document.getElementById('main').innerHTML = document.getElementById(name).innerHTML ;
     }
+    let emojis_emotions = [ 0x1F600, 0x1F609, 0x1F601, 0x1F606,0x1F605, 0x1F602, 0x1F923, 0x1F60A, 0x1F642, 0x1F604, 0x1F643,
+        0x1F607, 0x1F603, 0x1F61A, 0x1F970, 0x1F619, 0x263A, 0x1F60D, 0x1F617, 0x1F618, 0x1F929, 0x1F60B, 0x1F61B,
+        0x1F61C, 0x1F92A, 0x1F61D, 0x1F911, 0x1F914, 0x1F92D, 0x1F917, 0x1F92B, 0x1F610, 0x1F636, 0x1F928, 0x1F62C, 0x1F60F, 0x1F611,
+        0x1F612, 0x1F644, 0x1F910, 0x1F925, 0x1F60C, 0x1F614, 0x1F62A, 0x1F634, 0x1F924, 0x1F976, 0x1F927, 0x1F637, 0x1F92F, 0x1F974,
+        0x1F635, 0x1F912, 0x1F975, 0x1F92E, 0x1F915, 0x1F922, 0x1F920, 0x1F973, 0x1F913, 0x1F60E, 0x1F9D0, 0x1F615, 0x1F616, 0x1F627, 0x1F97A,
+        0x1F62B, 0x1F631, 0x1F61E, 0x1F62F, 0x1F62E, 0x1F62D, 0x1F61F, 0x1F613, 0x1F629, 0x1F622, 0x1F632, 0x1F628, 0x2620, 0x1F633, 0x1F641,
+        0x1F625, 0x1F623, 0x1F626, 0x2639, 0x1F630, 0x1F624, 0x1F608, 0x1F621, 0x1F480, 0x1F47F, 0x1F92C, 0x1F620, 0x1F4A9, 0x1F921,
+        0x1F916, 0x1F47D, 0x1F47E, 0x1F47B, 0x1F47A, 0x1F479, 0x1F640, 0x1F63D, 0x1F638, 0x1F63F, 0x1F63E, 0x1F63B, 0x1F63A, 0x1F63C, 0x1F639,
+        0x1F649, 0x1F64A, 0x1F648
+
+    ];
+    let emojis_peoples = [ 0x1F91A, 0x1F596, 0x1F44B, 0x1F590, 0x270B, 0x1F919, 0x1F91E, 0x1F91F, 0x1F918, 0x1F44C, 0x270C,
+        0x1F595, 0x1F446, 0x1F447, 0x1F448, 0x1F449, 0x261D, 0x1F91B, 0x1F91C, 0x1F44D, 0x270A, 0x1F44A, 0x1F44E, 0x1F450,
+        0x1F91D, 0x1F44F, 0x1F932, 0x1F64F, 0x1F64C, 0x270D, 0x1F933, 0x1F485, 0x1F441, 0x1F444, 0x1F445,
+        0x1F442, 0x1F443, 0x1F9B4, 0x1F440, 0x1F9B6, 0x1F9B5, 0x1F9B7, 0x1F4AA, 0x1F9E0, 0x1F9D3, 0x1F9D1, 0x1F9D2, 0x1F469,
+        0x1F466, 0x1F467, 0x1F468, 0x1F471, 0x1F476, 0x1F474, 0x1F475, 0x1F9D4,
+    ];
+
+    let emojis_simvols = [ 0x1F5EF, 0x1F573, 0x1F5E8, 0x1F9E1, 0x1F49F, 0x1F4AD, 0x1F49E, 0x1F48C, 0x1F5A4,
+        0x1F4A2, 0x1F493, 0x1F4AF, 0x1F495, 0x1F48B, 0x1F4A8, 0x1F4A6, 0x1F4AB, 0x1F497, 0x1F494, 0x1F498, 0x1F49A, 0x1F499,
+        0x1F49C, 0x1F49B, 0x1F4A5, 0x1F4A5, 0x1F4AC, 0x1F4A3, 0x1F4A4, 0x2764, 0x2763, 0x1F49D
+    ];
+    function show_emojis(name) {
+        document.getElementById(name).innerHTML = ""
+        document.getElementById(name).classList.toggle("hidden");
+        document.getElementById(name).innerHTML += "Эмоции <br>"
+        emojis_emotions.forEach(function(item, i, arr) {
+            document.getElementById(name).innerHTML += "<span class='emoji'onclick='add_emoji(" + i + ");' >" + String.fromCodePoint(item) + "</span>";
+            if (i % 10 == 9) {
+                document.getElementById(name).innerHTML += "<br>"
+            }
+        });
+        document.getElementById(name).innerHTML += "<br>Люди и жесты <br>"
+        emojis_peoples.forEach(function(item, i, arr) {
+            document.getElementById(name).innerHTML += "<span class='emoji'onclick='add_emoji(" + i + ");' >" + String.fromCodePoint(item) + "</span>";
+            if (i % 10 == 9) {
+                document.getElementById(name).innerHTML += "<br>"
+            }
+        });
+
+        document.getElementById(name).innerHTML += "<br>Символы <br>"
+        emojis_simvols.forEach(function(item, i, arr) {
+            document.getElementById(name).innerHTML += "<span class='emoji' onclick='add_emoji(" + i + ");' >" + String.fromCodePoint(item) + "</span>";
+            if (i % 10 == 9) {
+                document.getElementById(name).innerHTML += "<br>"
+            }
+        });
+
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            alert(e.target.result);
+
+        };
+
+    }
+
+    function add_emoji(i) {
+        document.getElementById('mood').value += String.fromCodePoint(emojis_emotions[i])
+    }
+
+    function showFile(e) {
+        alert("fdd");
+        var files = e.target.files;
+        for (var i = 0, f; f = files[i]; i++) {
+            if (!f.type.match('image.*')) continue;
+            var fr = new FileReader();
+            fr.onload = (function(theFile) {
+                return function(e) {
+                    var li = document.createElement('li');
+                    li.innerHTML = "<img src='" + e.target.result + "' />";
+                    document.getElementById('list').insertBefore(li, null);
+                };
+            })(f);
+
+            fr.readAsDataURL(f);
+        }
+    }
+
+    document.getElementById('imgInput').addEventListener('change', showFile, false);
+
 </script>
+
+
+
+<!--<script-->
+<!--  src="https://code.jquery.com/jquery-3.3.1.min.js"-->
+<!--  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="-->
+<!--  crossorigin="anonymous"></script>-->
+
+<!--<script>-->
+
+<!--    function readURL(input) {-->
+<!--alert("eeeeee");-->
+<!--        if (input.files && input.files[0]) {-->
+<!--            var reader = new FileReader();-->
+
+<!--            reader.onload = function (e) {-->
+<!--                alert(e.target.result);-->
+<!--                $('#image').attr('src', e.target.result);-->
+<!--            };-->
+
+<!--            reader.readAsDataURL(input.files[0]);-->
+<!--        }-->
+<!--    }-->
+
+<!--    $("#imgInput").change(function(){-->
+<!--        alert("eeeeee");-->
+<!--        readURL(this);-->
+<!--    });-->
+<!--</script>-->
+<script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
+<script>
+
+
+    document.addEventListener('keyup', function(event) {
+        yuyu();
+    });
+
+
+    function yuyu() {
+        el = document.getElementById("my-input")
+        const searchFor = el.value.toLowerCase();;
+        const $rooms = $("#user-list"),
+            $roomsList = $rooms.children();
+
+
+
+                $roomsList.each(function () {
+            const name = $(this).find("#name").text().toLowerCase();;
+            const surname = $(this).find("#surname").text().toLowerCase();;
+            const fullname = name + " " + surname;
+            const reversename = surname + " " + name;
+
+            if (name.includes(searchFor) || surname.includes(searchFor) || fullname.includes(searchFor) || reversename.includes(searchFor)) {
+                $(`#${this.id}`).show();
+            } else {
+                $(`#${this.id}`).hide();
+
+            }
+        });
+    }
+
+    function show_user(name, surname, state) {
+        document.getElementById('user_title').innerHTML = `Пользователь ${surname} ${name} одмен ${state}`;
+    }
+</script>
+
+
+<style>
+
+
+
+
+
+
+    /* слой затемнения */
+
+    .dm-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.65);
+        display: none;
+        overflow: auto;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+    }
+    /* активируем модальное окно */
+
+    .dm-overlay:target {
+        display: block;
+        -webkit-animation: fade .6s;
+        -moz-animation: fade .6s;
+        animation: fade .6s;
+    }
+    /* блочная таблица */
+
+    .dm-table {
+        display: table;
+        width: 100%;
+        height: 100%;
+    }
+    /* ячейка блочной таблицы */
+
+    .dm-cell {
+        display: table-cell;
+        padding: 0 1em;
+        vertical-align: middle;
+        text-align: center;
+    }
+    /* модальный блок */
+
+    .dm-modal {
+        display: inline-block;
+        padding: 20px;
+        max-width: 50em;
+        background: #607d8b;
+        -webkit-box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.22), 0px 19px 60px rgba(0, 0, 0, 0.3);
+        -moz-box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.22), 0px 19px 60px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.22), 0px 19px 60px rgba(0, 0, 0, 0.3);
+        color: #cfd8dc;
+        text-align: left;
+    }
+    /* изображения в модальном окне */
+
+    .dm-modal img {
+        width: 100%;
+        height: auto;
+    }
+    /* миниатюры изображений */
+
+    .pl-left {
+        width: 25%;
+        height: auto;
+    }
+
+    /* миниатюра слева */
+
+    .pl-left {
+        float: left;
+        margin: 5px 15px 5px 0;
+    }
+
+    /* рисуем кнопарь закрытия */
+
+    .close {
+        z-index: 9999;
+        float: right;
+        width: 30px;
+        height: 30px;
+        color: #cfd8dc;
+        text-align: center;
+        text-decoration: none;
+        line-height: 26px;
+        cursor: pointer;
+    }
+    .close:after {
+        display: block;
+        border: 2px solid #cfd8dc;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        content: 'X';
+        -webkit-transition: all 0.6s;
+        -moz-transition: all 0.6s;
+        transition: all 0.6s;
+        -webkit-transform: scale(0.85);
+        -moz-transform: scale(0.85);
+        -ms-transform: scale(0.85);
+        transform: scale(0.85);
+    }
+    /* кнопка закрытия при наведении */
+
+    .close:hover:after {
+        border-color: #fff;
+        color: #fff;
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+    }
+
+    /* движуха при появлении блоков с содержанием */
+
+    @-moz-keyframes fade {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1
+        }
+    }
+    @-webkit-keyframes fade {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1
+        }
+    }
+    @keyframes fade {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1
+        }
+    }
+
+</style>
