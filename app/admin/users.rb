@@ -1,29 +1,53 @@
 ActiveAdmin.register User do
+  permit_params :name, :email, :surname, :state, :mood, :info, :contacts, :user
 
-  # See permitted parameters documentation:
-  # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
-  # Uncomment all parameters which should be permitted for assignment
-  #
-  # permit_params :name, :email, :surname, :company_id, :password_digest, :email_confirmed, :confirm_token, :state
-  #
-  # or
-  #
-  permit_params do
-    permitted = [:name, :email, :surname, :company_id, :password_digest, :email_confirmed, :confirm_token, :state]
-    permitted << :other if params[:action] == 'create' && current_user.admin?
-    permitted
-  end
-  scope("Пассивы", show_count: false){ |scope| scope.com }
+  scope("Пользователи компании", show_count: true, default: true){ |scope| scope.company(current_user.company.id) }
 
-  index do |user|
-    selectable_column
+  filter :role
+  filter :name
+  filter :surname
+  filter :email
+  filter :state
 
-    column('ID', :id)
-    column('Заголовок', :name)
-    print user
 
+  index title: "Пользователи CRM" do
+    column('Почта', :email)
+    column('Имя', :name)
+    column('Фамилия', :surname)
+    column('Должность', :role)
+    column('Статус', :state)
     actions
   end
 
+  show do
+    attributes_table do
+      row('Почта', :email, &:email)
+      row('Имя', :name, &:name)
+      row('Фамилия', :surname, &:surname)
+      row('Должность', :role, &:role)
+      row('Статус', :state, &:state)
+      row('Настроение', :mood, &:mood)
+      row('Информация о себе', :info, &:info)
+      row('Контакты', :contacts, &:contacts)
+  end
+      # row('Аватар') { |u| u.avatar? ? image_tag(u.avatar.url) : 'Нет аватара'}
+  end
+
+  form do |f|
+    user
+    f.inputs do
+      f.input :email
+      f.input :name
+      f.input :surname
+      # f.input :role
+      f.input :email
+      f.input :state
+      f.input :mood
+      f.input :info
+      f.input :contacts
+    end
+
+    f.actions
+  end
 end
+#селект по роли компании

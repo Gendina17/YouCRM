@@ -5,15 +5,17 @@ class User < ApplicationRecord
 
   validates :email, presence: true
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
-  validates :name, :surname, :mood , presence: true, length: { maximum: 30 }
+  validates :name, :surname, presence: true, length: { maximum: 30 }
   validates :password, confirmation: true
   validates_inclusion_of :state, in: STATES
 
   belongs_to :company
+  belongs_to :role
+  has_many :walls
 
   before_create :confirmation_token
 
-  scope :com,    -> { where(company_id: current_user.company_id) }
+  scope :company,    ->(id) { where(company_id: id) }
 
   def self.authenticate(email, submitted_password, company)
     user = joins(:company).where("companies.name = ?", company)
@@ -35,3 +37,4 @@ class User < ApplicationRecord
     end
   end
 end
+#уволенные

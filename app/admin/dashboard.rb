@@ -1,32 +1,30 @@
 ActiveAdmin.register_page "Dashboard" do
-  menu priority: 1, label: proc { I18n.t("active_admin.dashboard") }
+  menu priority: 1, label: 'Main'
 
-  content title: proc { I18n.t("active_admin.dashboard") } do
-    div class: "blank_slate_container", id: "dashboard_default_message" do
-      span class: "blank_slate" do
-        span I18n.t("active_admin.dashboard_welcome.welcome")
-        small I18n.t("active_admin.dashboard_welcome.call_to_action")
+  content title: 'Главная' do
+    columns do
+      column do
+        panel "Основная информация" do
+          h3 'Название компании:  ' + current_user.company.name
+          h3 'Зарегестрирована в CRM с '  + current_user.company.created_at.to_s.split(' ', 2).first
+          h3 'Количество добавленных пользователей: ' + User.company(current_user.company_id).count.to_s
+          creator = User.company(current_user.company_id).first
+          h3 'Создатель CRM: ' + creator.name + ' ' + creator.surname
+        end
+      end
+
+      column do
+        panel "Info" do
+          h3 'Администраторы:'
+          ul do
+            User.joins(:role).where(company_id: current_user.company.id).where(name: 'Администратор').map do |user|
+              li link_to(user.name, admin_user_path(user))
+            end
+          end
+        end
       end
     end
-
-    # Here is an example of a simple dashboard with columns and panels.
-    #
-    # columns do
-    #   column do
-    #     panel "Recent Posts" do
-    #       ul do
-    #         Post.recent(5).map do |post|
-    #           li link_to(post.title, admin_post_path(post))
-    #         end
-    #       end
-    #     end
-    #   end
-
-    #   column do
-    #     panel "Info" do
-    #       para "Welcome to ActiveAdmin."
-    #     end
-    #   end
-    # end
-  end # content
+  end
 end
+# пепир треил мож выводить кто менял чтот логирование типа сделать и какие есть роли
+# сделать условную базу хранилище мож какиет графики аналитика

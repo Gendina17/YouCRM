@@ -1,8 +1,7 @@
 class MessagesController < ApplicationController
   def create
-    ActionCable.server.broadcast 'messages',
-      message: message_params[:body],
-      username: @current_user.name
+    p 'uigyggoyggoygogogohhghgiogyugyougouy'
+    ActionCable.server.broadcast( 'messages', {message: message_params[:body], username: @current_user.name})
     head :ok
   end
 

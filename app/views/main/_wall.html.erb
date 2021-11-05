@@ -1,0 +1,52 @@
+<div id="wall">
+  <div id="records">
+
+  </div>
+
+  <div id="new_record">
+    <form name="wallForm" id="wallForm" onsubmit="send_wall_form();return false">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <textarea name="body">
+
+      </textarea>
+      <button type="submit">
+        Отправить
+      </button>
+    </form>
+  </div>
+
+</div>
+
+<script>
+    function send_wall_form(){
+
+        var body = document.forms.wallForm.body.value;
+        var token = document.forms.wallForm.authenticity_token.value;
+
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/create_wall.json");
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        body = 'body=' + encodeURIComponent(body) + '&authenticity_token=' + encodeURIComponent(token);
+
+        xhr.onreadystatechange = function (){
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById("records").innerHTML += xhr.responseText;
+            }
+        }
+        xhr.send(body)
+    }
+
+    function show_walls(){
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/all_walls.json");
+
+        xhr.onreadystatechange = function (){
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById("records").innerHTML = xhr.responseText;
+            }
+        }
+        xhr.send()
+    }
+</script>

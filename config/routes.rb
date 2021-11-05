@@ -6,6 +6,13 @@ Rails.application.routes.draw do
   get '/', to: 'main#index'
   get '/settings', to: 'main#settings'
   get '/change_state', to: 'main#change_state'
+  post '/update', to: 'main#update'
+  post '/create', to: 'main#create'
+  post '/create_role', to: 'main#create_role'
+  post '/add_role_to_user', to: 'main#add_role_to_user'
+  get '/all_users_in_role', to: 'main#all_users_in_role'
+  get '/all_walls', to: 'main#all_walls'
+  post '/create_wall', to: 'main#create_wall'
 
   get '/identification', to: 'registration#identification'
   get '/send_password', to: 'registration#send_password'

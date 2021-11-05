@@ -27,6 +27,7 @@ gem 'jquery-rails'
 gem 'actioncable'
 gem 'activeadmin'
 gem 'devise'
+gem "rolify"
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 

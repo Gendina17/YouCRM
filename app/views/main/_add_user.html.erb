@@ -1,0 +1,677 @@
+<div id="add_users">
+
+
+  <p id="first_title">Пользователи компании <%= @company.name.upcase %>
+    <br><br><br></p>
+  <div class="input-wrapper" data-text="">
+
+    <input id="my-input"  type="text" placeholder="Найти...." >
+  </div>
+
+  <!--  <input placeholder="Найти...." id="my-input">-->
+  <div id="list">
+    <ul id="user-list" class="push">
+      <%@users.each do |user| %>
+        <li id="<%= rand(500) + 1 %>">
+          <a href="#win1" onclick="show_user('<%= user.name %>', '<%= user.surname %> ', '<%= user.state%>', '<%= user.mood%>', '<%= user.info&.strip%>', '<%= user.role&.name%>', '<%= user.email%>',  '<%= user.contacts.present? ? JSON.parse(user.contacts).to_a.map{|w| w.join('-')}.join('#') : '' %>', '<%= user.created_at.to_date.to_s.split('-').reverse.join('-') %>');">
+            <span id="name"><%= user.name %></span>
+            <span id="surname"><%= user.surname %></span>
+            <span id="surname"> ---- <%= user.state %></span>
+            <span id="surname">одмен</span>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="submit submit-with-social for_position">
+    <button name="submit_login" type="submit" id="menu4" class="log" >
+      <a href="#win2">
+      <span class="menu_text" id="menu_text4">Создать нового пользователя<b></b><b></b></span>
+      </a>
+    </button>
+  </div>
+
+</div>
+
+
+
+
+<!----------------------------окно создать---------------------------------------->
+<div class="dm-overlay" id="win2">
+<!--  <div class="dm-table">-->
+<!--    <div class="dm-cell">-->
+<!--      <div class="dm-modal">-->
+        <a href="#close" class="close_reg"></a>
+
+        <div id="block_registration" class="block">
+          <form  id="popup-login-form3" class="pl-login form-required no-disable" name="newForm" onsubmit="send_form_new();return false">
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+            <p class="heading" id="heading">Новый пользователь</p>
+            <p class="error-message validate-error-hide validate-error-login message" id="reg_error"></p>
+            <div class="login-input">
+              <div class="login-loader"></div>
+
+              <p>
+                <input type="email" name="email" class="textInput" placeholder="Почта" required maxlength="50">
+              </p>
+              <p class="password">
+                <input type="password" name="password" class="textInput" placeholder="Пароль" id="password-input"
+                       autocomplete="new-password" required maxlength="50" minlength="6">
+                <a href="#" class="password-control" onclick="return show_hide_password(this);"></a>
+              </p>
+              <p>
+                <input type="password" name="password_confirmation" class="textInput"
+                       placeholder="Повтор пароля" autocomplete="new-password" minlength="6" required maxlength="50">
+              </p>
+              <p>
+                <input type="text" name="name" class="textInput required" placeholder="Имя" required maxlength="50">
+              </p>
+              <p>
+                <input type="text" name="surname" class="textInput required" placeholder="Фамилия" required maxlength="50">
+              </p>
+              <p>
+                <input type="text" name="role" class="textInput required" placeholder="Должность" required maxlength="50">
+              </p>
+            </div>
+            <div class="submit submit-with-social">
+              <button name="submit_login" type="submit" id="menu4" class="log">
+                <span class="menu_text" id="menu_text4">Создать<b></b><b></b></span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<!---------------------------------------------------------------------------------------------------------->
+
+
+
+
+
+<script>
+
+
+    // document.addEventListener('keyup', function(event) {
+    //     yuyu();
+    // });
+    document.addEventListener('keyup', function(event) {
+        const wrapper = document.querySelector(".input-wrapper")
+        wrapper.setAttribute("data-text", event.target.value);
+        yuyu();
+    });
+
+    function yuyu() {
+        el = document.getElementById("my-input")
+        const searchFor = el.value.toLowerCase();;
+        const $rooms = $("#user-list"),
+            $roomsList = $rooms.children();
+
+
+
+        $roomsList.each(function () {
+            const name = $(this).find("#name").text().toLowerCase();;
+            const surname = $(this).find("#surname").text().toLowerCase();;
+            const fullname = name + " " + surname;
+            const reversename = surname + " " + name;
+
+            if (name.includes(searchFor) || surname.includes(searchFor) || fullname.includes(searchFor) || reversename.includes(searchFor)) {
+                $(`#${this.id}`).show();
+            } else {
+                $(`#${this.id}`).hide();
+
+            }
+        });
+    }
+
+    function show_user(name, surname, state, mood, info, role, mail, contacts, time) {
+        document.getElementById('user_title').innerHTML = `Пользователь ${surname} ${name} ${role} ${state}`;
+        document.getElementById('moodr').innerHTML = `${mood}`;
+        document.getElementById('info').innerHTML = `${info}`;
+        document.getElementById('mail').innerHTML = `${mail}`;
+        document.getElementById('time').innerHTML = `В YouCrm с ${time}`;
+        contacts = contacts.split('#')
+        document.getElementById('contact_list').innerHTML = ''
+        if (contacts == '')
+            return
+
+        for(i = 0; i < contacts.length; i++) {
+            site = contacts[i].split('-')[0]
+            nick = contacts[i].split('-')[1]
+            if (['telegram', 'slack' , 'whatsapp' , 'phone', 'github'].indexOf( site ) == -1)
+                site2 = 'another'
+            else
+                site2 = site
+            document.getElementById('contact_list').innerHTML += `<img id="iconki" src="../assets/${site2}.svg" title="${site}"> ${nick} <br>`;
+        }
+    }
+</script>
+
+
+<style>
+
+
+#iconki {
+    width: 30px;
+    height: 30px;
+}
+
+
+
+    /* слой затемнения */
+
+    .dm-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.85);
+        display: none;
+        overflow: auto;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+    }
+    /* активируем модальное окно */
+
+    .dm-overlay:target {
+        display: block;
+        -webkit-animation: fade .6s;
+        -moz-animation: fade .6s;
+        animation: fade .6s;
+    }
+    /* блочная таблица */
+
+    .dm-table {
+        display: table;
+        width: 100%;
+        height: 100%;
+    }
+    /* ячейка блочной таблицы */
+
+    .dm-cell {
+        display: table-cell;
+        padding: 0 1em;
+        vertical-align: middle;
+        text-align: center;
+    }
+    /* модальный блок */
+
+    .dm-modal {
+        display: inline-block;
+        padding: 20px;
+        max-width: 50em;
+        background: gray;
+        -webkit-box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.22), 0px 19px 60px rgba(0, 0, 0, 0.3);
+        -moz-box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.22), 0px 19px 60px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.22), 0px 19px 60px rgba(0, 0, 0, 0.3);
+        color: #cfd8dc;
+        border: 10px double #cfd8dc;
+        text-align: left;
+    }
+    /* изображения в модальном окне */
+
+    .dm-modal img {
+        width: 100%;
+        height: auto;
+    }
+    /* миниатюры изображений */
+
+    .pl-left {
+        width: 25%;
+        height: auto;
+    }
+
+    /* миниатюра слева */
+
+    .pl-left {
+        float: left;
+        margin: 5px 15px 5px 0;
+    }
+
+    /* рисуем кнопарь закрытия */
+
+    .close_reg {
+        z-index: 9999;
+        float: right;
+        width: 30px;
+        height: 30px;
+        color: #cfd8dc;
+        text-align: center;
+        text-decoration: none;
+        line-height: 26px;
+        cursor: pointer;
+        position: absolute;
+        top: 130px;
+        left: 975px;
+
+    }
+    .close_reg:after {
+        display: block;
+        border: 2px solid #cfd8dc;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        content: 'X';
+        -webkit-transition: all 0.6s;
+        -moz-transition: all 0.6s;
+        transition: all 0.6s;
+        -webkit-transform: scale(0.85);
+        -moz-transform: scale(0.85);
+        -ms-transform: scale(0.85);
+        transform: scale(0.85);
+    }
+
+    .close {
+        z-index: 9999;
+        float: right;
+        width: 30px;
+        height: 30px;
+        color: #cfd8dc;
+        text-align: center;
+        text-decoration: none;
+        line-height: 26px;
+        cursor: pointer;
+    }
+    .close:after {
+        display: block;
+        border: 2px solid #cfd8dc;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        content: 'X';
+        -webkit-transition: all 0.6s;
+        -moz-transition: all 0.6s;
+        transition: all 0.6s;
+        -webkit-transform: scale(0.85);
+        -moz-transform: scale(0.85);
+        -ms-transform: scale(0.85);
+        transform: scale(0.85);
+    }
+    /* кнопка закрытия при наведении */
+
+    .close:hover:after {
+        border-color: #fff;
+        color: #fff;
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+    }
+
+    /* движуха при появлении блоков с содержанием */
+
+    @-moz-keyframes fade {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1
+        }
+    }
+    @-webkit-keyframes fade {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1
+        }
+    }
+    @keyframes fade {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1
+        }
+    }
+
+</style>
+
+
+
+
+<style>
+
+    .block {
+        border: 3px double black;
+        padding: 20px;
+        position: absolute;
+        text-align: center;
+        background: #eef0f1;
+    }
+
+    .block:before {
+        width: 100%;
+        height: 8px;
+        top: 100%;
+        left: -2px;
+        margin: 2px 0 0;
+        padding: 0 10px 0 0;
+        background: url(https://park.mail.ru/static/core/pub/park/img/ubox-bottom.png) repeat-x -10px -13px;
+    }
+
+    .block:after {
+        width: 6px;
+        height: 100%;
+        top: -2px;
+        left: 100%;
+        margin: 0 0 0 2px;
+        padding: 0 0 10px;
+        background: url(https://park.mail.ru/static/core/pub/park/img/ubox-right.png) repeat-x -11px -10px;
+    }
+
+    .block:after, .block:before {
+        display: block;
+        content: '';
+        position: absolute;
+        overflow: hidden;
+    }
+
+
+    #block_registration {
+        max-height: 650px;
+        height: 650px;
+        width: 300px;
+        max-width: 300px;
+        top: 50%;
+        transform: translate(0, -50%);
+        left: 40%;
+    }
+
+
+
+    p {
+        font-family: pf_isotext_proregular,Arial,Helvetica,sans-serif;
+    }
+
+
+
+    .menu_text {
+        display: inline-block;
+        height: 54px;
+        font-family: pf_isotext_proregular,Arial,Helvetica,sans-serif;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 52px;
+        color: #1C1C1C;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-style: normal;
+        padding: 0 30px;
+        border-radius: 40px;
+        border: 2px solid #1C1C1C;
+        box-shadow: 4px 8px 0 0 #1c1c1c;
+        background: #fff;
+        text-align: center;
+        position: relative;
+        white-space: nowrap;
+    }
+
+    .menu_text:before {
+        cursor: pointer;
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        right: 3px;
+        bottom: 3px;
+        border: 1px solid #1C1C1C;
+        border-radius: 40px;
+        box-shadow: 0 0 0 3px #fff;
+    }
+
+
+
+    .menu_text:active {
+        border-color: #fff;
+        background: #000;
+        box-shadow: 0 0 0 3px #000;
+        color: #fff;
+    }
+
+
+    .popup .heading {
+        padding: 0 0 10px;
+        border-bottom: #cfcfcf 1px dotted;
+        font-weight: 700;
+        font-size: 22px;
+        line-height: 30px;
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    form {
+        display: block;
+        margin-top: 0em;
+    }
+
+    .popup-login .error-message {
+        display: block;
+        margin: 0 10px 11px;
+        color: #fff;
+        font-size: 13px;
+        line-height: 19px;
+        font-style: italic;
+        background-color: #000;
+        text-align: center;
+        border-radius: 10px;
+    }
+
+    .textInput {
+        margin: 0;
+        border: 1px solid #1c1c1c;
+        border-bottom-width: 3px;
+        border-right-width: 2px;
+        background: #fff;
+        color: #1c1c1c;
+        border-radius: 5px;
+        outline: 0;
+        width: 250px;
+    }
+
+    .b, .textInput {
+        padding: 8px 8px 8px 9px;
+        font: 400 16px/20px pf_isotext_proregular,Arial,Helvetica,sans-serif;
+    }
+
+    .log {
+        border: none;
+        background: 0 0;
+        outline: 0;
+    }
+
+    .log:hover {
+        margin-top: 8px;
+    .menu_text:hover {
+        box-shadow: none;
+    }
+    }
+
+    .hidden {
+        display: none;
+    }
+
+
+
+    .message {
+        padding: 5px;
+    }
+
+</style>
+
+<style>
+
+
+
+
+
+    .input-wrapper {
+        width: 500px;
+        margin: 50px auto;
+        position: relative;
+    }
+
+    .input-wrapper::after {
+        content: attr(data-text);
+        font-size: 1.5rem;
+        line-height: 0;
+        max-width: 100%;
+        border-bottom: 3px solid #575151;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        top: 119px;
+        height: 3px;
+        overflow: hidden;
+        user-select: none;
+        color: transparent;
+    }
+
+   #my-input {
+        color: #575151;
+        border: none;
+        padding: 0;
+        border-radius: 0;
+        outline: none;
+        width: auto;
+        min-width: 100%;
+        font-size: 1.5rem;
+        line-height: 3em;
+        font-family: Roboto, Arial, sans-serif;
+        border-bottom: 3px solid #cfcfcf;
+        background-color: transparent;
+        top: 50px;
+        position: absolute;
+    }
+
+
+    #list {
+        background-color: rgba(247, 248, 248, 0.74);
+        border: 2px double grey;
+        box-shadow: inset 0 0 6px;
+        width: 800px;
+        height: 400px;
+        overflow: auto;
+        position: absolute;
+        left: 560px;
+        top: 240px;
+    }
+
+
+    .push {
+        list-style: none;
+        font-family: "Lucida Sans";
+    }
+    .push li {
+        position: relative;
+        padding: 20px 0 20px 40px;
+        color: #D29D25;
+        font-variant: small-caps;
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: none !important;
+    }
+    .push li:before {
+        position: absolute;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #4F5151;
+        content: "";
+        left: 0;
+        transition: .3s ease-in-out;
+        top: 27px;
+    }
+    .push li:after {
+        position: absolute;
+        border-left: 1px dotted #4F5151;
+        width: 1px;
+        bottom: -12px;
+        content: "";
+        left: 3px;
+        top: 48px;
+    }
+    .push li:hover:before{box-shadow: 0 0 0 10px rgba(0,0,0,.2)}
+    .push li:last-child:after {content: none;}
+
+    #first_title {
+        position: absolute;
+        left: 560px;
+        top: 10px;
+    }
+
+    .for_position {
+        position: absolute;
+        left: 760px;
+        top: 700px;
+    }
+
+
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+<script>
+
+  function send_form_new() {
+
+          var email = document.forms.newForm.email.value;
+          var name = document.forms.newForm.name.value;
+          var surname = document.forms.newForm.surname.value;
+          var password = document.forms.newForm.password.value;
+          var password_confirmation = document.forms.newForm.password_confirmation.value;
+          var token = document.forms.newForm.authenticity_token.value
+          var xhr = new XMLHttpRequest();
+
+          xhr.open("POST", "/create.json")
+          xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          body = 'email=' + encodeURIComponent(email) +
+              '&name=' + encodeURIComponent(name) +
+              '&surname=' + encodeURIComponent(surname) +
+              '&password_confirmation=' + encodeURIComponent(password_confirmation) +
+              '&password=' + encodeURIComponent(password) +
+              '&authenticity_token=' + encodeURIComponent(token);
+
+          xhr.onreadystatechange = function () {
+              if (xhr.readyState == 4 && xhr.status == 200) {
+                  document.getElementById('reg_error').innerText = xhr.responseText;
+              }
+          }
+          xhr.send(body)
+      return false
+  }
+
+  function show_hide_password(target){
+      var input = document.getElementById('password-input');
+      if (input.getAttribute('type') == 'password') {
+          target.classList.add('view');
+          input.setAttribute('type', 'text');
+      } else {
+          target.classList.remove('view');
+          input.setAttribute('type', 'password');
+      }
+      return false;
+  }
+</script>
+<style>
+    .password {
+        width: 300px;
+        margin: 15px auto;
+        position: relative;
+    }
+
+    .password-control {
+        position: absolute;
+        top: 11px;
+        right: 24px;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: url(https://snipp.ru/demo/495/view.svg) 0 0 no-repeat;
+    }
+
+    .password-control.view {
+        background: url(https://snipp.ru/demo/495/no-view.svg) 0 0 no-repeat;
+    }
+</style>

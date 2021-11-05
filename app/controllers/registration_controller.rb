@@ -19,7 +19,6 @@ class RegistrationController < ApplicationController
       return render json: "Письмо для завершения регестрации отправлено Вам на почту"
     else
       company.destroy
-      redirect_to identification_url, alert: 'При создании crm произошла ошибка, пожалуйста попробуйте еще раз'
       return render json: 'При создании crm произошла ошибка, пожалуйста попробуйте еще раз'
     end
   end

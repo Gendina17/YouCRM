@@ -1,0 +1,147 @@
+<div id="prava">
+<span id="role_alert"></span>
+<h1>создать должность с такими правами</h1>
+  <br>
+  <form name="roleForm" id="roleForm" onsubmit="create_role();return false">
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  <input placeholder="Должность..." name="name" required maxlength="50">
+  <input placeholder="Описание..." name="description" maxlength="50">
+  <br>
+
+    <% Role::ACTIONS.each_with_index do |action, i| %>
+      <input class="tttt" type="checkbox" name="permission[<%= i %>]" value="<%= action.first %>"> <%= action.last %><br>
+    <% end %>
+
+    <div class="submit submit-with-social" id="am_but">
+      <button name="submit_login" id="menu3" class="log" type="submit">
+        <span class="menu_text" id="menu_text3">Сохранить<b></b><b></b></span>
+      </button>
+    </div>
+  </form>
+  <br>
+
+ <h1>присвоить человеку должность</h1>
+  <form name="roleUserForm" onsubmit="create_role_user();return false">
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <select name="user">
+      <% @roles.each do |role| %>
+      <option name="role" value="<%= role.id %>"><%= role.name %></option>
+      <% end %>
+    </select>
+
+    <select name="role">
+      <% User.company(@current_user.company_id).each do |user| %>
+        <option name="user" value="<%= user.id %>"><%= user.name %></option>
+      <% end %>
+
+    </select>
+
+    <div class="submit submit-with-social" id="am_but">
+      <button name="submit_login" id="menu3" class="log" type="submit">
+        <span class="menu_text" id="menu_text3">Сохранить<b></b><b></b></span>
+      </button>
+    </div>
+  </form>
+<br>
+
+
+  <span>Имеющиеся должности у CRM <%= @company.name %></span>
+  <ul>
+    <% @roles.each do |role| %>
+    <li><%= role.name %>- <%= role.description %> <button>доступы и их можно редачить</button> <button onclick="show_users('<%= role.id %>')">пользователи</button><button>удалить роль</button>
+    <div>
+      <ul>
+        <li>efewwe</li>
+      </ul>
+    </div>
+    </li>
+    <% end %>
+  </ul>
+
+</div>
+
+
+
+<script>
+    function create_role(){
+        var name = document.forms.roleForm.name.value;
+        var description = document.forms.roleForm.description.value;
+        var token = document.forms.roleForm.authenticity_token.value
+
+        form = document.getElementById('roleForm');
+
+
+
+    r = document.getElementsByClassName('tttt');
+
+
+
+
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("POST", "/create_role.json")
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        body = 'name=' + encodeURIComponent(name) +
+            '&description=' + encodeURIComponent(description) +
+            '&authenticity_token=' + encodeURIComponent(token);
+
+
+
+        for (i = 0; i<r.length/2; i++){
+            if (r[i].checked){
+                body += `&permission[${i}]=` + encodeURIComponent(r[i].value)
+            }
+
+        }
+
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById('role_alert').innerText = xhr.responseText;
+            }
+        }
+        xhr.send(body)
+        return false
+    }
+
+    function create_role_user(){
+        var user = document.forms.roleUserForm.user.value;
+        var role = document.forms.roleUserForm.role.value;
+        var token = document.forms.roleUserForm.authenticity_token.value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/add_role_to_user.json");
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        body = 'user_id=' + encodeURIComponent(user) +
+            '&role_id=' + encodeURIComponent(role) +
+            '&authenticity_token=' + encodeURIComponent(token);
+
+        xhr.onreadystatechange = function (){
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById("role_alert").innerHTML = xhr.responseText;
+            }
+        }
+        xhr.send(body)
+    }
+
+    function show_users(id){
+
+            var xhr = new XMLHttpRequest();
+
+            var params = 'id=' + encodeURIComponent(id);
+
+            xhr.open("GET", "/all_users_in_role?" + params)
+
+            xhr.onreadystatechange = function (){
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById('role_alert').innerText = xhr.responseText;
+                }
+            }
+            xhr.send()
+    }
+</script>
+<!--сразу после создания добавлять в список и седект и контакты-->
+<!--еще мб не отображать если не подтвержден или уволеееееен-->

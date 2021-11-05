@@ -1,0 +1,27 @@
+
+<div id="tasks">
+  <div class="tasks">
+  </div>
+  <div class="new_task">
+    <form>
+      <input type="text" name="title" placeholder="Заголовок..."><br>
+      <textarea name="body" placeholder="Тело..."></textarea><br>
+      <input type="date" name="time"><br>
+      <input type="text" name="title" placeholder="Тэг..."><br>
+      <select>
+        <% @users.each do |user| %>
+        <option value="<%= user.id %>"><%= user.name %> <%= user.surname %></option>
+          <% end %>
+      </select><br>
+      <input type="submit">
+    </form>
+  </div>
+  <button>закрытые задачки</button>
+
+  (либ селект по человеку или поиск по человеку и заголовку и мб тэгу)
+  <span>все задачки которые я давала человеку</span>
+</div>
+
+<script>
+
+</script>
