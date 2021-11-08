@@ -1,9 +1,9 @@
 ActiveAdmin.register User do
-  permit_params :name, :email, :surname, :state, :mood, :info, :contacts, :user
+  permit_params :name, :email, :surname, :state, :mood, :info, :contacts, :role_id
 
   scope("Пользователи компании", show_count: true, default: true){ |scope| scope.company(current_user.company.id) }
 
-  filter :role
+  filter :role_name_cont, label: 'Role'
   filter :name
   filter :surname
   filter :email
@@ -39,7 +39,7 @@ ActiveAdmin.register User do
       f.input :email
       f.input :name
       f.input :surname
-      # f.input :role
+      f.input :role, as: :select, collection: Role.company(current_user.company.id)
       f.input :email
       f.input :state
       f.input :mood
@@ -50,4 +50,3 @@ ActiveAdmin.register User do
     f.actions
   end
 end
-#селект по роли компании

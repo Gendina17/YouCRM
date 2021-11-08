@@ -4,7 +4,7 @@ ActiveAdmin.register Role do
     scope("Должности компании", show_count: true, default: true){ |scope| scope.company(current_user.company.id) }
 
     filter :name
-    filter :users
+    filter :users_surname_cont, label: 'User'
     filter :description
     filter :the_role
 
@@ -13,6 +13,7 @@ ActiveAdmin.register Role do
       column('Название', :name)
       column('Описание', :description)
       column('Доступы', :the_role)
+      column('Пользователи', :users)
       actions
     end
 
@@ -21,7 +22,8 @@ ActiveAdmin.register Role do
         row('Почта', :name, &:name)
         row('Имя', :description, &:description)
         row('Фамилия', :the_role, &:the_role)
-    end
+        row('Пользователи', :users, &:users)
+      end
     end
 
     form do |f|
@@ -35,4 +37,3 @@ ActiveAdmin.register Role do
       f.actions
     end
 end
-#либо переопределить мтеод создания либо инхерит поле сделать

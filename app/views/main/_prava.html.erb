@@ -1,67 +1,114 @@
+<%= stylesheet_link_tag 'prava', media: 'all', 'data-turbolinks-track': 'reload' %>
+
 <div id="prava">
-<span id="role_alert"></span>
-<h1>создать должность с такими правами</h1>
-  <br>
-  <form name="roleForm" id="roleForm" onsubmit="create_role();return false">
-    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-  <input placeholder="Должность..." name="name" required maxlength="50">
-  <input placeholder="Описание..." name="description" maxlength="50">
-  <br>
-
-    <% Role::ACTIONS.each_with_index do |action, i| %>
-      <input class="tttt" type="checkbox" name="permission[<%= i %>]" value="<%= action.first %>"> <%= action.last %><br>
-    <% end %>
-
-    <div class="submit submit-with-social" id="am_but">
-      <button name="submit_login" id="menu3" class="log" type="submit">
-        <span class="menu_text" id="menu_text3">Сохранить<b></b><b></b></span>
-      </button>
+  <span id="role_alert"></span>
+  <div id="role_blocks">
+    <div id="new_role" class="role_blocks">
+      <span>Новая должность</span>
+      <br>
+      <form name="roleForm" id="roleForm" onsubmit="create_role();return false">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <input class="textInput" placeholder="Название..." name="name" required maxlength="50" id="left_input">
+        <input class="textInput" placeholder="Описание..." name="description" maxlength="50" id="right_input">
+        <br>
+        <div id="role_actions">
+          <% Role::ACTIONS.each_with_index do |action, i| %>
+            <input class="tttt" type="checkbox" name="permission[<%= i %>]"
+                   value="<%= action.first %>"> <%= action.last %><br>
+          <% end %>
+        </div>
+        <div class="submit submit-with-social" id="am_but">
+          <button name="submit_login" id="menu3" class="log" type="submit">
+            <span class="menu_text" id="menu_text3">Создать<b></b><b></b></span>
+          </button>
+        </div>
+      </form>
+      <br>
     </div>
-  </form>
-  <br>
-
- <h1>присвоить человеку должность</h1>
-  <form name="roleUserForm" onsubmit="create_role_user();return false">
-    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-    <select name="user">
-      <% @roles.each do |role| %>
-      <option name="role" value="<%= role.id %>"><%= role.name %></option>
+    <div class="role_blocks" id="role_to_user">
+      <span>Присвоить человеку должность</span>
+      <form name="roleUserForm" onsubmit="create_role_user();return false">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <div id="inputs_block">
+          <select name="user" class="textInput">
+            <% @roles.each do |role| %>
+              <option name="role" value="<%= role.id %>"><%= role.name %></option>
+            <% end %>
+          </select>
+          <select name="role" class="textInput">
+            <% User.company(@current_user.company_id).each do |user| %>
+              <option name="user" value="<%= user.id %>"><%= user.name %></option>
+            <% end %>
+          </select>
+        </div>
+        <div class="submit submit-with-social" id="am_but">
+          <button name="submit_login" id="menu3" class="log" type="submit">
+            <span class="menu_text" id="menu_text3">Присвоить<b></b><b></b></span>
+          </button>
+        </div>
+      </form>
+      <br>
+    </div>
+  </div>
+  <div id="all_roles">
+    <span>Имеющиеся должности у CRM <%= @company.name %></span>
+    <ul id="ul_role">
+      <% @roles.order(:name).each do |role| %>
+        <li id="li-<%= role.name %>"><span title="<%= role.description %>"><%= role.name %>
+        </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button class="action_but" onclick="show_roles('<%= role.id %>')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="grey" class="bi bi-ui-checks" viewBox="0 0 16 16">
+              <path d="M7 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-1zM2 1a2 2 0 0
+              0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm0 8a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0
+              2-2v-2a2 2 0 0 0-2-2H2zm.854-3.646a.5.5 0 0 1-.708 0l-1-1a.5.5 0 1 1 .708-.708l.646.647 1.646-1.647a.5.5 0
+              1 1 .708.708l-2 2zm0 8a.5.5 0 0 1-.708 0l-1-1a.5.5 0 0 1 .708-.708l.646.647 1.646-1.647a.5.5 0 0 1 .708.708l-2
+              2zM7 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-1zm0-5a.5.5 0 0 1 .5-.5h5a.5.5
+              0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+          </button>
+          <button  class="action_but" onclick="show_users('<%= role.id %>', '<%= role.name %>')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="grey" class="bi bi-people" viewBox="0 0 16 16">
+            <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312
+             10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11
+             7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35
+             0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042
+             1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636
+             1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+          </svg>
+          </button>
+          <button class="action_but"  onclick="dell_role('<%= role.id %>')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="grey" class="bi bi-x-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0
+             1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+          </svg>
+          </button>
+          <div>
+            <ul id="<%= role.name %>" class="hidden"></ul>
+          </div>
+          <div class="hidden role_actions" id="role_actions_<%= role.id %>">
+            <form id="updateRoleForm" name="updateRoleForm" onsubmit="update_role('<%= role.id %>');return false">
+              <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+              <div id="for-align">
+                <% Role::ACTIONS.each_with_index do |action, i| %>
+                  <input class="wwww-<%= role.id %>" type="checkbox"
+                         name="permission[<%= i %>]" value="<%= action.first %>"
+                         <% if JSON.parse(role.the_role).include?(action.first.to_s) %> checked <% end %> >
+                  <%= action.last %><br>
+                <% end %>
+              </div>
+              <div class="submit submit-with-social" id="am_but">
+                <button name="submit_login" class="log2" type="submit">
+                  <span class="menu_text" id="action" >Сохранить<b></b><b></b></span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </li>
       <% end %>
-    </select>
-
-    <select name="role">
-      <% User.company(@current_user.company_id).each do |user| %>
-        <option name="user" value="<%= user.id %>"><%= user.name %></option>
-      <% end %>
-
-    </select>
-
-    <div class="submit submit-with-social" id="am_but">
-      <button name="submit_login" id="menu3" class="log" type="submit">
-        <span class="menu_text" id="menu_text3">Сохранить<b></b><b></b></span>
-      </button>
-    </div>
-  </form>
-<br>
-
-
-  <span>Имеющиеся должности у CRM <%= @company.name %></span>
-  <ul>
-    <% @roles.each do |role| %>
-    <li><%= role.name %>- <%= role.description %> <button>доступы и их можно редачить</button> <button onclick="show_users('<%= role.id %>')">пользователи</button><button>удалить роль</button>
-    <div>
-      <ul>
-        <li>efewwe</li>
-      </ul>
-    </div>
-    </li>
-    <% end %>
-  </ul>
-
+    </ul>
+  </div>
 </div>
-
-
-
 <script>
     function create_role(){
         var name = document.forms.roleForm.name.value;
@@ -69,14 +116,7 @@
         var token = document.forms.roleForm.authenticity_token.value
 
         form = document.getElementById('roleForm');
-
-
-
-    r = document.getElementsByClassName('tttt');
-
-
-
-
+        r = document.getElementsByClassName('tttt');
 
         var xhr = new XMLHttpRequest();
 
@@ -87,15 +127,11 @@
             '&description=' + encodeURIComponent(description) +
             '&authenticity_token=' + encodeURIComponent(token);
 
-
-
         for (i = 0; i<r.length/2; i++){
             if (r[i].checked){
                 body += `&permission[${i}]=` + encodeURIComponent(r[i].value)
             }
-
         }
-
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
@@ -127,8 +163,8 @@
         xhr.send(body)
     }
 
-    function show_users(id){
-
+    function show_users(id, name){
+        document.getElementById(name).classList.toggle("hidden");
             var xhr = new XMLHttpRequest();
 
             var params = 'id=' + encodeURIComponent(id);
@@ -137,11 +173,72 @@
 
             xhr.onreadystatechange = function (){
                 if (xhr.readyState == 4 && xhr.status == 200) {
-                    document.getElementById('role_alert').innerText = xhr.responseText;
+                    data = JSON.parse(xhr.responseText)
+
+                    if (data.length == 0) {
+                        document.getElementById(name).innerHTML = "<span id='no_users'>Пользователей с данной " +
+                            "должностью не существует</span>"
+                    } else {
+                        list_users = ``
+                        for(i = 0; i < data.length; i++){
+                            list_users += `<li>${data[i][0]} ${data[i][1]} <span id='no_users'> ( ${data[i][2]} )</span></li>`
+                        }
+                        document.getElementById(name).innerHTML = list_users
+                    }
                 }
             }
             xhr.send()
     }
+
+    function dell_role(id) {
+        if (!confirm("Вы уверены что хотите удалить должность? Это необратимый процесс.")) {
+           return
+        } else {
+            var xhr = new XMLHttpRequest();
+            var params = 'id=' + encodeURIComponent(id);
+            xhr.open("GET", "/dell_role?" + params)
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    data = JSON.parse(xhr.responseText)
+                    if (data[0] == 0) {
+                        alert(data[1])
+                    } else {
+                        alert(data[1])
+                        document.getElementById(`li-${data[1]}`).style.display = 'none'
+                    }
+                }
+            }
+            xhr.send()
+        }
+    }
+
+    function show_roles(id){
+        document.getElementById(`role_actions_${id}`).classList.toggle("hidden");
+    }
+
+    function update_role(id) {
+        var token = document.forms.updateRoleForm.authenticity_token.value;
+        r = document.getElementsByClassName(`wwww-${id}`);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/update_role.json");
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        body = 'authenticity_token=' + encodeURIComponent(token) +
+            '&id=' + encodeURIComponent(id);
+
+        for (i = 0; i<r.length/2; i++){
+            if (r[i].checked){
+                body += `&permission[${i}]=` + encodeURIComponent(r[i].value)
+            }
+        }
+
+        xhr.onreadystatechange = function (){
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById("role_alert").innerHTML = xhr.responseText;
+            }
+        }
+        xhr.send(body)
+    }
 </script>
-<!--сразу после создания добавлять в список и седект и контакты-->
-<!--еще мб не отображать если не подтвержден или уволеееееен-->

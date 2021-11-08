@@ -49,11 +49,11 @@ body {
   width: 25px;
   height: 25px;
 }
+
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
-
 
 #emoji {
   background-color: white;
@@ -63,11 +63,6 @@ body {
   max-height: 300px;
   overflow: auto;
 }
-
-
-
-
-
 
 .input-file-row-1:after {
   content: ".";
@@ -151,10 +146,6 @@ html[xmlns] .input-file-row-1{
   cursor: pointer;
 }
 
-
-
-
-
 .nothing_selected {
   font-size: 31px;
   line-height: 31px;
@@ -169,5 +160,4 @@ html[xmlns] .input-file-row-1{
 
 #add_users *  {
   color: #575151;
-
 }

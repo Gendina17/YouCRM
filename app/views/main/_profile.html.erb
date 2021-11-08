@@ -1,95 +1,63 @@
-
-
+<%= stylesheet_link_tag 'profile', media: 'all', 'data-turbolinks-track': 'reload' %>
 
 <div id="profile">
- <div id="alert"></div>
+  <div id="alert"></div>
   <form name="userForm" class="feedback-form-1" id="userForm" onsubmit="send_form();return false">
-
-    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-
-<!--    <fieldset>-->
-
-<!--      <div class="input-file-row-1">-->
-
-<!--        <div class="upload-file-container">-->
-<!--          <img id="image" src="#" alt="" />-->
-<!--          <div class="upload-file-container-text">-->
-<!--            <span>Add<br />photo</span>-->
-<!--            <input type="file" name="pic[]" class="photo" id="imgInput">-->
-<!--          </div>-->
-<!--        </div>-->
-
-<!--      </div>-->
-<!--    </fieldset>-->
-
-<span><%= @current_user.role.name %> из <%= @company.name %></span><br>
-    <span>activate</span><br>
-
-    <img src="../assets/avatar1.jpeg" id="img"><br>
-    <input type="text" name="name" value="<%= @current_user.name %>" placeholder="Имя" class="some-input" required  maxlength="50">
-    <input type="text" name="surname" value="<%= @current_user.surname %>" placeholder="Фамилия" class="some-input" required  maxlength="50"><br>
-
-    <input type="text" name="mood" value="<%= @current_user.mood %>" onclick="show_emojis('emoji')" id="mood" placeholder="Статус" class="some-input" maxlength="50">
-  <br>
-    <%time = ((Time.current - @current_user.created_at)/60/60/24).round - 1 %>
-
-    <% if time < 30 && time_m = 0 %>
-<span>в crm более <%= time %> days</span><br>
-<% elsif time < 365 %>
-      <span>в crm более <%= time/30 %> month</span><br>
-      <% else  %>
-      <span>в crm более <%= time/30/365 %> years</span><br>
-      <% end %>
-<br>
-    <textarea name="info" placeholder="О себе...." maxlength="300">
- <%= @current_user.info %>
-    </textarea>
-
-<br>
-
-    <img src="../assets/gmail.svg"><input type="text" value="<%= @current_user.email %>" class="some-input" readonly title="email"><br>
-
-<% if @current_user.contacts.present? %>
-<% JSON.parse(@current_user.contacts).each do |contact| %>
-      <% if contact.last.present? %>
-    <img src="../assets/<%= @contacts.include?(contact.first) ? contact.first : 'another' %>.svg" title="<%= contact.first %>">
-          <input type="text"  value="<%= contact.last %>" class="some-input" readonly><br>
-<% end %>
-    <% end %>
-    <% end %>
-
-
-
-    <input type="text" list="contact" placeholder="Контакты" name="contact" autocomplete="off"/>
-
-    <datalist id="contact">
-      <% @contacts.each do |contact| %>
-        <option ><%= contact %></option>
-      <% end %>
-    </datalist>
-
-    <input type="text" name="value" maxlength="30">
-
-    <div class="submit submit-with-social" id="am_but">
-      <button name="submit_login" id="menu3" class="log" type="submit">
-        <span class="menu_text" id="menu_text3">Сохранить<b></b><b></b></span>
-      </button>
+    <div id="sections">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <div id="left_section">
+        <span><%= @current_user.role.name %> из <%= @company.name %></span><br>
+        <span>activate</span><br>
+        <img src="../assets/avatar1.jpeg" id="img">
+      </div>
+      <div id="right_section">
+        <input type="text" name="name" value="<%= @current_user.name %>" placeholder="Имя"
+               class="some-input" required  maxlength="50">
+        <input type="text" name="surname" value="<%= @current_user.surname %>" placeholder="Фамилия"
+               class="some-input" required  maxlength="50"><br>
+        <input type="text" name="mood" value="<%= @current_user.mood %>" id="mood" placeholder="Статус"
+               class="some-input" maxlength="50">
+        <img src="../assets/emoji.svg" onclick="show_emojis('emoji')">
+        <br>
+        <%time = ((Time.current - @current_user.created_at)/60/60/24).round - 1 %>
+        <% if time < 30 && time_m = 0 %>
+          <span>в crm более <%= time %> days</span><br>
+        <% elsif time < 365 %>
+          <span>в crm более <%= time/30 %> month</span><br>
+        <% else  %>
+          <span>в crm более <%= time/30/365 %> years</span><br>
+        <% end %>
+        <textarea class="some-input" name="info" placeholder="О себе...." maxlength="300" cols="30"
+                  rows="5" id="some-input"><%= @current_user.info.strip %></textarea>
+        <br>
+        <img src="../assets/gmail.svg" class="some-img"><input type="text" value="<%= @current_user.email %>"
+                                                               class="some-input" readonly title="email"><br>
+        <% if @current_user.contacts.present? %>
+          <% JSON.parse(@current_user.contacts).each do |contact| %>
+            <% if contact.last.present? %>
+              <img src="../assets/<%= @contacts.include?(contact.first) ? contact.first : 'another' %>.svg"
+                   title="<%= contact.first %>" class="some-img">
+              <input type="text"  value="<%= contact.last %>" class="some-input" readonly><br>
+            <% end %>
+          <% end %>
+        <% end %>
+        <input type="text" list="contact" placeholder="Контакты" name="contact" autocomplete="off" class="text-input"/>
+        <datalist id="contact">
+          <% @contacts.each do |contact| %>
+            <option ><%= contact %></option>
+          <% end %>
+        </datalist>
+        <input type="text" name="value" maxlength="30" class="text-input" placeholder="Значение">
+        <div class="submit submit-with-social" id="am_but">
+          <button name="submit_login" id="menu3" class="log" type="submit">
+            <span class="menu_text" id="menu_text3">Сохранить<b></b><b></b></span>
+          </button>
+        </div>
+      </div>
     </div>
-
-
   </form>
-
-
-
-  <div id="emoji" class="hidden">
-
-
-  </div>
+  <div id="emoji" class="hidden"></div>
 </div>
-
-
-
-
 <script>
     function hidden_block(name) {
         document.getElementById('main').innerHTML = ""
@@ -105,7 +73,6 @@
         0x1F625, 0x1F623, 0x1F626, 0x1F630, 0x1F624, 0x1F608, 0x1F621, 0x1F480, 0x1F47F, 0x1F92C, 0x1F620, 0x1F4A9, 0x1F921,
         0x1F916, 0x1F47D, 0x1F47E, 0x1F47B, 0x1F47A, 0x1F479, 0x1F640, 0x1F63D, 0x1F638, 0x1F63F, 0x1F63E, 0x1F63B, 0x1F63A, 0x1F63C, 0x1F639,
         0x1F649, 0x1F64A, 0x1F648
-
     ];
 
     let emojis_peoples = [ 0x1F91A, 0x1F596, 0x1F44B, 0x1F590, 0x270B, 0x1F919, 0x1F91E, 0x1F91F, 0x1F918, 0x1F44C, 0x270C,
@@ -152,14 +119,16 @@
         document.getElementById(name).classList.toggle("hidden");
         document.getElementById(name).innerHTML += "Эмоции <br>"
         emojis_emotions.forEach(function(item, i, arr) {
-            document.getElementById(name).innerHTML += "<span class='emoji'onclick='add_emoji_emotions(" + i + ");' >" + String.fromCodePoint(item) + "</span>";
+            document.getElementById(name).innerHTML += "<span class='emoji'onclick='add_emoji_emotions(" + i + ");' >"
+                + String.fromCodePoint(item) + "</span>";
             if (i % 10 == 9) {
                 document.getElementById(name).innerHTML += "<br>"
             }
         });
         document.getElementById(name).innerHTML += "<br>Люди и жесты <br>"
         emojis_peoples.forEach(function(item, i, arr) {
-            document.getElementById(name).innerHTML += "<span class='emoji'onclick='add_emojis_peoples(" + i + ");' >" + String.fromCodePoint(item) + "</span>";
+            document.getElementById(name).innerHTML += "<span class='emoji'onclick='add_emojis_peoples(" + i + ");' >"
+                + String.fromCodePoint(item) + "</span>";
             if (i % 10 == 9) {
                 document.getElementById(name).innerHTML += "<br>"
             }
@@ -167,7 +136,8 @@
 
         document.getElementById(name).innerHTML += "<br>Символы <br>"
         emojis_simvols.forEach(function(item, i, arr) {
-            document.getElementById(name).innerHTML += "<span class='emoji' onclick='add_emojis_simvols(" + i + ");' >" + String.fromCodePoint(item) + "</span>";
+            document.getElementById(name).innerHTML += "<span class='emoji' onclick='add_emojis_simvols(" + i + ");' >"
+                + String.fromCodePoint(item) + "</span>";
             if (i % 10 == 9) {
                 document.getElementById(name).innerHTML += "<br>"
             }
@@ -175,7 +145,8 @@
 
         document.getElementById(name).innerHTML += "<br>Животные и растения <br>"
         emojis_animals.forEach(function(item, i, arr) {
-            document.getElementById(name).innerHTML += "<span class='emoji' onclick='add_emojis_animals(" + i + ");' >" + String.fromCodePoint(item) + "</span>";
+            document.getElementById(name).innerHTML += "<span class='emoji' onclick='add_emojis_animals(" + i + ");' >"
+                + String.fromCodePoint(item) + "</span>";
             if (i % 10 == 9) {
                 document.getElementById(name).innerHTML += "<br>"
             }
@@ -184,9 +155,7 @@
         var reader = new FileReader();
         reader.onload = function (e) {
             alert(e.target.result);
-
         };
-
     }
 
     function add_emoji_emotions(i) {
@@ -205,64 +174,9 @@
         document.getElementById('mood').value += String.fromCodePoint(emojis_animals[i])
     }
 
-    // function showFile(e) {
-    //     alert("fdd");
-    //     var files = e.target.files;
-    //     for (var i = 0, f; f = files[i]; i++) {
-    //         if (!f.type.match('image.*')) continue;
-    //         var fr = new FileReader();
-    //         fr.onload = (function(theFile) {
-    //             return function(e) {
-    //                 var li = document.createElement('li');
-    //                 li.innerHTML = "<img src='" + e.target.result + "' />";
-    //                 document.getElementById('list').insertBefore(li, null);
-    //             };
-    //         })(f);
-    //
-    //         fr.readAsDataURL(f);
-    //     }
-    // }
-    //
-    // document.getElementById('imgInput').addEventListener('change', showFile, false);
-
-// имя фамилия статус должность статустеу контакты инфа о сколько лет на сайте емаил
 </script>
-<style>
-  #img {
-      width: 250px;
-      height: 250px;
-  }
-  #profile {
-      text-align: center;
-  }
-
-  .some-input {
-      border: none;
-      border-bottom: 1px solid #000111;
-      background-color: transparent;
-      color: inherit;
-      outline: none;
-  }
-
-  body {
-      font-family: "Open Sans", sans-serif !important;
-      font-size: 17px !important;
-      font-weight: 300 !important;
-      line-height: 1.5 !important;
-      background-image: url(https://psv4.userapi.com/c537232/u131991696/docs/d20/e8f5cb900a15/back.png?extra=kDCHv9yqi8PMxucKKZ5VhMYWRwYSQFJx7BB91L5218wq8qpSl781rN3v1Enb4fhnYOn8oef9Xgj6pypwYgwvYwlfDzhXOQTwLmR3fMkK-2dgSBuPzInzw-BZgnOv0XQ6VbA9JoI3m0QCnQy384tZVs-RzcM);
-  }
-
-  #emoji {
-      position: absolute;
-      top: 400px;
-      left: 1150px;
-      text-align: left;
-  }
-</style>
-
 <script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
 <script>
-
     function send_form(){
 
         var name = document.forms.userForm.name.value;
@@ -292,34 +206,4 @@
         }
         xhr.send(body)
     }
-
-
-
 </script>
-
-<!--<script-->
-<!--  src="https://code.jquery.com/jquery-3.3.1.min.js"-->
-<!--  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="-->
-<!--  crossorigin="anonymous"></script>-->
-
-<!--<script>-->
-
-<!--    function readURL(input) {-->
-<!--alert("eeeeee");-->
-<!--        if (input.files && input.files[0]) {-->
-<!--            var reader = new FileReader();-->
-
-<!--            reader.onload = function (e) {-->
-<!--                alert(e.target.result);-->
-<!--                $('#image').attr('src', e.target.result);-->
-<!--            };-->
-
-<!--            reader.readAsDataURL(input.files[0]);-->
-<!--        }-->
-<!--    }-->
-
-<!--    $("#imgInput").change(function(){-->
-<!--        alert("eeeeee");-->
-<!--        readURL(this);-->
-<!--    });-->
-<!--</script>-->

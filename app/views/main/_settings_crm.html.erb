@@ -1,0 +1,56 @@
+<div id="settings_crm">
+  <button onclick="show_add_email();">Добавить почту</button>
+<div id="alert"></div>
+  <div id="add_email" class="hidden">
+    <form name="emailForm" class="feedback-form-1" id="emailForm" onsubmit="add_email();return false">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <label for="email">Почта для взаимодействия с клиентами</label>
+      <input name="email" type="email" placeholder="Email..." value="<%= @company.email %>" id="email" autocomplete="new-password"><br>
+      <label>Пароль от почты</label>
+     <input name="password" type="password" placeholder="Password..." value="<%= @company.password %>" autocomplete="new-password"><br>
+      <input name="send" id="send" type="checkbox" value="true" <% if @company.is_send %> checked <% end %>>
+      <label for="send">Получать и обрабатывать письма</label>
+      <div class="submit submit-with-social" id="am_but">
+        <button name="submit_login" id="menu3" class="log" type="submit">
+          <span class="menu_text" id="menu_text3">Сохранить<b></b><b></b></span>
+        </button>
+      </div>
+    </form>
+  </div>
+  <div>
+    Загрузить аватарку
+  </div>
+</div>
+<style>
+  #add_emai {
+      border: 1px solid black;
+  }
+</style>
+<script>
+  function show_add_email() {
+      document.getElementById('add_email').classList.toggle("hidden");
+  }
+
+  function add_email(){
+      var email = document.forms.emailForm.email.value;
+      var password = document.forms.emailForm.password.value;
+      var send = !!document.forms.emailForm.send.checked
+      var token = document.forms.emailForm.authenticity_token.value;
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "/add_email.json");
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+      body = 'email=' + encodeURIComponent(email) +
+          '&password=' + encodeURIComponent(password) +
+          '&send=' + encodeURIComponent(send) +
+          '&authenticity_token=' + encodeURIComponent(token);
+
+      xhr.onreadystatechange = function (){
+          if (xhr.readyState == 4 && xhr.status == 200) {
+              document.getElementById("alert").innerHTML = xhr.responseText;
+          }
+      }
+      xhr.send(body)
+  }
+</script>

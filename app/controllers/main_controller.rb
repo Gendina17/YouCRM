@@ -16,9 +16,10 @@ class MainController < ApplicationController
     current_user.save!
     render json: params[:state]
   end
-  #норм обрабатывать без пробелов
+
   def update
     @current_user.update!(user_params)
+    @current_user.info = params[:info].strip
 
     if @current_user.contacts.present?
       contacts = JSON.parse(@current_user.contacts)
@@ -33,7 +34,7 @@ class MainController < ApplicationController
     render json: 'Данные успешно изменены'
   end
 
-  def create
+  def create# мб с ролью чтот будет
     return render json: 'Введенные пароли не совпадают' if params[:password] != params[:password_confirmation]
 
     return render json: 'Пользователь с данным email уже зарегестрирован' if User.
@@ -100,6 +101,58 @@ class MainController < ApplicationController
     end
   end
 
+  def add_email
+    it_company = company
+    it_company.email = params[:email]
+    it_company.is_send = params[:send]
+    it_company.password = crypt.encrypt_and_sign(params[:password])
+    #crypt.decrypt_and_verify(encrypted_data)
+    # чет не так сохраняет
+
+    if it_company.save
+      render json: 'Почта успешно добавлена, но для того чтоб все работало корректно надо .......'
+    else
+      render json: 'не получилось'
+    end
+  end
+
+  def dell_role
+    role = Role.find(params[:id])
+    role_name = role.name
+    if role.users.blank?
+      role.destroy
+      render json: [1, role_name]
+    else
+      render json: [0, 'Назначте всем пользователям новые роли, прежде чем удалять должность']
+    end
+  end
+
+  def update_role
+    role = Role.find(params[:id])
+    role.the_role = params.require(:permission).values.to_json
+    if role.save!
+      return render json: 'Роль успешно изменена'
+    else
+      return render json: 'Что то не вышло('
+    end
+  end
+
+  def tasks
+    @tasks = Task.all
+    case params[:active]
+    when true
+      @tasks = Task.where(creator_id: current_user.id, active: true)
+    when false
+      @tasks = Task.where(creator_id: current_user.id, active: false )
+    else
+      @tasks = Task.where(creator_id: current_user.id)
+    end
+
+    @tasks = @tasks.where(tag: params[:tag]) if params[:tag].present?
+    @tasks = @tasks.where(user_id: params[:user_id]) if params[:user_id].present?
+    render json: @tasks
+  end
+
   private
 
   def company
@@ -107,15 +160,14 @@ class MainController < ApplicationController
   end
 
   def user_params
-    params.permit(:name, :surname, :mood, :info)
+    params.permit(:name, :surname, :mood)
   end
 
   def user_create_params
-    params.permit(:name, :surname, :password, :email, :password_confirmation)
+    params.permit(:name, :surname, :password, :email, :password_confirmation, :role_id)
   end
 
   def contacts
-    # @contacts = { telegram: :Telegram, slack: :Slack, whatsapp: :WhatsApp, phone: :Phone, github: :Github }
     @contacts = [ 'telegram', 'slack' , 'whatsapp' , 'phone', 'github']
   end
 
@@ -128,13 +180,22 @@ class MainController < ApplicationController
   end
 end
 
-#блок настройки своего профиля, блок выбора для настройки адмена,
-# 1F973ож аналитика какаят хз чтот функциональн слоджное
-# сделать для пользователя контакты(мб какойт список месседжеров с катгорией другое) инфу
+# аналитика какаят хз чтот функциональн слоджное
 ## как то обозночать создателя ну и роли
 # первую букву заглавную
-# посмотреть по роли кто в ней
 # мб как т интеграцию с соц сетями
 # редис солар амазон нжинкс мб на сервер вылеть чат сокеты почта бесконечная лента
-# удалять роли и делать пользователей уволенными
+# делать пользователей уволенными
 # какие поля у клиента у заказа какая пролукция
+# в ленте делать разного цвета например или картинку если объявление важно беседа и тп
+# мб комменты к задачам
+# пепир треил мож выводить кто менял чтот логирование типа сделать и какие есть роли
+# сделать условную базу хранилище мож какиет графики аналитика
+# при создании компании создавать роль админ и роль карент юзер
+# сделать все по доступам
+# мб письма красивыми
+# возможность отправлять с клиента
+# <!--сразу после создания добавлять в список и седект и контакты-->
+# <!--еще мб не отображать если не подтвержден или уволеееееен-->
+# <!--ну и создавать сразу должность главную админа при создании окмнаты и дават ьее юзеру и везде сделать по доступам-->
+# некрасивы пока индекс и вол

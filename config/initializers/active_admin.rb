@@ -4,7 +4,7 @@ ActiveAdmin.setup do |config|
   # Set the title that is displayed on the main layout
   # for each of the active admin pages.
   #
-  config.site_title = "Crm"
+  config.site_title = "YouCrm"
   config.comments = false
   config.comments_menu = false
 
@@ -94,8 +94,8 @@ ActiveAdmin.setup do |config|
   #
   # This setting changes the method which Active Admin calls
   # (within the application controller) to return the currently logged in user.
-  config.current_user_method = :current_admin_user
-
+  config.current_user_method = :current_user
+  config.site_title_link  = "/settings"
   # == Logging Out
   #
   # Active Admin displays a logout link on each screen. These

@@ -1,14 +1,18 @@
+<%= stylesheet_link_tag 'tasks', media: 'all', 'data-turbolinks-track': 'reload' %>
 
 <div id="tasks">
-  <div class="tasks">
-  </div>
+   <span id="task_alert"></span>
+
+
+
   <div class="new_task">
-    <form>
-      <input type="text" name="title" placeholder="Заголовок..."><br>
+    <form class="pl-login form-required no-disable" name="taskForm" onsubmit="create_task();return false">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <input type="text" name="subject" placeholder="Заголовок..."><br>
       <textarea name="body" placeholder="Тело..."></textarea><br>
-      <input type="date" name="time"><br>
-      <input type="text" name="title" placeholder="Тэг..."><br>
-      <select>
+      <input type="date" name="until_date"><br>
+      <input type="text" name="tag" placeholder="Тэг..."><br>
+      <select name="user_id">
         <% @users.each do |user| %>
         <option value="<%= user.id %>"><%= user.name %> <%= user.surname %></option>
           <% end %>
@@ -16,12 +20,63 @@
       <input type="submit">
     </form>
   </div>
+  <button>все задачки</button>
   <button>закрытые задачки</button>
-
-  (либ селект по человеку или поиск по человеку и заголовку и мб тэгу)
+  <button>открытые задачки</button>
+  <select>
+    <option>тэг</option>
+  </select>
+  <select>
+    <option>пользователь</option>
+  </select>
+  <br>
   <span>все задачки которые я давала человеку</span>
+  <br>
+  <div class="tasks">
+    <% @tasks.each do |task| %>
+      <span><%= task.subject %></span>
+      <span><%= task.body %></span>
+      <span><%= task.until_date %></span>
+      <span><%= task.tag %></span>
+      <span><%= task.active %></span>
+      <span><%= task.user.full_name %></span>
+      <br>
+    <% end %>
+  </div>
 </div>
 
+
+
 <script>
+    function create_task() {
+        var subject = document.forms.taskForm.subject.value;
+        var body2 = document.forms.taskForm.body.value;
+        var until_date = document.forms.taskForm.until_date.value;
+        var tag = document.forms.taskForm.tag.value;
+        var user_id = document.forms.taskForm.user_id.value;
+        var token = document.forms.taskForm.authenticity_token.value
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("POST", "/create_task.json")
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        body = 'subject=' + encodeURIComponent(subject) +
+            '&body=' + encodeURIComponent(body2) +
+            '&until_date=' + encodeURIComponent(until_date) +
+            '&tag=' + encodeURIComponent(tag) +
+            '&user_id=' + encodeURIComponent(user_id) +
+            '&authenticity_token=' + encodeURIComponent(token);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById('task_alert').innerText = xhr.responseText;
+            }
+        }
+        xhr.send(body)
+        return false
+    }
+
 
 </script>
+<!--могу сделать неактивным и мб коммент и ммммммб отредачить-->

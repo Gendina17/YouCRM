@@ -14,6 +14,10 @@
   <%= render 'prava' %>
 </div>
 
+<div id="block6" class="hidden">
+  <%= render 'settings_crm' %>
+</div>
+
 <div id="block5" class="hidden">
   <%= render 'wall' %>
 </div>
@@ -25,33 +29,31 @@
 <div id="block2" class="hidden">
   <%= render 'profile' %>
 </div>
-
-<!----------------------------окно юзера------------------------------------------------------------------------------->
+<!----------------------------окно пользователя------------------------------------------------------------------------------->
 <div class="dm-overlay" id="win1">
   <div class="dm-table">
     <div class="dm-cell">
       <div class="dm-modal">
         <a href="#close" class="close"></a>
         <h3 id="user_title"></h3>
-        <div class="pl-left">
+        <div class="pl-left info">
           <img src="../assets/avatar<%= rand(5) + 1 %>.jpeg">
         </div>
-        <p id="moodr"></p>
-        <p id="info"></p>
-        <p id="time"> В YouCRM уже 1000 дней</p>
-        <img src="../assets/gmail.svg" class="icons"> <span id="mail"></span><br>
-        <span id="contact_list"></span>
+        <div class="info">
+          <div>
+            <p id="user-mood"></p>
+            <p id="info"></p>
+            <p id="time"> В YouCRM уже 1000 дней</p>
+          </div>
+          <div id="contacts">
+            <img src="../assets/white-gmail.svg" class="icons">
+            <span id="mail"></span><br>
+            <span id="contact_list"></span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 <!--------------------------------------------------------------------------------------------------------------------->
-
 <script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
-
-<style>
-  .icons {
-      width: 30px !important;
-      height: 30px !important;
-  }
-</style>

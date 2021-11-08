@@ -36,5 +36,8 @@ class User < ApplicationRecord
       self.confirm_token = SecureRandom.urlsafe_base64.to_s
     end
   end
+
+  def full_name
+    [self.surname, self.name].join(' ')
+  end
 end
-#уволенные
