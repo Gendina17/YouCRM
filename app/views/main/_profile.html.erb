@@ -9,17 +9,15 @@
         <span><%= @current_user.role.name %> из <%= @company.name %></span><br>
         <span>activate</span><br>
         <% if @current_user.avatar.attached? %>
+          <a href="#win1">
           <img src="<%= @current_user.avatar.url %>" id="img">
+          </a>
         <% else %>
-          <img src="../assets/avatar1.jpeg" id="img">
+          <a href="#win1">
+          <img src="../assets/avatar1.jpeg" id="img" href="#win1">
+          </a>
         <% end %>
-<!--        <form method="post" action="/update" enctype="multipart/form-data">-->
-          <%#= hidden_field_tag :authenticity_token, form_authenticity_token %>
-<!--          <input type="file" name="avatar">-->
-<!--          <input type="submit">-->
-<!--        </form>-->
       </div>
-
       <div id="right_section">
         <input type="text" name="name" value="<%= @current_user.name %>" placeholder="Имя"
                class="some-input" required  maxlength="50">
@@ -67,6 +65,32 @@
     </div>
   </form>
   <div id="emoji" class="hidden"></div>
+</div>
+<!--------------------------------------------------------------------------------------------------------------------->
+<div class="dm-overlay" id="win1">
+  <div class="dm-table">
+    <div class="dm-cell">
+      <div class="dm-modal">
+        <a href="#close" class="close"></a>
+        <div>
+          <form method="post" action="/update_avatar" enctype="multipart/form-data">
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            <div class="example-1">
+              <div class="form-group">
+                <label class="label">
+                  <i class="material-icons">attach_file</i>
+                  <span class="title">Выбрать файл</span>
+                  <input type="file"name="avatar" id="avatar">
+                </label>
+              </div>
+            </div>
+            <input type="submit" value="Изменить" id="but_avatar">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <script>
     function hidden_block(name) {

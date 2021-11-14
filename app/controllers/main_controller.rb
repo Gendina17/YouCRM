@@ -18,26 +18,26 @@ class MainController < ApplicationController
   end
 
   def update
-    # @current_user.update!(user_params)
-    # @current_user.info = params[:info].strip
-    #
-    # if @current_user.contacts.present?
-    #   contacts = JSON.parse(@current_user.contacts)
-    # else
-    #   contacts = {}
-    # end
-    #
-    # contacts.merge!(params[:contact] => params[:value]) if params[:contact].present? && params[:value].present?
-    # contacts.except!(params[:contact]) if params[:contact].present? && params[:value].blank?
-    #
-    # @current_user.update!(contacts: contacts.to_json)
+    @current_user.update!(user_params)
+    @current_user.info = params[:info].strip
 
+    if @current_user.contacts.present?
+      contacts = JSON.parse(@current_user.contacts)
+    else
+      contacts = {}
+    end
 
+    contacts.merge!(params[:contact] => params[:value]) if params[:contact].present? && params[:value].present?
+    contacts.except!(params[:contact]) if params[:contact].present? && params[:value].blank?
 
-    # @current_user.avatar.attach(io: File.open('app/assets/images/avatar3.jpeg'), filename: 'avatar')
+    @current_user.update!(contacts: contacts.to_json)
+    render json: 'Данные успешно изменены'
+  end
+
+  def update_avatar
     @current_user.avatar.attach(params[:avatar])
     @current_user.save
-    render json: 'Данные успешно изменены'
+    redirect_to settings_path
   end
 
   def create# мб с ролью чтот будет
