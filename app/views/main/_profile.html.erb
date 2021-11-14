@@ -8,8 +8,18 @@
       <div id="left_section">
         <span><%= @current_user.role.name %> из <%= @company.name %></span><br>
         <span>activate</span><br>
-        <img src="../assets/avatar1.jpeg" id="img">
+        <% if @current_user.avatar.attached? %>
+          <img src="<%= @current_user.avatar.url %>" id="img">
+        <% else %>
+          <img src="../assets/avatar1.jpeg" id="img">
+        <% end %>
+<!--        <form method="post" action="/update" enctype="multipart/form-data">-->
+          <%#= hidden_field_tag :authenticity_token, form_authenticity_token %>
+<!--          <input type="file" name="avatar">-->
+<!--          <input type="submit">-->
+<!--        </form>-->
       </div>
+
       <div id="right_section">
         <input type="text" name="name" value="<%= @current_user.name %>" placeholder="Имя"
                class="some-input" required  maxlength="50">

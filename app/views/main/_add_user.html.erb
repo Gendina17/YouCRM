@@ -14,7 +14,8 @@
             '<%= user.state%>', '<%= user.mood%>', '<%= user.info&.strip%>',
             '<%= user.role&.name%>', '<%= user.email%>',
             '<%= user.contacts.present? ? JSON.parse(user.contacts).to_a.map{|w| w.join('-')}.join('#') : '' %>',
-            '<%= user.created_at.to_date.to_s.split('-').reverse.join('-') %>');">
+            '<%= user.created_at.to_date.to_s.split('-').reverse.join('-') %>',
+            '<%= user.avatar.attached? ? user.avatar.url : '' %>');">
             <span id="name"><%= user.name %></span>
             <span id="surname"><%= user.surname %></span>
             <span id="role_name"> - <%= user.role.name %></span>
@@ -107,7 +108,11 @@
         });
     }
 
-    function show_user(name, surname, state, mood, info, role, mail, contacts, time) {
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+    }
+
+    function show_user(name, surname, state, mood, info, role, mail, contacts, time, avatar) {
         document.getElementById('user_title').innerHTML = `Пользователь ${surname} ${name} ${role} ${state}`;
         document.getElementById('user-mood').innerHTML = `${mood}`;
         document.getElementById('info').innerHTML = `${info}`;
@@ -128,6 +133,16 @@
                 site2 = site
             document.getElementById('contact_list').innerHTML += `<img class="icons" src="../assets/white-${site2}.svg"` +
                 `title="${site}"> ${nick} <br>`;
+        }
+
+        value = getRandomInt(6)+1
+        document.getElementById('user_avatar').src = `../assets/avatar${value}.jpeg`
+
+        if (avatar !== ''){
+            document.getElementById('user_avatar').src = avatar
+        } else {
+            value = getRandomInt(6)+1
+            document.getElementById('user_avatar').src = `../assets/avatar${value}.jpeg`
         }
     }
 </script>

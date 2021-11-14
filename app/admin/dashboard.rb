@@ -9,7 +9,8 @@ ActiveAdmin.register_page "Dashboard" do
           h3 'Зарегестрирована в CRM с '  + current_user.company.created_at.to_s.split(' ', 2).first
           h3 'Количество добавленных пользователей: ' + User.company(current_user.company_id).count.to_s
           creator = User.company(current_user.company_id).first
-          h3 'Создатель CRM: ' + creator.name + ' ' + creator.surname
+          h3 'Создатель CRM: ' + creator.full_name
+          h3 'Основная почта: ' + current_user.company.email
         end
       end
 
@@ -21,6 +22,16 @@ ActiveAdmin.register_page "Dashboard" do
               li link_to(user.name, admin_user_path(user))
             end
           end
+        end
+      end
+    end
+
+    columns do
+      column do
+        panel "Утилиты" do
+          li link_to('Информация про YouCrm', admin_crm_info_path)
+          li link_to('Уволить пользователя', admin_fired_user_path)
+          li link_to('Поменять данные почты компании', admin_change_data_path)
         end
       end
     end

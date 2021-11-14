@@ -1,14 +1,16 @@
 ActiveAdmin.register User do
-  permit_params :name, :email, :surname, :state, :mood, :info, :contacts, :role_id
+  permit_params :name, :email, :surname, :state, :mood, :info, :contacts, :role_id, :is_fired
 
-  scope("Пользователи компании", show_count: true, default: true){ |scope| scope.company(current_user.company.id) }
+  scope("Все пользователи компании", show_count: true, default: true){ |scope| scope.company(current_user.company.id) }
+
+  actions :all, except: [:destroy]
 
   filter :role_name_cont, label: 'Role'
   filter :name
   filter :surname
   filter :email
   filter :state
-
+  filter :is_fired
 
   index title: "Пользователи CRM" do
     column('Почта', :email)
@@ -16,6 +18,7 @@ ActiveAdmin.register User do
     column('Фамилия', :surname)
     column('Должность', :role)
     column('Статус', :state)
+    column('Уволен', :is_fired)
     actions
   end
 
@@ -29,6 +32,7 @@ ActiveAdmin.register User do
       row('Настроение', :mood, &:mood)
       row('Информация о себе', :info, &:info)
       row('Контакты', :contacts, &:contacts)
+      row('Уволен', :is_fired, &:is_fired)
   end
       # row('Аватар') { |u| u.avatar? ? image_tag(u.avatar.url) : 'Нет аватара'}
   end
@@ -45,6 +49,7 @@ ActiveAdmin.register User do
       f.input :mood
       f.input :info
       f.input :contacts
+      f.input :is_fired
     end
 
     f.actions

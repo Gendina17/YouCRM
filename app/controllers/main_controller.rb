@@ -1,11 +1,11 @@
 class MainController < ApplicationController
   before_action :company, only: [:index, :settings]
-  before_action :contacts, :roles, only: :settings
+  before_action :contacts, :roles, :selected_params, only: :settings
+  before_action :task_for_index, only: :index
 
   def index
     @users = User.where(company_id: current_user.company_id).order(:state)
   end
-
 
   def settings
     @users = User.where(company_id: current_user.company_id)
@@ -18,19 +18,25 @@ class MainController < ApplicationController
   end
 
   def update
-    @current_user.update!(user_params)
-    @current_user.info = params[:info].strip
+    # @current_user.update!(user_params)
+    # @current_user.info = params[:info].strip
+    #
+    # if @current_user.contacts.present?
+    #   contacts = JSON.parse(@current_user.contacts)
+    # else
+    #   contacts = {}
+    # end
+    #
+    # contacts.merge!(params[:contact] => params[:value]) if params[:contact].present? && params[:value].present?
+    # contacts.except!(params[:contact]) if params[:contact].present? && params[:value].blank?
+    #
+    # @current_user.update!(contacts: contacts.to_json)
 
-    if @current_user.contacts.present?
-      contacts = JSON.parse(@current_user.contacts)
-    else
-      contacts = {}
-    end
 
-    contacts.merge!(params[:contact] => params[:value]) if params[:contact].present? && params[:value].present?
-    contacts.except!(params[:contact]) if params[:contact].present? && params[:value].blank?
 
-    @current_user.update!(contacts: contacts.to_json)
+    # @current_user.avatar.attach(io: File.open('app/assets/images/avatar3.jpeg'), filename: 'avatar')
+    @current_user.avatar.attach(params[:avatar])
+    @current_user.save
     render json: 'Данные успешно изменены'
   end
 
@@ -140,9 +146,9 @@ class MainController < ApplicationController
   def tasks
     @tasks = Task.all
     case params[:active]
-    when true
+    when 'true'
       @tasks = Task.where(creator_id: current_user.id, active: true)
-    when false
+    when 'false'
       @tasks = Task.where(creator_id: current_user.id, active: false )
     else
       @tasks = Task.where(creator_id: current_user.id)
@@ -150,7 +156,27 @@ class MainController < ApplicationController
 
     @tasks = @tasks.where(tag: params[:tag]) if params[:tag].present?
     @tasks = @tasks.where(user_id: params[:user_id]) if params[:user_id].present?
+    @tasks = @tasks.order(:created_at).pluck(:id, :subject, :body, :tag, :active, :user_id).
+      each do |task|
+      task[5] = User.find(task[5]).full_name
+      task[3] = task[3].blank? ? '---': task[3]
+    end
+
     render json: @tasks
+  end
+
+  def task_for_index
+    @tasks = Task.where(user_id: current_user.id, active: true)
+    @is_new = @tasks.where(is_new: true).present?
+  end
+
+  def not_new
+    Task.where(user_id: current_user.id, active: true).update(is_new: false)
+  end
+
+  def inactive
+    Task.find(params[:id]).update(active: false)
+    render json: 'ok'
   end
 
   private
@@ -178,6 +204,12 @@ class MainController < ApplicationController
   def task_params
     params.permit(:subject, :body, :user_id, :until_date, :tag)
   end
+
+  def selected_params
+    ids =  Task.where(creator_id: current_user.id).pluck(:user_id)
+    @selected_users = User.where(id: ids).pluck(:id, :name, :surname)
+    @selected_tags = Task.where(creator_id: current_user.id).pluck(:tag).uniq
+  end
 end
 
 # аналитика какаят хз чтот функциональн слоджное
@@ -199,3 +231,12 @@ end
 # <!--еще мб не отображать если не подтвержден или уволеееееен-->
 # <!--ну и создавать сразу должность главную админа при создании окмнаты и дават ьее юзеру и везде сделать по доступам-->
 # некрасивы пока индекс и вол
+# <!--мб коммент и ммммммб отредачить таски-->
+# атачмент файлы
+# мб если добавить хэдэры в письмо то не будет черного списка
+# чтоб создавать в админке невидимое поле компани
+# шаблоны писем и можно выбирать какой отправлять
+# обновление контактов
+# c увольнением чтот норм
+# с шифрованием от почты
+# права так и не сделала

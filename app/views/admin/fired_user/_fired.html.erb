@@ -1,0 +1,16 @@
+<%= form_with url: 'fired_user/fired', method: :post do |form| %>
+  <fieldset class="inputs">
+    <legend>
+      <span>Увольнение</span>
+    </legend>
+    <ol>
+      <li>
+        <%= form.label 'Выберите пользователя' %>
+        <%= form.select :user_id, users %>
+      </li>
+      <li>
+        <%= form.submit 'Уволить' %>
+      </li>
+    </ol>
+  </fieldset>
+<% end %>

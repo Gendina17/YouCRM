@@ -7,7 +7,7 @@
       <label for="email">Почта для взаимодействия с клиентами</label>
       <input name="email" type="email" placeholder="Email..." value="<%= @company.email %>" id="email" autocomplete="new-password"><br>
       <label>Пароль от почты</label>
-     <input name="password" type="password" placeholder="Password..." value="<%= @company.password %>" autocomplete="new-password"><br>
+<!--     <input name="password" type="password" placeholder="Password..." value="<%#= ApplicationController.new.crypt.decrypt_and_verify(@company.password) %>" autocomplete="new-password"><br>-->
       <input name="send" id="send" type="checkbox" value="true" <% if @company.is_send %> checked <% end %>>
       <label for="send">Получать и обрабатывать письма</label>
       <div class="submit submit-with-social" id="am_but">
@@ -18,7 +18,7 @@
     </form>
   </div>
   <div>
-    Загрузить аватарку
+    Загрузить аватарку и показывать ли
   </div>
 </div>
 <style>

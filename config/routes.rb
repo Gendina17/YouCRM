@@ -18,8 +18,11 @@ Rails.application.routes.draw do
   post '/update_role', to: 'main#update_role'
   post '/create_task', to: 'main#create_task'
   get '/tasks', to: 'main#tasks'
+  get '/inactive', to: 'main#inactive'
+  get '/not_new', to: 'main#not_new'
 
   get '/identification', to: 'registration#identification'
+  get '/destroy', to: 'registration#destroy'
   get '/send_password', to: 'registration#send_password'
   post '/create_room', to: 'registration#create_room'
   post '/authorization', to: 'registration#authorization'

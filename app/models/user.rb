@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_secure_password
+  has_one_attached :avatar
 
   STATES = ['active', 'busy', 'inactive', nil]
 
@@ -16,6 +17,10 @@ class User < ApplicationRecord
   before_create :confirmation_token
 
   scope :company,    ->(id) { where(company_id: id) }
+  scope :fired,    -> { where(is_fired: true) }
+  scope :not_fired,    -> { where(is_fired: false) }
+
+  # default_scope -> { where(is_fired: false) }
 
   def self.authenticate(email, submitted_password, company)
     user = joins(:company).where("companies.name = ?", company)
