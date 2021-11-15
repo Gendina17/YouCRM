@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_14_165213) do
+ActiveRecord::Schema.define(version: 2021_11_15_173619) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(version: 2021_11_14_165213) do
     t.string "email"
     t.string "password"
     t.boolean "is_send"
+    t.boolean "is_show_avatar", default: false
   end
 
   create_table "emails", force: :cascade do |t|
@@ -107,6 +108,7 @@ ActiveRecord::Schema.define(version: 2021_11_14_165213) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "company_id"
+    t.boolean "is_admin", default: false
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -147,6 +149,7 @@ ActiveRecord::Schema.define(version: 2021_11_14_165213) do
     t.integer "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "tag"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

@@ -1,5 +1,5 @@
 ActiveAdmin.register_page "Dashboard" do
-  menu priority: 1, label: 'Main'
+  menu priority: 1, label: 'Основное'
 
   content title: 'Главная' do
     columns do
@@ -18,8 +18,8 @@ ActiveAdmin.register_page "Dashboard" do
         panel "Info" do
           h3 'Администраторы:'
           ul do
-            User.joins(:role).where(company_id: current_user.company.id).where(name: 'Администратор').map do |user|
-              li link_to(user.name, admin_user_path(user))
+            User.joins(:role).where(company_id: current_user.company.id).where('roles.is_admin = true').map do |user|
+              li link_to(user.full_name, admin_user_path(user))
             end
           end
         end

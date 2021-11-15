@@ -3,10 +3,13 @@ class Role < ApplicationRecord
   belongs_to :company
 
   ACTIONS = {
-    add_users: 'Добавление новго пользователя в CRM',
-    create_role: 'Возможность создавать новые должности и присваивать им роли',
-    add_user_role: 'Присвоение пользователю новой должности',
-    create_task: 'Создание задач пользователям',
+    add_users: 'Добавление нового пользователя в CRM',
+    create_role: 'Создание новых должностей',
+    add_user_role: 'Присвоение пользователю должности',
+    create_task: 'Создание задач',
+    settings: 'Доступ к настройкам CRM',
+    admin: 'Доступ к админке',
+    show_users: 'Просмотр пользователей'
   }
 
   scope :company,    ->(id) { where(company_id: id) }

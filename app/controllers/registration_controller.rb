@@ -13,6 +13,9 @@ class RegistrationController < ApplicationController
 
     user = User.new(user_params)
     user.company = company
+    role = Role.create(name: 'Администратор', description: 'Пользователь обладает всеми возможными правами',
+      the_role: Role::ACTIONS.keys.to_json, company_id: company.id, is_admin: true )
+    user.role_id = role.id
 
     if user.save
       UserMailer.registration_confirmation(user).deliver_now

@@ -1,37 +1,43 @@
 <%= stylesheet_link_tag 'add_user', media: 'all', 'data-turbolinks-track': 'reload' %>
 
 <div id="add_users">
-  <p id="first_title">Пользователи компании <%= @company.name.upcase %>
-    <br><br><br></p>
-  <div class="input-wrapper" data-text="">
-    <input id="my-input" type="text" placeholder="Найти...." >
-  </div>
-  <div id="list">
-    <ul id="user-list" class="push">
-      <%@users.each do |user| %>
-        <li id="<%= rand(500) + 1 %>">
-          <a href="#win1" onclick="show_user('<%= user.name %>', '<%= user.surname %> ',
-            '<%= user.state%>', '<%= user.mood%>', '<%= user.info&.strip%>',
-            '<%= user.role&.name%>', '<%= user.email%>',
-            '<%= user.contacts.present? ? JSON.parse(user.contacts).to_a.map{|w| w.join('-')}.join('#') : '' %>',
-            '<%= user.created_at.to_date.to_s.split('-').reverse.join('-') %>',
-            '<%= user.avatar.attached? ? user.avatar.url : '' %>');">
-            <span id="name"><%= user.name %></span>
-            <span id="surname"><%= user.surname %></span>
-            <span id="role_name"> - <%= user.role.name %></span>
-          </a>
-        </li>
-      <% end %>
-    </ul>
-  </div>
-  <div class="submit submit-with-social for_position">
-    <button name="submit_login" type="submit" id="menu4" class="log" >
-      <a href="#win2">
-        <span class="menu_text" id="menu_text4">Создать нового пользователя<b></b><b></b></span>
-      </a>
-    </button>
-  </div>
-</div>
+  <% if JSON.parse(@current_user.role.the_role).include?('show_users') %>
+    <p id="first_title">Пользователи компании <%= @company.name.upcase %>
+      <br><br><br></p>
+    <div class="input-wrapper" data-text="">
+      <input id="my-input" type="text" placeholder="Найти...." >
+    </div>
+    <div id="list">
+      <ul id="user-list" class="push">
+        <%@users.each do |user| %>
+          <li id="<%= rand(500) + 1 %>">
+            <a href="#win1" onclick="show_user('<%= user.name %>', '<%= user.surname %> ',
+              '<%= user.state%>', '<%= user.mood%>', '<%= user.info&.strip%>',
+              '<%= user.role&.name%>', '<%= user.email%>',
+              '<%= user.contacts.present? ? JSON.parse(user.contacts).to_a.map{|w| w.join('-')}.join('#') : '' %>',
+              '<%= user.created_at.to_date.to_s.split('-').reverse.join('-') %>',
+              '<%= user.avatar.attached? ? user.avatar.url : '' %>');">
+              <span id="name"><%= user.name %></span>
+              <span id="surname"><%= user.surname %></span>
+              <span id="role_name"> - <%= user.role.name %></span>
+            </a>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% else %>
+    <div class="nothing_selected">У вас нет прав для просмотра пользователей компании</div>
+  <% end %>
+  <% if JSON.parse(@current_user.role.the_role).include?('add_users') %>
+    <div class="submit submit-with-social for_position">
+      <button name="submit_login" type="submit" id="menu4" class="log" >
+        <a href="#win2">
+          <span class="menu_text" id="menu_text4">Создать нового пользователя<b></b><b></b></span>
+        </a>
+      </button>
+    </div>
+    </div>
+  <% end %>
 <!----------------------------окно создания пользователя--------------------------------------------------------------->
 <div class="dm-overlay" id="win2">
   <a href="#close" class="close_reg" id="close_reg"></a>

@@ -149,63 +149,72 @@
     ];
 
     function show_emojis(name) {
-        document.getElementById(name).innerHTML = ""
         document.getElementById(name).classList.toggle("hidden");
-        document.getElementById(name).innerHTML += "Эмоции <br>"
-        emojis_emotions.forEach(function(item, i, arr) {
-            document.getElementById(name).innerHTML += "<span class='emoji'onclick='add_emoji_emotions(" + i + ");' >"
-                + String.fromCodePoint(item) + "</span>";
-            if (i % 10 == 9) {
-                document.getElementById(name).innerHTML += "<br>"
-            }
-        });
-        document.getElementById(name).innerHTML += "<br>Люди и жесты <br>"
-        emojis_peoples.forEach(function(item, i, arr) {
-            document.getElementById(name).innerHTML += "<span class='emoji'onclick='add_emojis_peoples(" + i + ");' >"
-                + String.fromCodePoint(item) + "</span>";
-            if (i % 10 == 9) {
-                document.getElementById(name).innerHTML += "<br>"
-            }
-        });
-
-        document.getElementById(name).innerHTML += "<br>Символы <br>"
-        emojis_simvols.forEach(function(item, i, arr) {
-            document.getElementById(name).innerHTML += "<span class='emoji' onclick='add_emojis_simvols(" + i + ");' >"
-                + String.fromCodePoint(item) + "</span>";
-            if (i % 10 == 9) {
-                document.getElementById(name).innerHTML += "<br>"
-            }
-        });
-
-        document.getElementById(name).innerHTML += "<br>Животные и растения <br>"
-        emojis_animals.forEach(function(item, i, arr) {
-            document.getElementById(name).innerHTML += "<span class='emoji' onclick='add_emojis_animals(" + i + ");' >"
-                + String.fromCodePoint(item) + "</span>";
-            if (i % 10 == 9) {
-                document.getElementById(name).innerHTML += "<br>"
-            }
-        });
-
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            alert(e.target.result);
-        };
     }
 
-    function add_emoji_emotions(i) {
-        document.getElementById('mood').value += String.fromCodePoint(emojis_emotions[i])
+    let name = new Array();
+    name = ["emoji", "emoji2"]
+
+    for (j=0; j<2; j++) {
+      document.getElementById(name[j]).innerHTML += "Эмоции <br>"
+      emojis_emotions.forEach(function(item, i, arr) {
+          document.getElementById(name[j]).innerHTML += `<span class="emoji" onclick="add_emoji_emotions(${i}, ${j});">`
+              + String.fromCodePoint(item) + "</span>";
+          if (i % 10 == 9) {
+              document.getElementById(name[j]).innerHTML += "<br>"
+          }
+      });
+
+      document.getElementById(name[j]).innerHTML += "<br>Люди и жесты <br>"
+      emojis_peoples.forEach(function(item, i, arr) {
+          document.getElementById(name[j]).innerHTML += `<span class="emoji" onclick="add_emojis_peoples(${i}, ${j});">`
+              + String.fromCodePoint(item) + "</span>";
+          if (i % 10 == 9) {
+              document.getElementById(name[j]).innerHTML += "<br>"
+          }
+      });
+
+      document.getElementById(name[j]).innerHTML += "<br>Символы <br>"
+      emojis_simvols.forEach(function(item, i, arr) {
+          document.getElementById(name[j]).innerHTML += `<span class="emoji" onclick="add_emojis_simvols(${i}, ${j});">`
+              + String.fromCodePoint(item) + "</span>";
+          if (i % 10 == 9) {
+              document.getElementById(name[j]).innerHTML += "<br>"
+          }
+      });
+
+      document.getElementById(name[j]).innerHTML += "<br>Животные и растения <br>"
+      emojis_animals.forEach(function(item, i, arr) {
+          document.getElementById(name[j]).innerHTML += `<span class="emoji" onclick="add_emojis_animals(${i}, ${j});">`
+              + String.fromCodePoint(item) + "</span>";
+          if (i % 10 == 9) {
+              document.getElementById(name[j]).innerHTML += "<br>"
+          }
+      });
     }
 
-    function add_emojis_peoples(i) {
-        document.getElementById('mood').value += String.fromCodePoint(emojis_peoples[i])
+    function add_emoji_emotions(i, n) {
+        let id = new Array();
+        id = ['mood', 'message_input']
+        document.getElementById(id[n]).value += String.fromCodePoint(emojis_emotions[i])
     }
 
-    function add_emojis_simvols (i) {
-        document.getElementById('mood').value += String.fromCodePoint(emojis_simvols[i])
+    function add_emojis_peoples(i, n) {
+        let id = new Array();
+        id = ['mood', 'message_input']
+        document.getElementById(id[n]).value += String.fromCodePoint(emojis_peoples[i])
     }
 
-    function add_emojis_animals(i) {
-        document.getElementById('mood').value += String.fromCodePoint(emojis_animals[i])
+    function add_emojis_simvols(i, n) {
+        let id = new Array();
+        id = ['mood', 'message_input']
+        document.getElementById(id[n]).value += String.fromCodePoint(emojis_simvols[i])
+    }
+
+    function add_emojis_animals(i, n) {
+        let id = new Array();
+        id = ['mood', 'message_input']
+        document.getElementById(id[n]).value += String.fromCodePoint(emojis_animals[i])
     }
 
 </script>

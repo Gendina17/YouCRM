@@ -18,7 +18,31 @@
     </form>
   </div>
   <div>
-    Загрузить аватарку и показывать ли
+    <% if @current_user.company.avatar.attached? %>
+      <a href="#win1">
+        <img src="<%= @current_user.company.avatar.url %>" id="img">
+      </a>
+    <% else %>
+      <a href="#win1">
+        <img src="../assets/avatar1.jpeg" id="img" href="#win1">
+      </a>
+    <% end %>
+    <form method="post" action="/update_company_avatar" enctype="multipart/form-data">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <div class="example-1">
+        <div class="form-group">
+          <label class="label">
+            <i class="material-icons">attach_file</i>
+            <span class="title">Выбрать файл</span>
+            <input type="file"name="avatar" id="avatar">
+          </label>
+        </div>
+      </div>
+      <input type="checkbox" name="is_show_avatar"><label>Отображать логотип на главной странице и иконке сайта</label>
+      <input type="submit" value="Изменить" id="but_avatar">
+    </form>
+
   </div>
 </div>
 <style>

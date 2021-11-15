@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get '/change_state', to: 'main#change_state'
   post '/update', to: 'main#update'
   post '/update_avatar', to: 'main#update_avatar'
+  post '/update_company_avatar', to: 'main#update_company_avatar'
   post '/create', to: 'main#create'
   post '/create_role', to: 'main#create_role'
   post '/add_role_to_user', to: 'main#add_role_to_user'
