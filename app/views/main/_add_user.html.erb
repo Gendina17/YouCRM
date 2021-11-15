@@ -11,7 +11,7 @@
       <ul id="user-list" class="push">
         <%@users.each do |user| %>
           <li id="<%= rand(500) + 1 %>">
-            <a href="#win1" onclick="show_user('<%= user.name %>', '<%= user.surname %> ',
+            <a href="#win10" onclick="show_user('<%= user.name %>', '<%= user.surname %> ',
               '<%= user.state%>', '<%= user.mood%>', '<%= user.info&.strip%>',
               '<%= user.role&.name%>', '<%= user.email%>',
               '<%= user.contacts.present? ? JSON.parse(user.contacts).to_a.map{|w| w.join('-')}.join('#') : '' %>',
