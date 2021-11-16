@@ -93,6 +93,9 @@
       </nav>
     </a>
     <a href="#" id="title"><%= @company.name %></a>
+    <% if @current_user.company.avatar.attached? && @current_user.company.is_show_avatar %>
+      <img src="<%= @current_user.company.avatar.url %>" id="img" class="www" width="70" height="50">
+    <% end %>
   </div>
   <div class="dm-overlay" id="win1">
     <div class="dm-table">

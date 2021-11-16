@@ -6,7 +6,12 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <link rel="shortcut icon" type="image/x-icon" href="/assets/icons.svg" >
+    <% if @current_user.company.avatar.attached? && @current_user.company.is_show_avatar %>
+      <link rel="shortcut icon" type="image/x-icon" href="<%= @current_user.company.avatar.url %>" >
+    <% else %>
+      <link rel="shortcut icon" type="image/x-icon" href="/assets/icons.svg" >
+    <% end %>
+
     <%#= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 

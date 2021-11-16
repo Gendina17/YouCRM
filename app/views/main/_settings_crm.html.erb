@@ -54,7 +54,8 @@
                 <% else %>
                   <img src="../assets/avatar1.jpeg" id="img" href="#win1">
                 <% end %>
-                <input type="file"name="avatar" id="avatar">
+                <input type="file"name="avatar" id="avatar" value="<%= @current_user.company.avatar.url %>"
+                       onchange="alert_about_photo(this)">
               </label>
             </div>
           </div>
@@ -112,6 +113,18 @@
           document.getElementById(`but_${i}`).classList.remove("i_active");
       }
       el.classList.add("i_active");
+  }
+
+  function alert_about_photo(input){
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function(e) {
+              document.getElementById('img').src = e.target.result;
+          }
+
+          reader.readAsDataURL(input.files[0]);
+      }
   }
 </script>
 
