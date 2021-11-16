@@ -208,7 +208,7 @@ class MainController < ApplicationController
     # чет не так сохраняет
 
     if it_company.save
-      render json: 'Почта успешно добавлена, но для того чтоб все работало корректно надо .......'
+      render json: 'Почта успешно добавлена'
     else
       render json: 'не получилось'
     end
