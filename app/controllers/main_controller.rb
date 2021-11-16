@@ -146,6 +146,19 @@ class MainController < ApplicationController
     end
   end
 
+  def define_attach_file(wall, is_you)
+    id = is_you.zero? ? 'attach_file_you' : 'attach_file'
+
+    if wall.attach.attached?
+      "<a target='_blank' id='#{id}' href='#{wall.attach.url}'><svg xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='currentColor'
+      class='bi bi-paperclip send_icon' viewBox='0 0 16 16'><path d='M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3
+           0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z'/>
+      </svg></a>"
+    else
+      ''
+    end
+  end
+
   def all_walls
     walls = []
     Wall.company(current_user.company_id).each do |wall|
@@ -153,8 +166,9 @@ class MainController < ApplicationController
       text_time = define_text_time(wall.created_at)
       tag = define_tag(wall.tag)
       src = define_avatar(wall.user)
+      attach = define_attach_file(wall, my)
 
-      walls << [wall.body, wall.tag, text_time, tag, src, my]
+      walls << [wall.body, wall.tag, text_time, tag, src, my, attach]
     end
     @walls = Wall.company(current_user.company_id)
     render json: walls
@@ -174,6 +188,15 @@ class MainController < ApplicationController
     else
       render json: 'не удалось отправить сообщение'
     end
+  end
+
+  def create_wall_with_attach
+    wall = Wall.new(params.permit(:body))
+    wall.user_id = current_user.id
+    wall.company_id = current_user.company_id
+    wall.tag = 'advertisement'
+    wall.attach.attach(params[:attach])
+    wall.save
   end
 
   def add_email

@@ -1,6 +1,7 @@
 class Wall < ApplicationRecord
   belongs_to :user
   belongs_to :company
+  has_one_attached :attach
 
   TAGS = {
     important: 'Важная информация', interesting: 'Это может быть интересно',

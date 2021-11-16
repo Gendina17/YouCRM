@@ -18,7 +18,7 @@
   line-height: 60px;
   outline: 0 none;
   border: none;
-  width: calc(100% - 150px);
+  width: calc(100% - 190px);
   color: #575151;
   text-indent: 10px;
   font-size: 12pt;
@@ -172,5 +172,54 @@
   max-height: 130px;
   overflow: auto;
   font-size: 16px;
-  background-image: url(https://psv4.userapi.com/c536236/u131991696/docs/d5/cc2d70bd92df/back.png?extra=w-9TQjbJa3Jcn8hsbm8iEF04TNdNPqzVKT2ng6ZzS6vUPSByf3Ctq5W7gHSsJ6xWJh-ZcDGk0xzhv8jeeBn9lgmkxMWYzBhjf_HF9iZhK87rP6H7DyzrpmpmJan1K9w05_qT-5Ge94LgY9uGjGeRGoa-_m0); ;
+  background-image: url(https://psv4.userapi.com/c536236/u131991696/docs/d5/cc2d70bd92df/back.png?extra=w-9TQjbJa3Jcn8hsbm8iEF04TNdNPqzVKT2ng6ZzS6vUPSByf3Ctq5W7gHSsJ6xWJh-ZcDGk0xzhv8jeeBn9lgmkxMWYzBhjf_HF9iZhK87rP6H7DyzrpmpmJan1K9w05_qT-5Ge94LgY9uGjGeRGoa-_m0);
+}
+
+#attach {
+  position: absolute;
+  top: 555px;
+  left: 1300px;
+  border: 1px solid grey;
+  border-bottom: none;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  background-color: white;
+  height: 300px;
+  width: 250px;
+  text-align: center;
+  max-width: 250px;
+  max-height: 300px;
+  overflow: auto;
+  font-size: 16px;
+  background-image: url(https://psv4.userapi.com/c536236/u131991696/docs/d5/cc2d70bd92df/back.png?extra=w-9TQjbJa3Jcn8hsbm8iEF04TNdNPqzVKT2ng6ZzS6vUPSByf3Ctq5W7gHSsJ6xWJh-ZcDGk0xzhv8jeeBn9lgmkxMWYzBhjf_HF9iZhK87rP6H7DyzrpmpmJan1K9w05_qT-5Ge94LgY9uGjGeRGoa-_m0);
+}
+
+#attach_file {
+  position: relative;
+  top: 30px;
+  right: 25px;
+}
+
+#attach_file_you {
+  position: relative;
+  top: 35px;
+  right: 60px;
+}
+
+#inp_avatar {
+  background: inherit;
+  border: 1px solid #cfd8dc;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 6px;
+  margin-bottom: 15px;
+  margin-top: 5px;
+  outline:none;
+}
+
+#att {
+  margin-left: 45px;
+}
+
+.att {
+  margin-left: 5px !important;
 }

@@ -1,5 +1,9 @@
 <div id="settings_crm">
-  <button onclick="show_add_email();">Добавить почту</button>
+  <button onclick="show('add_email');">Добавить почту</button>
+  <button onclick="show('change_company_avatar');">Изменить логотип</button>
+  <button onclick="show('change_company_avatar');">Управление шаблонами</button>
+  <button onclick="show('change_company_avatar');">Настроить клиента</button>
+  <button onclick="show('change_company_avatar');">Настроить продукцию</button>
 <div id="alert"></div>
   <div id="add_email" class="hidden">
     <form name="emailForm" class="feedback-form-1" id="emailForm" onsubmit="add_email();return false">
@@ -17,10 +21,13 @@
       </div>
     </form>
   </div>
-  <div>
+
+  <div id="change_company_avatar" class="hidden">
+
     <% if @current_user.company.avatar.attached? %>
       <a href="#win1">
         <img src="<%= @current_user.company.avatar.url %>" id="img">
+        <a href="<%= @current_user.company.avatar.url %>">hhhhhh</a>
       </a>
     <% else %>
       <a href="#win1">
@@ -42,8 +49,9 @@
       <input type="checkbox" name="is_show_avatar"><label>Отображать логотип на главной странице и иконке сайта</label>
       <input type="submit" value="Изменить" id="but_avatar">
     </form>
-
   </div>
+
+
 </div>
 <style>
   #add_emai {
@@ -51,8 +59,8 @@
   }
 </style>
 <script>
-  function show_add_email() {
-      document.getElementById('add_email').classList.toggle("hidden");
+  function show(name) {
+      document.getElementById(name).classList.toggle("hidden");
   }
 
   function add_email(){

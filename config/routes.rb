@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get '/all_users_in_role', to: 'main#all_users_in_role'
   get '/all_walls', to: 'main#all_walls'
   post '/create_wall', to: 'main#create_wall'
+  post '/create_wall_with_attach', to: 'main#create_wall_with_attach'
   post '/add_email', to: 'main#add_email'
   get '/dell_role', to: 'main#dell_role'
   post '/update_role', to: 'main#update_role'
