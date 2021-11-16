@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_15_173619) do
+ActiveRecord::Schema.define(version: 2021_11_16_195510) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -141,6 +141,13 @@ ActiveRecord::Schema.define(version: 2021_11_15_173619) do
     t.json "contacts"
     t.integer "role_id"
     t.boolean "is_fired"
+  end
+
+  create_table "users_walls", id: false, force: :cascade do |t|
+    t.bigint "wall_id"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_users_walls_on_user_id"
+    t.index ["wall_id"], name: "index_users_walls_on_wall_id"
   end
 
   create_table "walls", force: :cascade do |t|

@@ -9,6 +9,9 @@ class MainController < ApplicationController
 
   def settings
     @users = User.where(company_id: current_user.company_id)
+    @has_new = Wall.company(current_user.company_id).where.not(user_id: current_user.id).count > Wall.
+      company(current_user.company_id).where.not(user_id: current_user.id).joins(:users_walls).
+      where('users_walls.user_id = ?', current_user.id).count
   end
 
   def change_state
@@ -167,10 +170,16 @@ class MainController < ApplicationController
       tag = define_tag(wall.tag)
       src = define_avatar(wall.user)
       attach = define_attach_file(wall, my)
+      new = wall.users.exclude?(current_user) ? 'new' : ''
+      p new
 
-      walls << [wall.body, wall.tag, text_time, tag, src, my, attach]
+      walls << [wall.body, wall.tag, text_time, tag, src, my, attach, new]
     end
-    @walls = Wall.company(current_user.company_id)
+
+    Wall.company(current_user.company_id).where.not(user_id: current_user.id).each do |wall|
+      wall.users << current_user if wall.users.exclude?(current_user)
+    end
+
     render json: walls
   end
 
@@ -204,8 +213,6 @@ class MainController < ApplicationController
     it_company.email = params[:email]
     it_company.is_send = params[:send]
     it_company.password = crypt.encrypt_and_sign(params[:password])
-    #crypt.decrypt_and_verify(encrypted_data)
-    # чет не так сохраняет
 
     if it_company.save
       render json: 'Почта успешно добавлена'

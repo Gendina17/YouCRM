@@ -92,6 +92,10 @@
     }
 
     function show_walls(){
+        if (document.getElementById('notification')){
+            document.getElementById('notification').classList.add('hidden');
+        }
+
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "/all_walls.json");
 
@@ -105,7 +109,7 @@
                             `<span class="timestamp"><span class="username">Вы</span>&bull;<span class="posttime"> ${item[2]} </span> &bull;` +
                             `${item[3]}</span></div><img class="user-img" id="user-0" src="${item[4]}"/>${item[6]}</div></article>`;
                     } else {
-                        document.getElementById("chat-window").innerHTML += `<article class="msg-container msg-remote" id="msg-0"><div class="msg-box msg-${item[1]}">` +
+                        document.getElementById("chat-window").innerHTML += `<article class="msg-container msg-remote ${item[7]}" id="msg-0"><div class="msg-box msg-${item[1]}">` +
                             `<img class="user-img" id="user-0" src="${item[4]}" />${item[6]}<div class="flr"><div class="messages"><p class="msg" id="msg-0">${item[0]}</p></div>`+
                             `<span class="timestamp"><span class="username">Вы</span>&bull;<span class="posttime"> ${item[2]} </span> &bull;` +
                             `${item[3]}</span></div></div></article>`;
@@ -117,4 +121,3 @@
         xhr.send()
     }
 </script>
-

@@ -13,6 +13,7 @@ class User < ApplicationRecord
   belongs_to :company
   belongs_to :role
   has_many :walls
+  has_and_belongs_to_many :walls
 
   before_create :confirmation_token
 
