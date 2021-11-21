@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_16_195510) do
+ActiveRecord::Schema.define(version: 2021_11_21_214146) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,28 @@ ActiveRecord::Schema.define(version: 2021_11_16_195510) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "categories", force: :cascade do |t|
+    t.integer "company_id"
+    t.string "title"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "client_companies", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "phone"
+    t.string "email"
+    t.string "address"
+    t.string "responsible"
+    t.text "note"
+    t.integer "points", default: 0
+    t.integer "manager_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "clients", force: :cascade do |t|
     t.string "name"
     t.string "surname"
@@ -77,6 +99,13 @@ ActiveRecord::Schema.define(version: 2021_11_16_195510) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "company_id"
+    t.string "address"
+    t.text "description"
+    t.text "note"
+    t.integer "points", default: 0
+    t.string "password"
+    t.string "patronymic"
+    t.integer "manager_id"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -87,6 +116,11 @@ ActiveRecord::Schema.define(version: 2021_11_16_195510) do
     t.string "password"
     t.boolean "is_send"
     t.boolean "is_show_avatar", default: false
+    t.string "type_client"
+    t.text "client_fields", default: ""
+    t.string "type_product"
+    t.boolean "show_statuses", default: true
+    t.boolean "show_categories", default: true
   end
 
   create_table "emails", force: :cascade do |t|
@@ -101,6 +135,20 @@ ActiveRecord::Schema.define(version: 2021_11_16_195510) do
     t.datetime "date"
   end
 
+  create_table "products", force: :cascade do |t|
+    t.string "name"
+    t.datetime "date"
+    t.string "type"
+    t.text "note"
+    t.integer "number"
+    t.text "description"
+    t.integer "price"
+    t.boolean "is_important"
+    t.integer "discount"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -109,6 +157,29 @@ ActiveRecord::Schema.define(version: 2021_11_16_195510) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "company_id"
     t.boolean "is_admin", default: false
+  end
+
+  create_table "services", force: :cascade do |t|
+    t.string "name"
+    t.datetime "date"
+    t.string "type"
+    t.string "duration"
+    t.text "note"
+    t.integer "price"
+    t.boolean "is_important"
+    t.integer "discount"
+    t.text "description"
+    t.string "executor"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "statuses", force: :cascade do |t|
+    t.integer "company_id"
+    t.string "title"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -122,6 +193,18 @@ ActiveRecord::Schema.define(version: 2021_11_16_195510) do
     t.string "tag"
     t.boolean "active"
     t.boolean "is_new", default: true
+  end
+
+  create_table "tickets", force: :cascade do |t|
+    t.string "subject"
+    t.integer "status_id"
+    t.integer "category_id"
+    t.integer "client_id"
+    t.text "description"
+    t.integer "product_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "is_closed"
   end
 
   create_table "users", force: :cascade do |t|

@@ -217,3 +217,232 @@
 #but_and_check {
   margin-left: -34% !important;
 }
+
+#select_client {
+  text-align: center;
+}
+
+#clientCompanyForm {
+  background-color: rgba(247, 248, 248, 0.74);
+  border: 2px double #1872e3;
+  box-shadow: inset 0 0 6px #1872e3;
+  width: 590px;
+  height: 490px;
+  overflow: auto;
+  padding-top: 10px;
+  margin-left: 25%;
+  margin-top: 30px;
+  text-align: left;
+  padding-left: 150px;
+}
+
+#clientForm {
+  background-color: rgba(247, 248, 248, 0.74);
+  border: 2px double #cd1307;
+  box-shadow: inset 0 0 6px #cd1307;
+  width: 590px;
+  height: 570px;
+  overflow: auto;
+  padding-top: 10px;
+  margin-left: 25%;
+  margin-top: 30px;
+  text-align: left;
+  padding-left: 150px;
+}
+
+#client_but {
+  margin-top: 20px;
+  margin-left: 100px;
+}
+
+#client_buttons {
+  height: 100px;
+  max-height: 100px;
+}
+
+.add_to_but {
+  margin-top: 8px;
+  .menu_text {
+    box-shadow: none;
+  }
+}
+
+#select_tovar {
+  text-align: center;
+}
+
+#service_fields {
+  background-color: rgba(247, 248, 248, 0.74);
+  border: 2px double #515cff;
+  box-shadow: inset 0 0 6px #515cff;
+  width: 300px;
+  height: 500px;
+  overflow: auto;
+  padding-top: 10px;
+  margin-left: 37%;
+  margin-top: 90px;
+  text-align: left;
+  padding-left: 100px;
+  margin-bottom: 50px;
+  cursor: pointer;
+}
+
+#fields_product {
+  background-color: rgba(247, 248, 248, 0.74);
+  border: 2px double #cd8e07;
+  box-shadow: inset 0 0 6px #cd8e07;
+  width: 300px;
+  height: 460px;
+  overflow: auto;
+  padding-top: 10px;
+  margin-left: 37%;
+  margin-top: 90px;
+  margin-bottom: 50px;
+  text-align: left;
+  padding-left: 100px;
+  cursor: pointer;
+}
+
+#productForm {
+  height: 140px;
+  max-height: 140px;
+}
+
+.wrapper{
+  display: inline-flex;
+  background: #fff;
+  height: 100px;
+  width: 400px;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 5px;
+  padding: 20px 15px;
+}
+.wrapper .option{
+  background: #fff;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 0 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 0 10px;
+  border: 2px solid lightgrey;
+  transition: all 0.3s ease;
+}
+.wrapper .option .dot{
+  height: 20px;
+  width: 20px;
+  background: #d9d9d9;
+  border-radius: 50%;
+  position: relative;
+}
+.wrapper .option .dot::before{
+  position: absolute;
+  content: "";
+  top: 4px;
+  left: 4px;
+  width: 12px;
+  height: 12px;
+  background: #88aace;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(1.5);
+  transition: all 0.3s ease;
+}
+input[type="radio"]{
+  display: none;
+}
+#option-1:checked:checked ~ .option-1,
+#option-2:checked:checked ~ .option-2{
+  border-color: #88aace;
+  background: #88aace;
+}
+#option-1:checked:checked ~ .option-1 .dot,
+#option-2:checked:checked ~ .option-2 .dot{
+  background: #fff;
+}
+#option-1:checked:checked ~ .option-1 .dot::before,
+#option-2:checked:checked ~ .option-2 .dot::before{
+  opacity: 1;
+  transform: scale(1);
+}
+.wrapper .option span{
+  font-size: 20px;
+  color: #808080;
+}
+#option-1:checked:checked ~ .option-1 span,
+#option-2:checked:checked ~ .option-2 span{
+  color: #fff;
+}
+
+#block_about_statuses {
+  margin-top: 90px;
+  display: flex;
+  justify-content: space-around;
+}
+
+#statusForm {
+  background-color: rgba(247, 248, 248, 0.74);
+  border: 2px double #6d07cd;
+  box-shadow: inset 0 0 6px #6d07cd;
+  width: 500px;
+  height: 380px;
+  overflow: auto;
+  padding-top: 10px;
+  margin-top: 30px;
+  text-align: center;
+}
+
+#statuses {
+  background-color: rgba(247, 248, 248, 0.74);
+  border: 2px double rgba(7, 205, 146, 0.84);
+  box-shadow: inset 0 0 6px rgba(7, 205, 146, 0.84);
+  width: 350px;
+  height: 380px;
+  overflow: auto;
+  padding-top: 10px;
+  margin-top: 30px;
+  text-align: right;
+  padding-right: 150px;
+}
+
+#block_about_categories {
+  display: flex;
+  justify-content: space-around;
+}
+
+#categoryForm {
+  background-color: rgba(247, 248, 248, 0.74);
+  border: 2px double rgba(205, 83, 7, 0.84);
+  box-shadow: inset 0 0 6px  rgba(205, 83, 7, 0.84);
+  width: 500px;
+  height: 380px;
+  overflow: auto;
+  padding-top: 10px;
+  margin-top: 30px;
+  text-align: center;
+}
+
+#categories {
+  background-color: rgba(247, 248, 248, 0.74);
+  border: 2px double black;
+  box-shadow: inset 0 0 6px  black;
+  width: 350px;
+  height: 380px;
+  overflow: auto;
+  padding-top: 10px;
+  margin-top: 30px;
+  text-align: right;
+  padding-right: 150px;
+}
+
+.del {
+  cursor: pointer;
+}
+
+.del:hover {
+  opacity: 0.5;
+}

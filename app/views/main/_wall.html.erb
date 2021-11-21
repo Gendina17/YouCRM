@@ -17,10 +17,10 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <div class="example-1">
           <div class="form-group" id="att">
-            <label class="label">
-              <i class="material-icons">attach_file</i>
-              <span class="title">Выбрать файл</span>
-              <input type="file"name="attach" id="avatar">
+            <label class="label" id="label2">
+              <i class="material-icons" id="icon">attach_file</i>
+              <span class="title" id="file">Выбрать файл</span>
+              <input type="file"name="attach" id="avatar" onchange="alert_about_choise(this)">
             </label>
           </div>
         </div>
@@ -119,5 +119,19 @@
             }
         }
         xhr.send()
+    }
+
+    function alert_about_choise(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                document.getElementById('file').innerText = 'Файл выбран';
+                document.getElementById('file').style.color = 'black';
+                document.getElementById('icon').style.color = 'black';
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
     }
 </script>

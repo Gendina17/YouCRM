@@ -12,6 +12,8 @@ class MainController < ApplicationController
     @has_new = Wall.company(current_user.company_id).where.not(user_id: current_user.id).count > Wall.
       company(current_user.company_id).where.not(user_id: current_user.id).joins(:users_walls).
       where('users_walls.user_id = ?', current_user.id).count
+    @statuses = Status.company(company.id)
+    @categories = Category.company(company.id)
   end
 
   def change_state
@@ -276,6 +278,51 @@ class MainController < ApplicationController
   def inactive
     Task.find(params[:id]).update(active: false)
     render json: 'ok'
+  end
+
+  def set_clients_fields
+    company = current_user.company
+    company.update(type_client: params[:type_client])
+
+    company.client_fields = params.require(:fields).values.to_json
+    if company.save!
+      return render json: 'Данные успешно изменены'
+    else
+      return render json: 'Что то не вышло('
+    end
+  end
+
+  def set_type_product
+    current_user.company.update(type_product: params[:type_product])
+    render json: 'Данные успешно изменены'
+  end
+
+  def create_status
+    company.update(show_statuses: params[:show_statuses])
+    status = Status.new(title: params[:title], description: params[:description])
+    status.company_id = company.id
+    if status.save!
+      render json: status
+    end
+  end
+
+  def create_category
+    company.update(show_categories: params[:show_categories])
+    category = Category.new(title: params[:title], description: params[:description])
+    category.company_id = company.id
+    if category.save!
+      render json: category
+    end
+  end
+
+  def delete_status
+    Status.find_by(id: params[:id]).destroy
+    render json: [params[:id]]
+  end
+
+  def delete_category
+    Category.find_by(id: params[:id]).destroy
+    render json: [params[:id]]
   end
 
   private

@@ -23,6 +23,12 @@ Rails.application.routes.draw do
   get '/tasks', to: 'main#tasks'
   get '/inactive', to: 'main#inactive'
   get '/not_new', to: 'main#not_new'
+  post '/set_clients_fields', to: 'main#set_clients_fields'
+  post '/set_type_product', to: 'main#set_type_product'
+  post '/create_status', to: 'main#create_status'
+  post '/create_category', to: 'main#create_category'
+  get '/delete_category', to: 'main#delete_category'
+  get '/delete_status', to: 'main#delete_status'
 
   get '/identification', to: 'registration#identification'
   get '/destroy', to: 'registration#destroy'

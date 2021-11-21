@@ -63,7 +63,7 @@
             </div>
           </a>
             <ul class="submenu">
-              <% @users.each do |user| %>
+              <% @users.where.not(id: @current_user.id).each do |user| %>
                 <li><a class="a" href="#win1" onclick="show_user('<%= user.name %>', '<%= user.surname %> ',
                   '<%= user.state%>', '<%= user.mood%>', '<%= user.info&.strip%>',
                   '<%= user.role&.name%>', '<%= user.email%>',
