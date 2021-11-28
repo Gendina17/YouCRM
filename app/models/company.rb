@@ -10,8 +10,6 @@ class Company < ApplicationRecord
   has_many :walls
   has_many :statuses
   has_many :categories
-  has_many :products
-  has_many :services
 
   TYPE_CLIENTS = [[:human, 'Человек'], [:company, 'Компания']]
   TYPE_PRODUCT = [[:product, 'Товар'], [:service, 'Услуга']]

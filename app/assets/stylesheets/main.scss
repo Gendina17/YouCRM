@@ -139,6 +139,10 @@ html, body {
 }
 
 body {
+  background: rgba(232, 232, 232, 0.4) !important;
+}
+
+body {
   font-family: 'Open Sans', sans-serif!important;
   font-size: 17px!important;
   font-weight: 300!important;
@@ -377,9 +381,9 @@ body {
   display: inline-block;
   padding: 20px;
   max-width: 50em;
-  background: #a6a5a2;
-  color: #cfd8dc;
-  border: 10px double #cfd8dc;
+  background-image: url(https://psv4.userapi.com/c536236/u131991696/docs/d5/589b9e5a7f77/back.png?extra=ekrKzufXoewG8T95oAR-N9YzslsDQIIaA_47l0HYBWcIoJ_k78jDcv12moEKXDnk47s-VNaZ5qPrF3iYNJ8fS4GvGU8pTDIQ808CU48z60ZDx7E6jlBlEMY_7M_XY3Oc08KGrStfOM5QG8R_A6-PKMxmow);
+  color: #888585;
+  border: 10px double #888585;
   text-align: left;
 }
 
@@ -451,8 +455,8 @@ body {
 /* кнопка закрытия при наведении */
 
 .close:hover:after {
-  border-color: #fff;
-  color: #fff;
+  border-color: #a69b9b;
+  color: #a69b9b;
   -webkit-transform: scale(1);
   -moz-transform: scale(1);
   -ms-transform: scale(1);

@@ -29,6 +29,17 @@ Rails.application.routes.draw do
   post '/create_category', to: 'main#create_category'
   get '/delete_category', to: 'main#delete_category'
   get '/delete_status', to: 'main#delete_status'
+  get '/show_ticket', to: 'main#show_ticket'
+  post '/update_client', to: 'main#update_client'
+  get '/show_ticket', to: 'main#show_ticket'
+  get '/sort_ticket', to: 'main#sort_ticket'
+  get '/ticket_close', to: 'main#ticket_close'
+  get '/update_close_ticket', to: 'main#update_close_ticket'
+  get '/send_client_mail', to: 'main#send_client_mail'
+  post '/create_note', to: 'main#create_note'
+  post '/update_note', to: 'main#update_note'
+  get '/delete_note', to: 'main#delete_note'
+
 
   get '/identification', to: 'registration#identification'
   get '/destroy', to: 'registration#destroy'
@@ -43,6 +54,4 @@ Rails.application.routes.draw do
       post 'password_recovery'
     end
   end
-
-  resources :messages, only: [:index, :create]
 end

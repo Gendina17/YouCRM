@@ -1,5 +1,5 @@
 class Product < ApplicationRecord
-  belongs_to :company
+  has_many :tickets, as: :product
 
   FIELDS = ['Название', 'Описание', 'Дата', 'Тип', 'Пометки', 'Цена', 'Скидка', 'Дата создания',
     'Важность', 'Количество']

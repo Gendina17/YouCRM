@@ -1,67 +1,192 @@
-<div id="menu">
-<a href="#win5">новый тикет</a>
+<div id="alert_update">
+   Поле успешно изменено
 </div>
+<%= render 'menu_panel' %>
 <div id="tickets">
 
-<div class="ticket">
-  <span>rwtreatesrysrydy</span>
-  заказ такой то
-  статус такой
-  категория такая
-  менеджер такой
-  дата такая
-</div>
 
-  <div class="ticket">
-    <span>rwtreatesrysrydy</span>
-  </div>
 
-  <div class="ticket">
-    <span>rwtreatesrysrydy</span>
-  </div>
+  <% @tickets.each do |ticket| %>
+    <div id="ticket_<%= ticket.id %>" class="ticket" onclick="show_ticket('<%= ticket.id %>')">
+      <div class="manager">Нина Гендина</div>
+      <div class="subject"><%= ticket.subject %></div>
 
-  <div class="ticket">
-    <span>rwtreatesrysrydy</span>
-  </div>
 
-  <div class="ticket">
-    <span>rwtreatesrysrydy</span>
-  </div>
+      <div class="status_category">
 
-  <div class="ticket">
-    <span>rwtreatesrysrydy</span>
-  </div>
-
-  <div class="ticket">
-    <span>rwtreatesrysrydy</span>
-  </div>
-
-  <div class="ticket">
-    <span>rwtreatesrysrydy</span>
-  </div>
-</div>
-
-<div class="dm-overlay" id="win5">
-  <div class="dm-table">
-    <div class="dm-cell">
-      <div class="dm-modal2">
-        <a href="#close" class="close"></a>
-        <div class="info">
-          <form>
-            <input placeholder="Тема">
-            <input placeholder="описание">
-            <input  type="checkbox">
-            клиент
-            <label>прикрепить заказ</label>
-            про заказ
-            тип
-            статус
-          </form>
-        </div>
+        <span>статус</span> <span>категория</span>
       </div>
-    </div>
-  </div>
+
+<div class="client_product">
+      <span>Клиент: <%= ticket.client&.full_name %></span><br>
+      <span>Заказ: <%= ticket.product&.name %></span>
 </div>
+
+      <span class="create_at"> <%= ticket.description %></span>
+
+    </div>
+
+
+    <div class="product">
+      <% if @company.type_product == Company::TYPE_PRODUCT.first.first && ticket.product.present?%>
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#848484" class="bi bi-boxes" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z"/>
+        </svg>
+      <% elsif @company.type_product == Company::TYPE_PRODUCT.second.first && ticket.product.present? %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#848484" class="bi bi-pin-map" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z"/>
+          <path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/>
+        </svg>
+
+      <% end %>
+    </div>
+  <% end %>
+
+</div>
+
+
+<script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+    }
+  function show_ticket(id, close = false) {
+
+          var xhr = new XMLHttpRequest();
+          var params = 'id=' + encodeURIComponent(id);
+          xhr.open("GET", "/show_ticket?" + params)
+
+          xhr.onreadystatechange = function () {
+              if (xhr.readyState == 4 && xhr.status == 200) {
+                  document.getElementById('active_ticket').innerHTML = ''
+                  document.getElementById('another_tickets').innerHTML = ''
+                  document.getElementById('client_info').innerHTML = ''
+                  data = JSON.parse(xhr.responseText)
+
+                  ticket = data['ticket']
+                  document.getElementById('active_ticket').innerHTML += `<div>#${ticket.id}<br>${ticket.subject}<br>${ticket.description}`
+
+
+                  i = getRandomInt(4) + 1
+                  client_info = data['client']
+                  if (close) {
+                      document.getElementById('client_info').innerHTML += `<div><div><img id="avatar_client" src="../assets/client_avatar${i}.png"></div><span id_ticket='${ticket.id}'  id="name">${client_info.name}</span> <span id_ticket='${ticket.id}' id="surname">${client_info.surname}</span><br> ${client_info.email} ${client_info.phone}</div>`
+                      document.getElementById('active_ticket').innerHTML += '</div>'
+                  }else {
+                      document.getElementById('client_info').innerHTML += `<div><div><img id="avatar_client" src="../assets/client_avatar${i}.png"></div><span id_ticket='${ticket.id}' contenteditable="true" id="name">${client_info.name}</span> <span id_ticket='${ticket.id}' contenteditable="true" id="surname">${client_info.surname}</span><br> ${client_info.email} ${client_info.phone}</div>`
+                      document.getElementById('active_ticket').innerHTML += `<a title="Закрыть тикет" onclick="close_ticket('${ticket.id}')" id="icon_${ticket.id}"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eye-slash-fill" viewBox="0 0 16 16"><path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z"/><path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z"/></svg></a></div>`
+                  }
+
+                  another_tickets = data['another_tickets']
+                  for(i = 0; i< another_tickets.length; i++ ){
+                      document.getElementById('another_tickets').innerHTML += `<div onclick="show_ticket('${another_tickets[i].id }', ${another_tickets[i].is_closed})">#${another_tickets[i].id }<br>${another_tickets[i].subject}<br>${another_tickets[i].description}</div>`
+                  }
+
+              }
+          }
+          xhr.send()
+
+  }
+
+  function sort_tickets(value = false){
+      var xhr = new XMLHttpRequest();
+      params = 'all=' + encodeURIComponent(value);
+
+      xhr.open("GET", "/sort_ticket?" + params)
+
+      xhr.onreadystatechange = () => {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+              data = JSON.parse(xhr.responseText)
+              document.getElementById('tickets').innerHTML = ''
+              for (i = 0; i< data.length; i++) {
+                  document.getElementById('tickets').innerHTML += `<div id="ticket_${data[i].id}" class="ticket" onclick="show_ticket('${data[i].id}')"><span>${data[i].subject}</span><br><span>${data[i].description}</span><br><span>Клиент: ${data[i].client_type}</span><br><span>Заказ: ${data[i].product_type}</span><br><span>Клиент: ${data[i].created_at}</span></div>`
+              }
+          }
+      }
+      xhr.send()
+  }
+
+  function show_close_tickets(){
+      var xhr = new XMLHttpRequest();
+
+      xhr.open("GET", "/ticket_close")
+
+      xhr.onreadystatechange = () => {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+              data = JSON.parse(xhr.responseText)
+              document.getElementById('tickets').innerHTML = ''
+              for (i = 0; i< data.length; i++) {
+                  document.getElementById('tickets').innerHTML += `<div id="ticket_${data[i].id}" class="ticket" onclick="show_ticket('${data[i].id}', true)"><span>${data[i].subject}</span><br><span>${data[i].description}</span><br><span>Клиент: ${data[i].client_type}</span><br><span>Заказ: ${data[i].product_type}</span><br><span>Клиент: ${data[i].created_at}</span></div>`
+              }
+          }
+      }
+      xhr.send()
+  }
+
+  $('body').on('focus', '[contenteditable]', function() {
+      const $this = $(this);
+      $this.data('before', $this.html());
+
+  }).on('blur keyup paste input', '[contenteditable]', function() {
+      const $this = $(this);
+      if ($this.data('before') !== $this.html()) {
+          $this.data('before', $this.html());
+          $this.trigger('change');
+
+          update_client($this.attr('id'), $this.html(), $this.attr('id_ticket'));
+      }
+  });
+  function update_client(name, value, id) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "/update_client.json");
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+      body = name+ '=' + encodeURIComponent(value) +
+          '&id=' + id +
+          '&authenticity_token=' + document.getElementById('token').value;
+
+      xhr.onreadystatechange = function (){
+          if (xhr.readyState == 4 && xhr.status == 200) {
+document.getElementById('alert_update').style.display = 'block'
+              setTimeout(hidden_alert, 1000)
+          }
+      }
+      xhr.send(body)
+
+  }
+
+  function hidden_alert(){
+      document.getElementById('alert_update').style.display = 'none'
+  }
+
+  function close_ticket(id){
+      if (!confirm('Вы уверены, что хотите закрыть тикет? Это необратимый процесс.')){
+          return
+      }
+
+      var xhr = new XMLHttpRequest();
+      params = 'id=' + encodeURIComponent(id);
+
+      xhr.open("GET", "/update_close_ticket?" + params)
+
+      xhr.onreadystatechange = () => {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+          }
+      }
+      xhr.send()
+      document.getElementById(`icon_${id}`).style.display = 'none'
+      document.getElementById(`ticket_${id}`).style.display = 'none'
+  }
+
+</script>
+
+
+
+
+
+
+
+
 
 
 
@@ -75,6 +200,7 @@
       background-color: rgb(253, 252, 252);
       border-radius: 5px;
       cursor: pointer;
+      overflow: auto;
   }
 
   .ticket:hover {
@@ -88,7 +214,7 @@
       max-width: 400px;
       overflow: auto;
       text-align: center;
-      background-image: url("https://psv4.userapi.com/c536236/u131991696/docs/d5/df67de7472c7/back.png?extra=cqy2TTF-5OEnRileVfdLQRCfadBXzOLYYLaTDABMpdMG8evJxa0gAZwefaUwhdA3jf3vtMOKB8R8xPbjpSz_ULxcQg8Xd2fxnmTGUTt7Agv9R7wZ7XEIJYm8A4SOpuLQCdajNFvR9HyBOEcsOyaI6jFO_DU");
+      background-image: url("https://psv4.userapi.com/c536236/u131991696/docs/d5/0eadbbb45240/back.png?extra=PwjxvY8h3jrqlwpf565PlushQVY8c41mphGARKpD9s2Imyq_yPTBbbqerhAUQsdu_WIv_ODKsHJQtyL6GVDWKUaLps4oP6fagK87mccHuHKeaBmlvTkKwPpTUrDYUeKYVsV6_5ham3tEit7l_Cm8L-1Xdlo");
       display: inline-block;
       border-right: 1px solid grey;
       padding-left: 1.7%;
@@ -99,7 +225,14 @@
       max-height: 5%;
       width: 400px;
       max-width: 400px;
-      background-color: grey;
+      padding: 10px;
+      justify-content: space-around;
+      position: relative;
+      display: flex;
+      align-items: center;
+      border: 1px solid #848484;
+      margin-top: 2px;
+      background: white;
   }
 
   .dm-modal2 {
@@ -108,7 +241,60 @@
       max-width: 50em;
       background: rgb(253, 252, 252);
       color: black;
-      border: 10px double black;
+      border: 10px double grey;
       text-align: left;
   }
+
+   #alert_update {
+       background-color: rgba(109, 7, 205, 0.39);
+       position: absolute;
+       left: 1300px;
+       width: 300px;
+       height: 200px;
+       display: none;
+   }
+
+   #avatar_client {
+       border-radius: 100%;
+       width: 100px;
+       height: 100px;
+   }
+.i_t:hover{
+    fill: black;
+    background: inherit;
+}
+.manager {
+    position: relative;
+    left: 110px;
+    font-size: 14px;
+}
+.subject {
+    font-weight: bold;
+    color: #3b3737;
+}
+.product {
+    position: relative;
+    right: 143px;
+    bottom: 170px;
+}
+.status_category {
+
+    justify-content: space-around;
+    position: relative;
+    display: flex;
+    font-size: 14px;
+}
+.client_product {
+margin-top: 5px;
+}
+.create_at {
+    position: relative;
+    left: 108px;
+    font-size: 14px;
+}
+.aa {
+    background: white !important;
+}
 </style>
+
+

@@ -6,7 +6,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <% if @current_user.company.avatar.attached? && @current_user.company.is_show_avatar %>
+    <% if @current_user&.company&.avatar&.attached? && @current_user.company.is_show_avatar %>
       <link rel="shortcut icon" type="image/x-icon" href="<%= @current_user.company.avatar.url %>" >
     <% else %>
       <link rel="shortcut icon" type="image/x-icon" href="/assets/icons.svg" >

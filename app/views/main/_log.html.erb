@@ -1,0 +1,76 @@
+<div id="log">
+  <div id="actions">
+<!--    блок действий(написать заметки,прикрепить доки, письма отправить) мб выводить переиску-->
+
+    <button><a href="#win1010">Переписка</a></button>
+    <textarea name="body"></textarea>
+  </div>
+  переключить лог или заметки
+  <div id="logs">
+
+  </div>
+</div>
+<!--проверка есть ли почта у компании и у клиента-->
+
+<div class="dm-overlay" id="win1010">
+  <div class="dm-table">
+    <div class="dm-cell">
+      <div class="dm-modal2" id="block">
+        <a href="#close" class="close"></a>
+        <div class="info">
+          <form name="mailForm" onsubmit="send_client_mail();return false">
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+            <input name="subject">
+            <textarea name="body"></textarea>
+            <div class="submit submit-with-social">
+              <button name="submit_login" type="submit" id="menu4" class="log">
+                <span class="menu_text" id="menu_text4">Создать<b></b><b></b></span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<style>
+    #log {
+        height: 93%;
+        max-height: 93%;
+        margin-left: 15px;
+        width: 400px;
+        max-width: 400px;
+        border: 1px solid grey;
+        position: absolute;
+        top: 52px;
+        left: 1100px;
+    }
+    #actions {
+        height: 300px;
+        border-bottom: 1px dashed grey;
+    }
+</style>
+<script>
+  function send_client_mail() {
+      var subject = document.forms.mailForm.subject.value;
+      var body = document.forms.mailForm.body.value;
+      var token = document.forms.mailForm.authenticity_token.value;
+
+      params = 'subject=' + encodeURIComponent(subject) +
+          '&body=' + encodeURIComponent(body) +
+          '&authenticity_token=' + encodeURIComponent(token);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "/send_client_mail.json?" + params);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+      xhr.onreadystatechange = function (){
+          if (xhr.readyState == 4 && xhr.status == 200) {
+              document.getElementById("actions").innerHTML = xhr.responseText;
+          }
+      }
+      xhr.send()
+  }
+</script>

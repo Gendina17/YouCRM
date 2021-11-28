@@ -3,6 +3,7 @@ class Client < ApplicationRecord
   validates :name, :surname, presence: true, length: { maximum: 30 }
 
   belongs_to :company
+  has_many :tickets, as: :client
 
   FIELDS = {
     name: 'Имя', surname: 'Фамилия', patronymic: 'Отчество', description: 'Описание', phone: 'Телефон',
@@ -11,4 +12,8 @@ class Client < ApplicationRecord
   }
 
   scope :company,    ->(id) { where(company_id: id) }
+
+  def full_name
+    [surname, name].join(' ')
+  end
 end

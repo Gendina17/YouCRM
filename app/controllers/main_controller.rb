@@ -5,6 +5,88 @@ class MainController < ApplicationController
 
   def index
     @users = User.where(company_id: current_user.company_id).order(:state)
+    @tickets = Ticket.company(company.id).open.order(:created_at).reverse.each do |el|
+      el[:description] = define_text_time(el.created_at)
+    end
+  end
+
+  def sort_ticket
+    return render json: Ticket.company(company.id).open.order(:created_at).reverse if params[:all] == 'true'
+  end
+
+  def ticket_close
+    render json: Ticket.company(company.id).where(is_closed: true).order(:created_at).reverse.each do |e|
+      e[:client_type]= e.client.full_name
+      e[:product_type]= e.product&.name
+    end
+  end
+
+  def update_close_ticket
+    Ticket.find_by(id: params[:id]).update(is_closed: true)
+  end
+
+  def show_ticket
+    ticket = Ticket.find_by(id: params[:id])
+    client = ticket.client
+    another_tickets = client.tickets.where.not(id: params[:id]).order(:created_at).reverse
+    render json: {ticket: ticket, client: client, another_tickets: another_tickets}
+  end
+
+  def update_client
+    Ticket.find_by(id: params[:id]).client.update(params.permit(:name, :surname, :phone, :email, :address,
+      :description, :note, :points, :password, :patronymic, :manager_id, :responsible))
+    render json: {success: true}
+  end
+
+  def send_client_mail
+    subject = params[:subject]
+    body = params[:body]
+    email = @current_user.company.email
+    password = @current_user.company.password
+
+    options = {
+      address: "smtp.gmail.com",
+      port: 587,
+      domain: 'localhost',
+      user_name: email,
+      password: password,
+      authentication: 'plain',
+      enable_starttls_auto: true
+    }
+
+    Mail.defaults do
+      delivery_method :smtp, options
+    end
+
+    Mail.deliver do
+      to 'you.crm.with.love@gmail.com'
+      from email
+      subject subject
+      body body
+    end
+    render json: Mail.to_s
+  end
+
+  def create_note
+    note = Note.create(params.permit(:body, :ticket_id))
+    note.manager_id = current_user.id
+    note.company_id = company.id
+    if note.save!
+      render json: note
+    end
+  end
+
+  def delete_note
+    Note.find_by(id: params[:id]).destroy
+    render json: {success: true}
+  end
+
+  def update_note
+    note = Note.find_by(id: params[:id]).update(params.permit(:body))
+    note.manager_id = current_user.id
+    if note.save!
+      render json: note
+    end
   end
 
   def settings
@@ -358,33 +440,5 @@ class MainController < ApplicationController
   end
 end
 
-# аналитика какаят хз чтот функциональн слоджное
-## как то обозночать создателя ну и роли
-# первую букву заглавную
-# мб как т интеграцию с соц сетями
-# редис солар амазон нжинкс мб на сервер вылеть чат сокеты почта бесконечная лента
-# делать пользователей уволенными
-# какие поля у клиента у заказа какая пролукция
-# в ленте делать разного цвета например или картинку если объявление важно беседа и тп
-# мб комменты к задачам
-# пепир треил мож выводить кто менял чтот логирование типа сделать и какие есть роли
-# сделать условную базу хранилище мож какиет графики аналитика
-# при создании компании создавать роль админ и роль карент юзер
-# сделать все по доступам
-# мб письма красивыми
-# возможность отправлять с клиента
-# <!--сразу после создания добавлять в список и седект и контакты-->
-# <!--еще мб не отображать если не подтвержден или уволеееееен-->
-# <!--ну и создавать сразу должность главную админа при создании окмнаты и дават ьее юзеру и везде сделать по доступам-->
-# некрасивы пока индекс и вол
-# <!--мб коммент и ммммммб отредачить таски-->
-# атачмент файлы
-# мб если добавить хэдэры в письмо то не будет черного списка
-# чтоб создавать в админке невидимое поле компани
-# шаблоны писем и можно выбирать какой отправлять
-# обновление контактов
-# c увольнением чтот норм
-# с шифрованием от почты
-# подгрузка сообщений в чате
-# если получится все таки сделать чат
-# код распределить мб в хэлперы вынести
+# вот это(лог записи расписание письма) поиск письма и аналитика - основа что успею норм
+# если такой клиент уже есть то говорить что есть

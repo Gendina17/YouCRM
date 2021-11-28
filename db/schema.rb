@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_21_214146) do
+ActiveRecord::Schema.define(version: 2021_11_28_223002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,7 +84,6 @@ ActiveRecord::Schema.define(version: 2021_11_21_214146) do
     t.string "email"
     t.string "address"
     t.string "responsible"
-    t.text "note"
     t.integer "points", default: 0
     t.integer "manager_id"
     t.datetime "created_at", precision: 6, null: false
@@ -101,7 +100,6 @@ ActiveRecord::Schema.define(version: 2021_11_21_214146) do
     t.integer "company_id"
     t.string "address"
     t.text "description"
-    t.text "note"
     t.integer "points", default: 0
     t.string "password"
     t.string "patronymic"
@@ -135,11 +133,19 @@ ActiveRecord::Schema.define(version: 2021_11_21_214146) do
     t.datetime "date"
   end
 
+  create_table "notes", force: :cascade do |t|
+    t.text "body"
+    t.integer "manager_id"
+    t.integer "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "ticket_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name"
     t.datetime "date"
-    t.string "type"
-    t.text "note"
+    t.string "type_product"
     t.integer "number"
     t.text "description"
     t.integer "price"
@@ -162,9 +168,8 @@ ActiveRecord::Schema.define(version: 2021_11_21_214146) do
   create_table "services", force: :cascade do |t|
     t.string "name"
     t.datetime "date"
-    t.string "type"
+    t.string "type_service"
     t.string "duration"
-    t.text "note"
     t.integer "price"
     t.boolean "is_important"
     t.integer "discount"
@@ -196,15 +201,21 @@ ActiveRecord::Schema.define(version: 2021_11_21_214146) do
   end
 
   create_table "tickets", force: :cascade do |t|
-    t.string "subject"
     t.integer "status_id"
     t.integer "category_id"
-    t.integer "client_id"
     t.text "description"
-    t.integer "product_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "is_closed"
+    t.boolean "is_closed", default: false
+    t.integer "company_id"
+    t.string "client_type"
+    t.bigint "client_id"
+    t.string "product_type"
+    t.bigint "product_id"
+    t.integer "manager_id"
+    t.string "subject"
+    t.index ["client_type", "client_id"], name: "index_tickets_on_client"
+    t.index ["product_type", "product_id"], name: "index_tickets_on_product"
   end
 
   create_table "users", force: :cascade do |t|
