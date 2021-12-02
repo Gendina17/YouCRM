@@ -1,33 +1,102 @@
 <div id="log">
   <div id="actions">
-<!--    блок действий(написать заметки,прикрепить доки, письма отправить) мб выводить переиску-->
+    <div id="email_button">
+    </div>
+    <form id="noteForm" name="noteForm" onsubmit="create_note();return false">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <textarea rows="4" placeholder="Оставить заметку..." name="body" class="textInput" required maxlength="300"></textarea>
+      <button type="submit" id="note_but" title="Отпрвить">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#848484" class="bi bi-pencil" viewBox="0 0 16 16">
+      <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+    </svg>
+      </button>
+      <button id="note_but2"  title="Очистить" onclick="document.forms.noteForm.body.value = ''" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#848484" class="bi bi-eraser" viewBox="0 0 16 16">
+          <path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828l6.879-6.879zm2.121.707a1 1 0 0 0-1.414 0L4.16 7.547l5.293 5.293 4.633-4.633a1 1 0 0 0 0-1.414l-3.879-3.879zM8.746 13.547 3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293l.16-.16z"/>
+        </svg>
+      </button>
+      <input type="hidden" id="ticket_id_for_note" name="id">
+    </form>
 
-    <button><a href="#win1010">Переписка</a></button>
-    <textarea name="body"></textarea>
   </div>
-  переключить лог или заметки
+<div id="div_but_log_not">
+  <button class="bb">Лог тикета</button>
+  <button class="bb">Заметки</button>
+</div>
   <div id="logs">
 
   </div>
+
+
+  <div id="notes">
+    <ul id="notes2">
+      <li>
+
+        <p>Посмотреть то то сделать тото а потом тото вот так вот ага да ну воб щем тот и тот ага и вот так а потом так ну и так вобщем дааа ух ну это так кароч ага да да ага дааа</p>
+
+        <span onclick="delete_note('${data.id}')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#848484" class="bi bi-x-circle" viewBox="0 0 16 16">
+                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg></span>
+      <span class="note_manager">Аалал аоаоо</span>
+
+      </li>
+      <li>
+        <p>Browse hacker news for a bit</p>
+      </li>
+
+
+
+    </ul>
+
+  </div>
 </div>
-<!--проверка есть ли почта у компании и у клиента-->
+
 
 <div class="dm-overlay" id="win1010">
   <div class="dm-table">
     <div class="dm-cell">
-      <div class="dm-modal2" id="block">
+      <div class="dm-modal2" id="block_emails">
         <a href="#close" class="close"></a>
         <div class="info">
+          <div>
+          <div id="block_show_emails">
+
+          </div>
+
+          <div id="block_send_email">
           <form name="mailForm" onsubmit="send_client_mail();return false">
             <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-            <input name="subject">
-            <textarea name="body"></textarea>
+            <p>
+              <input class="textInput inputs_email" name="subject" type="text" required maxlength="40" placeholder="Тема письма">
+            </p>
+            <p>
+              <textarea rows="4" class="textInput inputs_email" name="body" required maxlength="500" placeholder="Письмо..."></textarea>
+            </p>
+            <input type="hidden" name="id" id="input_email_for_id">
             <div class="submit submit-with-social">
               <button name="submit_login" type="submit" id="menu4" class="log">
-                <span class="menu_text" id="menu_text4">Создать<b></b><b></b></span>
+                <span class="menu_text" id="menu_text40">Отправить<b></b><b></b></span>
               </button>
             </div>
           </form>
+          </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="dm-overlay" id="win2020">
+  <div class="dm-table">
+    <div class="dm-cell">
+      <div class="dm-modal2" id="block_calendar">
+        <a href="#close" class="close"></a>
+        <div class="info">
+          <%= month_calendar do |date| %>
+            <%= date.day %>
+          <% end %>
         </div>
       </div>
     </div>
@@ -37,8 +106,8 @@
 
 <style>
     #log {
-        height: 93%;
-        max-height: 93%;
+        height: 95%;
+        max-height: 95%;
         margin-left: 15px;
         width: 400px;
         max-width: 400px;
@@ -46,20 +115,53 @@
         position: absolute;
         top: 52px;
         left: 1100px;
+        background-color: rgba(220, 220, 220, 0.38);
+        overflow: auto;
     }
     #actions {
-        height: 300px;
+        height: 200px;
         border-bottom: 1px dashed grey;
+        text-align: center;
+        padding: 15px;
+    }
+    #block_calendar {
+        width: 1500px;
+        height: 830px;
+        max-height: 830px;
+        text-align: center;
+        padding-left: 1%;
+    }
+    #block_emails {
+        width: 1500px !important;
+        max-width: 1500px !important;
+        height: 870px;
+        max-height: 870px;
+        text-align: center;
+    }
+    #block_show_emails {
+        background-color: #d3d3d354;
+        border: 1px solid gray;
+        height: 550px;
+        max-height: 550px;
+        width: 1400px;
+        margin-bottom: 20px;
+        overflow: auto;
+    }
+    .inputs_email {
+        width: 1400px !important;
     }
 </style>
 <script>
   function send_client_mail() {
+      document.getElementById('menu_text40').innerText = 'Отправляется'
       var subject = document.forms.mailForm.subject.value;
       var body = document.forms.mailForm.body.value;
       var token = document.forms.mailForm.authenticity_token.value;
+      var id = document.forms.mailForm.id.value;
 
       params = 'subject=' + encodeURIComponent(subject) +
           '&body=' + encodeURIComponent(body) +
+          '&id=' + encodeURIComponent(id) +
           '&authenticity_token=' + encodeURIComponent(token);
 
       var xhr = new XMLHttpRequest();
@@ -68,9 +170,302 @@
 
       xhr.onreadystatechange = function (){
           if (xhr.readyState == 4 && xhr.status == 200) {
-              document.getElementById("actions").innerHTML = xhr.responseText;
+              data = JSON.parse(xhr.responseText)
+              document.getElementById('block_show_emails').innerHTML += `<article class="msg-container msg-self"><div class="msg-box"><div class="flr"><div class="messages"><p>${data[0]}</p><p class="msg" id="msg-1">${data[1]}</p></div><span class="timestamp"><span class="username">${data[2]}</span>&bull;<span class="posttime"> ${data[3]} </span></span></div></div></article>`;
+              document.getElementById('menu_text40').innerText = 'Доставлено'
+              setTimeout(document.getElementById('menu_text40').innerText = 'Отправить', 2000)
+              document.forms.mailForm.body.value = ''
+              document.forms.mailForm.subject.value = ''
+              document.getElementById("block_show_emails").scrollTo(1000,30000000000000);
           }
       }
       xhr.send()
   }
+
+  function show_emails(ticket_id){
+      params = 'id=' + encodeURIComponent(ticket_id);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "/show_emails.json?" + params);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+      xhr.onreadystatechange = function (){
+          if (xhr.readyState == 4 && xhr.status == 200) {
+              data = JSON.parse(xhr.responseText);
+              document.getElementById('block_show_emails').innerHTML = ''
+              if (data['key_present']) {
+                  emails = data['emails']
+                  for (i=0; i<emails.length; i++) {
+                      if (emails[i][4]) {
+                          document.getElementById('block_show_emails').innerHTML += `<article class="msg-container msg-remote"><div class="msg-box"><div class="flr"><div class="messages"><p>${emails[i][0]}</p><p class="msg" id="msg-1">${emails[i][1]}</p></div><span class="timestamp"><span class="username">${emails[i][2]}</span>&bull;<span class="posttime"> ${emails[i][3]} </span></span></div></div></article>`;
+                      } else {
+                          document.getElementById('block_show_emails').innerHTML += `<article class="msg-container msg-self"><div class="msg-box"><div class="flr"><div class="messages"><p>${emails[i][0]}</p><p class="msg" id="msg-1">${emails[i][1]}</p></div><span class="timestamp"><span class="username">${emails[i][2]}</span>&bull;<span class="posttime"> ${emails[i][3]} </span></span></div></div></article>`;
+                      }
+                  }
+              } else {
+                  document.getElementById('block_show_emails').innerHTML = 'С данным пользователем пока нет переписки'
+              }
+
+              if (data['key_sent']) {
+                  document.getElementById('input_email_for_id').value = ticket_id;
+              } else {
+                  document.getElementById('block_send_email').innerHTML = data['message']
+              }
+              document.getElementById("block_show_emails").scrollTo(1000,30000000000000);
+          }
+      }
+      xhr.send()
+  }
+
+  function create_note() {
+      var body_ = document.forms.noteForm.body.value;
+      var id = document.forms.noteForm.id.value;
+      var token = document.forms.noteForm.authenticity_token.value
+
+      var xhr = new XMLHttpRequest();
+
+      xhr.open("POST", "/create_note")
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+      body = 'body=' + encodeURIComponent(body_) +
+          '&ticket_id=' + encodeURIComponent(id) +
+          '&authenticity_token=' + encodeURIComponent(token);
+
+      xhr.onreadystatechange = function () {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+              data = JSON.parse(xhr.responseText)
+              current_value = document.getElementById('notes2').innerHTML
+
+              document.getElementById('notes2'). innerHTML =  (`<li id="note_${data.id}"><p contenteditable="true" id_ticket='${data.id}' name='body' type_object='note'>${data.body}</p><span onclick="delete_note('${data.id}')" style="cursor: pointer"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">` +
+                  `<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>` +
+                  `<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg></span><span class="note_manager">Вы</span></li>`);
+              document.getElementById('notes2'). innerHTML += current_value
+              document.forms.noteForm.body.value = ''
+          }
+      }
+      xhr.send(body)
+      return false;
+  }
+
+  function delete_note(id) {
+      if (!confirm("Вы уверены что хотите удалить Заметку? Это необратимый процесс.")) {
+          return
+      } else {
+          var xhr = new XMLHttpRequest();
+          var params = 'id=' + encodeURIComponent(id);
+          xhr.open("GET", "/delete_note?" + params)
+
+          xhr.onreadystatechange = function () {
+              if (xhr.readyState == 4 && xhr.status == 200) {
+
+              }
+          }
+          xhr.send()
+          document.getElementById(`note_${id}`).style.display = 'none'
+      }
+  }
 </script>
+
+<style>
+    #notes2 li {
+        position: relative;
+        width: 300px;
+        min-height: 100px;
+        margin: 25px auto;
+        padding: 15px;
+        background: #f1f3a2;
+        background: -webkit-gradient(linear, 0% 0%, 0% 140%, from(rgb(255, 255, 255)), to(rgba(134, 134, 134, 0.39)));
+        background: -moz-linear-gradient(top, rgba(247,247,210,1), rgb(232, 234, 141));
+        -webkit-box-shadow: 0 2px 12px rgba(0,0,0,.5);
+        box-shadow: 0 1px 2px #000;
+        -webkit-transform: rotate(-.5deg);
+        -moz-transform: rotate(-.5deg);
+        -o-transform: rotate(-.5deg);
+    }
+
+    #notes2 li:nth-child(even) {
+        -webkit-transform: rotate(.5deg);
+        -moz-transform: rotate(.5deg);
+        -o-transform: rotate(.5deg);
+    }
+    /*(252, 242, 125, 0.33)*/
+    #notes2 li p {
+        text-align: center;
+        color: #000;
+        text-shadow: white 1px 1px 0px;
+        overflow:hidden;
+        padding-top: 7px;
+    }
+
+    #notes2 li::before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 115px;
+        top: -15px;
+        width: 75px;
+        height: 25px;
+        z-index: 2;
+        background-color: rgba(243, 241, 241, 0.55);
+        border: 2px solid rgba(255,255,255,0.5);
+        -webkit-box-shadow: 0 0 5px #888;
+        -moz-box-shadow: 0 0 5px #888;
+        box-shadow: 2px 2px 2px #000;
+        -webkit-transform: rotate(-6deg);
+        -moz-transform: rotate(-6deg);
+        -o-transform: rotate(-6deg);
+    }
+
+    #notes2 li:nth-child(even)::before {
+        -webkit-transform: rotate(6deg);
+        -moz-transform: rotate(6deg);
+        -o-transform: rotate(6deg);
+    }
+    #notes {
+        overflow: auto !important;
+    }
+    #note_but {
+        background-color: inherit;
+        border: none;
+        position: relative;
+        bottom: 80px;
+    }
+    #note_but > :hover {
+        fill: black;
+    }
+    #note_but2 {
+        background-color: inherit;
+        border: none;
+        position: relative;
+        bottom: 55px;
+        right: 35px;
+    }
+    #note_but2 > :hover {
+        fill: black;
+    }
+    .mail_calendar {
+        background-color: rgba(255, 255, 255, 0.56);
+border: 1.5px solid black;
+        border-radius: 5px;
+        box-shadow: 2px 2px 2px #000;
+    }
+    .mail_calendar:hover {
+        background-color: rgba(134, 134, 134, 0.39);
+    }
+    #noteForm {
+        margin-top: 15px;
+        margin-left: 42px;
+    }
+    .mail_calendar:active {
+        box-shadow: 0px 0px 0px #fff;;
+    }
+    #email_button {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+    #div_but_log_not {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        max-height: 60px;
+        height: 60px;
+    }
+    .bb {
+        background: inherit;
+        border: none;
+        font-size: 24px;
+        font-family: "Open Sans", sans-serif !important;
+        opacity: 60%;
+        cursor: pointer;
+    }
+    .bb:hover {
+        opacity: 100%;
+        border-bottom: 1px solid black;
+    }
+    .note_manager {
+        color: #848484;
+        float: right;
+        font-size: 15px;
+    }
+</style>
+<style>
+    .msg-container {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        margin: 0 0 10px 0;
+        padding: 0;
+    }
+    .msg-self .msg-box {
+        border-radius: 6px 0 0 6px;
+        float: right;
+        background-color: #555a5f78;
+    }
+
+    .msg-self .msg {
+        text-align: right;
+    }
+
+    .msg-self .timestamp {
+        text-align: right;
+    }
+
+    .msg-remote .msg-box {
+        border-radius: 0 6px 6px 0;
+        background-color: #eabfbf;
+    }
+
+    .msg-remote .msg {
+        text-align: left;
+    }
+
+    .msg-remote .timestamp {
+        text-align: left;
+    }
+
+    .msg-box {
+        display: flex;
+        padding: 10px 10px 0 10px;
+        border-radius: 0 6px 6px 0;
+        max-width: 80%;
+        width: auto;
+        float: left;
+        box-shadow: 0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);
+        margin-top: 25px;
+    }
+    .messages {
+        flex: 1 0 auto;
+    }
+    .flr {
+        flex: 1 0 auto;
+        display: flex;
+        flex-direction: column;
+        width: calc(100% - 50px);
+    }
+    .msg {
+        display: inline-block;
+        font-size: 12pt;
+        line-height: 13pt;
+        color: rgba(255,255,255,.7);
+        margin: 0 0 4px 0;
+        color: black;
+    }
+
+    .msg:first-of-type {
+        margin-top: 8px;
+    }
+    .username {
+        margin-right: 3px;
+    }
+    .timestamp {
+        color: rgba(0,0,0,.38);
+        font-size: 9pt;
+        margin-bottom: 10px;
+        color: black;
+    }
+    .posttime {
+        margin-left: 3px;
+    }
+</style>

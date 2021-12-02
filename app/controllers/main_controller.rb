@@ -25,11 +25,33 @@ class MainController < ApplicationController
     Ticket.find_by(id: params[:id]).update(is_closed: true)
   end
 
+  def add_files_to_client
+    Ticket.find_by(id: params[:id]).client.files.attach(params[:files])
+    redirect_to '#win5000001'
+  end
+
+  def show_files
+    files = Ticket.find_by(id: params[:id]).client.files
+    if files.attached?
+      data  = files.map {|file| [file.url, file.filename] }
+      render json: { data: data, key: true }
+    else
+      render json: { key: false, message: 'По данному клиенту не загружен ни один файл'}
+    end
+  end
+
   def show_ticket
     ticket = Ticket.find_by(id: params[:id])
+    product = ticket.product
     client = ticket.client
     another_tickets = client.tickets.where.not(id: params[:id]).order(:created_at).reverse
-    render json: {ticket: ticket, client: client, another_tickets: another_tickets}
+    type_product = company.type_product
+    type_client = company.type_client
+    notes = ticket.notes.order(:created_at).reverse.map do |note|
+      [note.id, note.body, note.manager.full_name, note.manager == current_user ? true : false ]
+    end
+    render json: { ticket: ticket, client: client, another_tickets: another_tickets, product: product,
+      type_product: type_product,  type_client: type_client, notes: notes }
   end
 
   def update_client
@@ -38,11 +60,24 @@ class MainController < ApplicationController
     render json: {success: true}
   end
 
+  def update_product
+    Ticket.find_by(id: params[:id]).product.update(params.permit(:name, :date, :type_product, :number, :description,
+      :price, :discount, :duration, :executor))
+    render json: {success: true}
+  end
+
+  def update_ticket
+    Ticket.find_by(id: params[:id]).update(params.permit(:description, :subject))
+    render json: {success: true}
+  end
+
   def send_client_mail
     subject = params[:subject]
     body = params[:body]
     email = @current_user.company.email
-    password = @current_user.company.password
+    password = crypt.decrypt_and_verify(@current_user.company.password)
+    client = Ticket.find_by(id: params[:id]).client
+    to = client.email
 
     options = {
       address: "smtp.gmail.com",
@@ -59,12 +94,28 @@ class MainController < ApplicationController
     end
 
     Mail.deliver do
-      to 'you.crm.with.love@gmail.com'
+      to to
       from email
       subject subject
       body body
     end
-    render json: Mail.to_s
+
+    send_email = Email.create(to: to, from: email, subject: subject, body: body, company_id: company.id,
+      date: Time.current, incoming: false, manager_id: current_user.id, client: client)
+
+    render json: [send_email.subject, send_email.body, send_email.manager.full_name, define_text_time(send_email.created_at)]
+  end
+
+  def show_emails
+    client = Ticket.find_by(id: params[:id]).client
+    emails = Email.where(client_id: client.id)
+    key_present = emails.present? ? true : false
+    key_sent = company.email.present? && client.email.present? && company.is_send
+    response_hash = { key_present: key_present, key_sent: key_sent}
+    email_array = emails&.map{ |mail| [mail.subject, mail.body, mail.incoming ? mail.client&.full_name : mail.manager&.full_name, define_text_time(mail.created_at), mail.incoming]}
+    response_hash.merge!(emails: email_array) if key_present
+    response_hash.merge!(message: 'Чтобы иметь возможность написать клиенту, укажите его email и email компании') unless key_sent
+    render json: response_hash
   end
 
   def create_note
@@ -82,7 +133,8 @@ class MainController < ApplicationController
   end
 
   def update_note
-    note = Note.find_by(id: params[:id]).update(params.permit(:body))
+    note = Note.find_by(id: params[:id])
+    note.update(params.permit(:body))
     note.manager_id = current_user.id
     if note.save!
       render json: note
@@ -440,5 +492,12 @@ class MainController < ApplicationController
   end
 end
 
-# вот это(лог записи расписание письма) поиск письма и аналитика - основа что успею норм
+# лог расписание
+# поиск по всему
+# сбор писем
+# аналитика
+#
+#норм доделать отображение  создание
 # если такой клиент уже есть то говорить что есть
+# хэш где ключ тору или фолс или наоборот
+# полоска отчеркивающая дату создания тикета или цвет

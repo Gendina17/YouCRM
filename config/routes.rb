@@ -39,6 +39,11 @@ Rails.application.routes.draw do
   post '/create_note', to: 'main#create_note'
   post '/update_note', to: 'main#update_note'
   get '/delete_note', to: 'main#delete_note'
+  post '/update_product', to: 'main#update_product'
+  post '/update_ticket', to: 'main#update_ticket'
+  post '/add_files_to_client', to: 'main#add_files_to_client'
+  get '/show_files', to: 'main#show_files'
+  get '/show_emails', to: 'main#show_emails'
 
 
   get '/identification', to: 'registration#identification'
@@ -53,5 +58,9 @@ Rails.application.routes.draw do
       get 'new_password'
       post 'password_recovery'
     end
+  end
+
+  namespace :admin do
+    resources :analytics, only: [:index]
   end
 end

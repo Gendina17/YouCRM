@@ -3,6 +3,7 @@ class ClientCompany < ApplicationRecord
   scope :company,    ->(id) { where(company_id: id) }
   belongs_to :company
   has_many :tickets, as: :client
+  has_many :emails, as: :client
 
   FIELDS = {
     name: 'Название', description: 'Описание', phone: 'Телефон', email: 'Почта', address: 'Адрес',

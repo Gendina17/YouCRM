@@ -8,6 +8,12 @@ ActiveAdmin.setup do |config|
   config.comments = false
   config.comments_menu = false
 
+  config.namespace :admin do |admin|
+    admin.build_menu do |menu|
+      menu.add label: 'Аналитика', url: '/admin/analytics'
+    end
+  end
+
 
   # Set the link url for the title. For example, to take
   # users to your main site. Defaults to no link.

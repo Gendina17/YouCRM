@@ -1,6 +1,7 @@
 class Ticket < ApplicationRecord
   belongs_to :client, polymorphic: true, optional: true
   belongs_to :product, polymorphic: true, optional: true
+  has_many :notes
 
   validates_presence_of :subject
 

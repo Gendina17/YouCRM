@@ -14,6 +14,8 @@ class User < ApplicationRecord
   belongs_to :role
   has_many :walls
   has_and_belongs_to_many :walls
+  has_many :emails
+  has_many :notes
 
   before_create :confirmation_token
 
