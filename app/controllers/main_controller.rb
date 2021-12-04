@@ -2,6 +2,7 @@ class MainController < ApplicationController
   before_action :company, only: [:index, :settings]
   before_action :contacts, :roles, :selected_params, only: :settings
   before_action :task_for_index, only: :index
+  before_action :set_paper_trail_whodunnit
 
   def index
     @users = User.where(company_id: current_user.company_id).order(:state)
@@ -97,7 +98,10 @@ class MainController < ApplicationController
       to to
       from email
       subject subject
-      body body
+      html_part do
+        content_type 'text/html; charset=UTF-8'
+        body body
+      end
     end
 
     send_email = Email.create(to: to, from: email, subject: subject, body: body, company_id: company.id,
@@ -148,6 +152,7 @@ class MainController < ApplicationController
       where('users_walls.user_id = ?', current_user.id).count
     @statuses = Status.company(company.id)
     @categories = Category.company(company.id)
+    @email_templates = EmailTemplate.select(:id, :name).company(company.id).order(:created_at).reverse
   end
 
   def change_state
@@ -459,6 +464,31 @@ class MainController < ApplicationController
     render json: [params[:id]]
   end
 
+  def create_template
+    render json: EmailTemplate.create!(body: params[:body], subject: params[:subject], company_id: company.id,
+      name: params[:name])
+  end
+
+  def update_template
+    EmailTemplate.find_by(id: params[:id]).update(params.permit(:body, :subject, :name))
+    render json: { success: true }
+  end
+
+  def delete_template
+    EmailTemplate.find_by(id: params[:id]).destroy
+    render json: { success: true }
+  end
+
+  def set_default_template
+    id = params[:id] == 0 ? nil : params[:id]
+    company.update(default_email_id: id)
+    render json: { success: true }
+  end
+
+  def show_template
+    render json: EmailTemplate.find_by(id: params[:id])
+  end
+
   private
 
   def company
@@ -501,3 +531,7 @@ end
 # если такой клиент уже есть то говорить что есть
 # хэш где ключ тору или фолс или наоборот
 # полоска отчеркивающая дату создания тикета или цвет
+# мб к письмам тикет айди чтоб понятно было к какому тикету
+#
+#
+# перспектива - тригеры и партнеры

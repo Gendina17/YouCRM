@@ -444,3 +444,111 @@
 .del:hover {
   opacity: 0.5;
 }
+
+#template_alert {
+  position: absolute;
+  background: rgba(144, 238, 144, 0.82);
+  top: 10%;
+  left: 35%;
+  padding-top: 20px;
+  padding-left: 75px;
+  width: 380px;
+  height: 50px;
+  border-radius: 5px;
+  font-size: 21px;
+}
+
+#template_alert2 {
+  position: absolute;
+  background: rgba(144, 238, 144, 0.82);
+  top: 80%;
+  left: 45%;
+  padding-top: 55px;
+  padding-left: 75px;
+  width: 400px;
+  height: 70px;
+  border-radius: 5px;
+  font-size: 21px;
+}
+
+#info_temolates {
+  background: rgba(140, 139, 139, 0.15);
+  border: 1px solid grey;
+  font-size: 19px;
+  width: 800px;
+  text-align: left;
+  padding: 10px;
+  border-radius: 5px;
+  margin-left: 20%;
+  margin-top: 30px;
+}
+
+#info_temolates > div {
+  margin-left: 30%;
+}
+
+#show_templates {
+  text-align: center;
+}
+
+.one_template {
+  color: black;
+  border: 1px solid black;
+  padding: 5px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 19px;
+}
+.one_template:hover {
+  background: rgba(140, 139, 139, 0.15);
+}
+.template {
+  margin-left: 20%;
+}
+
+#exist_templates {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.textInputLong {
+  width: 800px !important;
+}
+
+#templateForm {
+  background-color: rgba(247, 248, 248, 0.74);
+  border: 2px double rgba(140, 139, 139, 0.53);
+  box-shadow: inset 0 0 6px rgba(140, 139, 139, 0.53);
+  text-align: center;
+  height: 450px;
+  width: 1000px;
+  padding-top: 10px;
+  margin-bottom: 40px;
+  margin-top: 30px;
+  margin-left: 15%;
+}
+
+#defaultTemplateForm {
+  margin-bottom: 40px;
+}
+
+#info_about_template {
+  text-align: center;
+  max-height: 600px !important;
+  width: 900px !important;
+  display: block;
+  overflow: auto;
+}
+
+#body_template {
+  overflow: auto;
+  display: block;
+  white-space: pre-wrap !important;
+  border: 1px solid #848484;
+  padding: 15px;
+}
+
+#delete_template {
+  font-size: 20px;
+  cursor: pointer;
+}

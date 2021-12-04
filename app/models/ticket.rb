@@ -1,4 +1,6 @@
 class Ticket < ApplicationRecord
+  has_paper_trail versions: { class_name: 'TicketVersion' }, ignore: [:updated_at, :product_type, :product_id, :client_id, :client_type, :created_at]
+
   belongs_to :client, polymorphic: true, optional: true
   belongs_to :product, polymorphic: true, optional: true
   has_many :notes

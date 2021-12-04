@@ -4,7 +4,7 @@
   <div id="button_section">
     <button id="but_1" onclick="show('add_email');set_focus(this)" class="active_but">Добавить почту</button>
     <button id="but_2" onclick="show('change_company_avatar');set_focus(this)" class="active_but">Изменить логотип</button>
-    <button id="but_3" onclick="show('');set_focus(this)" class="active_but">Управление шаблонами</button>
+    <button id="but_3" onclick="show('show_templates');set_focus(this)" class="active_but">Управление шаблонами</button>
     <button id="but_4" onclick="show('select_client');set_focus(this)" class="active_but">Настроить клиента</button>
     <button id="but_5" onclick="show('select_tovar');set_focus(this)" class="active_but">Настроить продукцию</button>
   </div>
@@ -199,6 +199,63 @@
       </div>
     </div>
   </div>
+  <div id="show_templates" class="hidden">
+    <div id="info_temolates">
+      &nbsp;Вы можете создать шаблоны для писем в формате text или html и использовать их при отправки клиентам. <br>
+      &nbsp;Для удобства, используйте переменные:
+      <div>
+        {{ client.full_name }} <br> {{ manager.full_name }} <br>
+        {{ manager.email }} <br> {{ product.name })
+      </div>
+    </div>
+    <div id="exist_templates">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token, id: 'token' %>
+      <span>Имеющиеся шаблоны:</span>
+      <% @email_templates.each do |template| %>
+        <div id="template_<%= template.id %>" class="template">
+          <a href="#win100500" onclick="show_template('<%= template.id %>')" class="one_template"><%= template.name %></a>
+        </div>
+      <% end %>
+    </div>
+    <div id="templateForm">
+      <form name="templateForm" onsubmit="create_template();return false">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <p>
+          <input name="name" type="text" required maxlength="40" class="textInput textInputLong" placeholder="Название шаблона...">
+        </p>
+        <p>
+          <input name="subject" type="text" required maxlength="50" placeholder="Тема писма..." class="textInput textInputLong">
+        </p>
+        <p>
+          <textarea rows="5" name="body" required maxlength="400" placeholder="Тело письма..." class="textInput textInputLong"></textarea>
+        </p>
+        <div class="submit submit-with-social" id="am_but">
+          <button name="submit_login" id="menu3" class="log" type="submit">
+            <span class="menu_text" id="menu_text3">Создать шаблон<b></b><b></b></span>
+          </button>
+        </div>
+      </form>
+    </div>
+    <div id="info_temolates">
+      <span>Также вы можете назначить шаблон, который будет отправляться клиентам в качестве пимьма по умолчанию,
+        когда они будут писать впервые. </span>
+    </div>
+    <form onsubmit="set_default_template();return false" name="defaultTemplateForm" id="defaultTemplateForm">
+      <p>
+        <select class="textInput textInputLong" name="id">
+          <option value="0">Отсутствие дефолтного письма</option>
+          <% @email_templates.each do |template| %>
+            <option value="<%= template.id %>" <% if @company.default_email_id == template.id %> selected <% end %>>
+              <%= template.name %>
+            </option>
+          <% end %>
+        </select>
+      </p>
+      <button name="submit_login" id="menu3" class="log" type="submit">
+        <span class="menu_text" id="menu_text3">Назначить<b></b><b></b></span>
+      </button>
+    </form>
+  </div>
   <div id="select_client" class="hidden">
     <span>Выберите, пожалуйста, кто является клиентами вашей компании и какие им необходимы характеристики</span>
     <div id="client_buttons">
@@ -248,6 +305,24 @@
     </form>
   </div>
 </div>
+<div id="template_alert2" class="hidden">
+  <span>Дефолтный шаблон установлен</span>
+</div>
+<div class="dm-overlay" id="win100500">
+  <div class="dm-table">
+    <div class="dm-cell">
+      <div class="dm-modal">
+        <a href="#close" class="close"></a>
+        <div id="info_about_template">
+        </div>
+        <div id="template_alert" class="hidden">
+          <span>Шаблон успешно изменен</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
 <script>
   function show(name) {
       document.getElementById(name).classList.toggle("hidden");
@@ -471,5 +546,122 @@
           }
           xhr.send()
       }
+  }
+
+  function create_template() {
+      var subject = document.forms.templateForm.subject.value;
+      var body_email = document.forms.templateForm.body.value;
+      var name = document.forms.templateForm.name.value;
+      var token = document.forms.templateForm.authenticity_token.value;
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "/create_template.json");
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+      body = 'subject=' + encodeURIComponent(subject) +
+          '&body=' + encodeURIComponent(body_email) +
+          '&name=' + encodeURIComponent(name) +
+          '&authenticity_token=' + encodeURIComponent(token);
+
+      xhr.onreadystatechange = function (){
+          if (xhr.readyState == 4 && xhr.status == 200) {
+              data = JSON.parse(xhr.responseText)
+              document.getElementById("exist_templates").innerHTML += `<br><span id="template_${data.id}" class="template"><a href="#win100500" onclick="show_template('${data.id}')" class="one_template">${data.name}</a></span>`;
+          }
+      }
+      xhr.send(body)
+      document.forms.templateForm.subject.value = ""
+      document.forms.templateForm.body.value = ""
+  }
+
+  $('body').on('focus', '[contenteditable]', function() {
+      const $this = $(this);
+      $this.data('before', $this.html());
+
+  }).on('blur', '[contenteditable]', function() {
+      const $this = $(this);
+      if ($this.data('before') !== $this.html()) {
+          $this.data('before', $this.html());
+          $this.trigger('change');
+
+          update_template($this.attr('name'), $this.html(), $this.attr('template_id'));
+      }
+  });
+
+  function update_template(name, value, id) {
+      var xhr = new XMLHttpRequest();
+
+      xhr.open("POST", "/update_template.json");
+
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+      body = name + '=' + encodeURIComponent(value) +
+          '&id=' + id +
+          '&authenticity_token=' + document.getElementById('token').value;
+
+      xhr.onreadystatechange = function (){
+          if (xhr.readyState == 4 && xhr.status == 200) {
+              document.getElementById('template_alert').classList.remove('hidden')
+              setTimeout(hidden_alert, 1000)
+          }
+      }
+      xhr.send(body)
+
+  }
+
+  function hidden_alert(){
+      document.getElementById('template_alert').classList.add('hidden')
+  }
+
+  function hidden_alert2(){
+      document.getElementById('template_alert2').classList.add('hidden')
+  }
+
+  function delete_template(id) {
+      if (!confirm("Вы уверены что хотите удалить шаблон письма? Это необратимый процесс.")) {
+          return
+      } else {
+          var xhr = new XMLHttpRequest();
+          var params = 'id=' + encodeURIComponent(id);
+          xhr.open("GET", "/delete_template?" + params)
+
+          xhr.onreadystatechange = function () {
+              if (xhr.readyState == 4 && xhr.status == 200) {
+              }
+          }
+          xhr.send()
+          document.getElementById(`template_${id}`).style.display = 'none'
+      }
+  }
+
+  function set_default_template() {
+      var id = document.forms.defaultTemplateForm.id.value;
+
+      var xhr = new XMLHttpRequest();
+      var params = 'id=' + encodeURIComponent(id);
+      xhr.open("GET", "/set_default_template?" + params)
+
+      xhr.onreadystatechange = function () {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+              document.getElementById('template_alert2').classList.remove('hidden')
+              setTimeout(hidden_alert2, 1000)
+          }
+      }
+      xhr.send()
+  }
+
+  function show_template(id) {
+      var xhr = new XMLHttpRequest();
+      var params = 'id=' + encodeURIComponent(id);
+      xhr.open("GET", "/show_template?" + params)
+
+      xhr.onreadystatechange = function () {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+              data = JSON.parse(xhr.responseText)
+              document.getElementById('info_about_template').innerHTML =  `<span contenteditable="true" name="name" template_id="${data.id}">${data.name}</span><br><span contenteditable="true" name="subject" template_id="${data.id}">${data.subject}</span>` +
+                  `<xmp id='body_template' contenteditable="true" name="body" template_id="${data.id}">${data.body}</xmp><span id="delete_template" onclick="delete_template('${data.id}')">Удалить шаблон</span>`
+          }
+      }
+      xhr.send()
   }
 </script>

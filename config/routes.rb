@@ -44,7 +44,11 @@ Rails.application.routes.draw do
   post '/add_files_to_client', to: 'main#add_files_to_client'
   get '/show_files', to: 'main#show_files'
   get '/show_emails', to: 'main#show_emails'
-
+  post '/create_template', to: 'main#create_template'
+  post '/update_template', to: 'main#update_template'
+  get '/delete_template', to: 'main#delete_template'
+  get '/set_default_template', to: 'main#set_default_template'
+  get 'show_template', to: 'main#show_template'
 
   get '/identification', to: 'registration#identification'
   get '/destroy', to: 'registration#destroy'

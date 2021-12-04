@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_30_194651) do
+ActiveRecord::Schema.define(version: 2021_12_04_202002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -119,6 +119,16 @@ ActiveRecord::Schema.define(version: 2021_11_30_194651) do
     t.string "type_product"
     t.boolean "show_statuses", default: true
     t.boolean "show_categories", default: true
+    t.integer "default_email_id"
+  end
+
+  create_table "email_templates", force: :cascade do |t|
+    t.text "body"
+    t.string "subject"
+    t.integer "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "name"
   end
 
   create_table "emails", force: :cascade do |t|
@@ -204,6 +214,31 @@ ActiveRecord::Schema.define(version: 2021_11_30_194651) do
     t.boolean "is_new", default: true
   end
 
+  create_table "ticket_logs", force: :cascade do |t|
+    t.integer "ticket_id"
+    t.string "message"
+    t.string "loggable_type"
+    t.integer "version_id"
+    t.integer "manager_id"
+    t.string "value"
+    t.string "previos_value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "attribute_name"
+  end
+
+  create_table "ticket_versions", force: :cascade do |t|
+    t.string "item_type"
+    t.string "{:null=>false}"
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.json "object"
+    t.json "object_changes"
+    t.datetime "created_at"
+    t.index ["item_type", "item_id"], name: "index_ticket_versions_on_item_type_and_item_id"
+  end
+
   create_table "tickets", force: :cascade do |t|
     t.integer "status_id"
     t.integer "category_id"
@@ -246,6 +281,18 @@ ActiveRecord::Schema.define(version: 2021_11_30_194651) do
     t.bigint "user_id"
     t.index ["user_id"], name: "index_users_walls_on_user_id"
     t.index ["wall_id"], name: "index_users_walls_on_wall_id"
+  end
+
+  create_table "versions", force: :cascade do |t|
+    t.string "item_type"
+    t.string "{:null=>false}"
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.datetime "created_at"
+    t.text "object_changes"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
   create_table "walls", force: :cascade do |t|
