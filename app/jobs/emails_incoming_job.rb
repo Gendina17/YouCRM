@@ -30,9 +30,9 @@ class EmailsIncomingJob < ApplicationJob
             date: mail['date'].to_s,
             company_id: company_data[:id],
             incoming: incoming,
-            client_id: (company_data[:type_client] == 'client' ? Client.find_or_create_by!(email: from,
+            client_id: (company_data[:type_client] == 'human' ? Client.find_or_create_by!(email: from,
               company_id: company_data[:id]).id : ClientCompany.find_or_create_by!(email: from, company_id: company_data[:id]).id),
-            client_type: (company_data[:type_client] == 'client' ? 'Client' : 'ClientCompany')
+            client_type: (company_data[:type_client] == 'human' ? 'Client' : 'ClientCompany')
           )
 
           unless email&.client&.tickets&.where(is_closed: false).present?

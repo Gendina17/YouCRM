@@ -1,3 +1,6 @@
+<div class="nothing_selected" id="nothing_selected">
+  Выберите или создайте тикет, чтобы начать работать
+</div>
 <div id="client" class="hidden">
   <%= hidden_field_tag :authenticity_token, form_authenticity_token, id: 'token' %>
   <div id="active_ticket">
@@ -229,7 +232,7 @@
 
   #active_ticket {
       height: 460px;
-      background-image: url("https://psv4.userapi.com/c536236/u131991696/docs/d5/0eadbbb45240/back.png?extra=PwjxvY8h3jrqlwpf565PlushQVY8c41mphGARKpD9s2Imyq_yPTBbbqerhAUQsdu_WIv_ODKsHJQtyL6GVDWKUaLps4oP6fagK87mccHuHKeaBmlvTkKwPpTUrDYUeKYVsV6_5ham3tEit7l_Cm8L-1Xdlo");
+      background-image: url('../../assets/back.png');
       border-bottom: 1px solid grey;
       padding: 10px;
   }
@@ -242,7 +245,7 @@
   }
 
   #another_tickets {
-      background-image: url("https://psv4.userapi.com/c536236/u131991696/docs/d5/0eadbbb45240/back.png?extra=PwjxvY8h3jrqlwpf565PlushQVY8c41mphGARKpD9s2Imyq_yPTBbbqerhAUQsdu_WIv_ODKsHJQtyL6GVDWKUaLps4oP6fagK87mccHuHKeaBmlvTkKwPpTUrDYUeKYVsV6_5ham3tEit7l_Cm8L-1Xdlo");
+      background-image: url('../../assets/back.png');
       height: 400px;
       border-top: 1px solid grey;
       text-align: center;
@@ -438,6 +441,18 @@ text-align: center;
     margin-left: 23%;
     margin-top: 13%;
 }
+  .nothing_selected {
+      font-size: 31px;
+      line-height: 31px;
+      padding: 30px 30px 30px 30px;
+      text-align: center;
+      color: #848484;
+      border: 5px dashed;
+      margin: 90px 90px 0;
+      position: absolute;
+      top: 182px;
+      left: 470px;
+  }
 </style>
 
 <script>

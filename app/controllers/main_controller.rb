@@ -51,8 +51,15 @@ class MainController < ApplicationController
     notes = ticket.notes.order(:created_at).reverse.map do |note|
       [note.id, note.body, note.manager.full_name, note.manager == current_user ? true : false ]
     end
+    loggable_type1 = type_client == 'human' ? 'Client' : 'ClientCompany'
+    loggable_type2 = type_product == 'product' ? 'Product' : 'Service'
+    logs = TicketLog.where(item_id: client.id, loggable_type: loggable_type1).or(TicketLog.where(ticket_id: ticket.id))
+                    .or(TicketLog.where(item_id: product&.id, loggable_type: loggable_type2))
+                    .order(:created_at).reverse.map do |log|
+      [log.message, define_text_time(log.created_at), log.loggable_type]
+    end
     render json: { ticket: ticket, client: client, another_tickets: another_tickets, product: product,
-      type_product: type_product,  type_client: type_client, notes: notes }
+      type_product: type_product,  type_client: type_client, notes: notes, logs: logs }
   end
 
   def update_client
@@ -523,8 +530,8 @@ class MainController < ApplicationController
 end
 
 # лог расписание
+# основное
 # поиск по всему
-# сбор писем
 # аналитика
 #
 #норм доделать отображение  создание
@@ -532,6 +539,7 @@ end
 # хэш где ключ тору или фолс или наоборот
 # полоска отчеркивающая дату создания тикета или цвет
 # мб к письмам тикет айди чтоб понятно было к какому тикету
+# добавить к логам компани айди чтоб в админку
 #
 #
 # перспектива - тригеры и партнеры

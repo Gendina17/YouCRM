@@ -43,7 +43,8 @@ class TicketLog < ApplicationRecord
         message: message,
         manager_id: version.whodunnit,
         value: values.last.try(:truncate, 255) || values.last,
-        previos_value: values.first.try(:truncate, 255) || values.first
+        previos_value: values.first.try(:truncate, 255) || values.first,
+        item_id: version.item_id
       )
     end
   end
@@ -58,7 +59,8 @@ class TicketLog < ApplicationRecord
       attribute_name: 'create',
       created_at: version.created_at,
       updated_at: version.created_at,
-      message: who  + ' создал(а) ' + TRANSLATE_ATTRIBUTES[version.item_type.to_sym]
+      message: who  + ' создал(а) ' + TRANSLATE_ATTRIBUTES[version.item_type.to_sym],
+      item_id: version.item_id
     )
   end
 end
