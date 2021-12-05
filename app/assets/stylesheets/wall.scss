@@ -1,0 +1,229 @@
+.chat-window {
+  flex: auto;
+  overflow: scroll;
+  height: 830px;
+  padding-bottom: 30px;
+}
+
+.chat-input {
+  flex: 0 0 auto;
+  height: 60px;
+  border-top: 1px solid #575151;
+  background: white;
+  box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
+}
+
+.chat-input input {
+  height: 59px;
+  line-height: 60px;
+  outline: 0 none;
+  border: none;
+  width: calc(100% - 190px);
+  color: #575151;
+  text-indent: 10px;
+  font-size: 12pt;
+  padding: 0;
+
+}
+
+.msg-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  margin: 0 0 10px 0;
+  padding: 0;
+}
+
+.msg-box {
+  display: flex;
+  padding: 10px 10px 0 10px;
+  border-radius: 0 6px 6px 0;
+  max-width: 80%;
+  width: auto;
+  float: left;
+  box-shadow: 0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);
+  margin-top: 25px;
+}
+
+.msg-random {
+  background: #b2b6ea;
+}
+
+.msg-important {
+  background: #c32c3685;
+}
+
+.msg-interesting {
+  background: rgba(175, 38, 255, 0.27);
+}
+
+.msg-advertisement {
+  background: #555a5f78;
+}
+
+.user-img {
+  display: inline-block;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  background: lightgray;
+  margin: 0 10px 10px 0;
+}
+
+.flr {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 50px);
+}
+
+.messages {
+  flex: 1 0 auto;
+}
+
+.msg {
+  display: inline-block;
+  font-size: 11pt;
+  line-height: 13pt;
+  color: rgba(255,255,255,.7);
+  margin: 0 0 4px 0;
+}
+
+.msg:first-of-type {
+  margin-top: 8px;
+}
+
+.timestamp {
+  color: rgba(0,0,0,.38);
+  font-size: 9pt;
+  margin-bottom: 10px;
+}
+
+.username {
+  margin-right: 3px;
+}
+
+.posttime {
+  margin-left: 3px;
+}
+
+.msg-self .msg-box {
+  border-radius: 6px 0 0 6px;
+  float: right;
+}
+
+.msg-self .user-img {
+  margin: 0 0 10px 10px;
+}
+
+.msg-self .msg {
+  text-align: right;
+}
+
+.msg-self .timestamp {
+  text-align: right;
+}
+
+#send_but {
+  background: inherit;
+  border: none;
+}
+
+.send_icon{
+  margin-left: 10px;
+}
+
+.send_icon:hover {
+  fill: grey;
+  cursor: pointer;
+  margin-top: 5px !important;
+}
+
+#emoji2 {
+  position: absolute;
+  top: 567px;
+  left: 1360px;
+  text-align: left;
+  border: 1px solid grey;
+  border-bottom: none;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  padding-left: 12px;
+  background-color: white;
+  height: 300px;
+  width: 300px;
+  max-width: 300px;
+  max-height: 300px;
+  overflow: auto;
+}
+
+#tags {
+  position: absolute;
+  top: 700px;
+  left: 1360px;
+  text-align: left;
+  border: 1px solid grey;
+  border-bottom: none;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  padding: 15px;
+  background-color: white;
+  height: 130px;
+  width: 200px;
+  max-width: 200px;
+  max-height: 130px;
+  overflow: auto;
+  font-size: 16px;
+  background-image: url('../../assets/back.png');
+}
+
+#attach {
+  position: absolute;
+  top: 555px;
+  left: 1300px;
+  border: 1px solid grey;
+  border-bottom: none;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  background-color: white;
+  height: 300px;
+  width: 250px;
+  text-align: center;
+  max-width: 250px;
+  max-height: 300px;
+  overflow: auto;
+  font-size: 16px;
+  background-image: url('../../assets/back.png');
+}
+
+#attach_file {
+  position: relative;
+  top: 30px;
+  right: 25px;
+}
+
+#attach_file_you {
+  position: relative;
+  top: 35px;
+  right: 60px;
+}
+
+#inp_avatar {
+  background: inherit;
+  border: 1px solid #cfd8dc;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 6px;
+  margin-bottom: 15px;
+  margin-top: 5px;
+  outline:none;
+}
+
+#att {
+  margin-left: 45px;
+}
+
+.att {
+  margin-left: 5px !important;
+}
+
+.new {
+  background-color: #a5919154;
+}

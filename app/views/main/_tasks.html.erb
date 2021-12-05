@@ -1,0 +1,170 @@
+<%= stylesheet_link_tag 'tasks', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+<div id="tasks">
+  <span id="task_alert"></span>
+  <div class="new_task one-task2">
+    <div id="popup-login" class="popup popup-login" style="opacity: 1; display: block;">
+      <form name="taskForm" onsubmit="create_task();return false" id="taskForm">
+        <div class="login-input">
+          <div class="login-loader"></div>
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+          <div class="p">
+            <input type="text" name="subject" placeholder="Заголовок..." class="textInput3" required maxlength="30">
+          </div>
+          <textarea name="body" placeholder="Тело..." class="textInput3" required
+                    maxlength="200" id="area-body"></textarea>
+          <div class="p">
+            <input type="date" name="until_date" class="textInput3" required id="date-input">
+          </div>
+          <div class="p">
+            <input type="text" name="tag" placeholder="Тэг..." class="textInput3" maxlength="20">
+          </div>
+          <div class="p">
+            <select name="user_id" class="textInput3" required id="select-input">
+              <% @users.each do |user| %>
+                <option value="<%= user.id %>"><%= user.name %> <%= user.surname %></option>
+              <% end %>
+            </select>
+          </div>
+          <div class="submit submit-with-social">
+            <button name="submit_login" type="submit" id="menu4" class="log">
+              <span class="menu_text" id="menu_text4">Создать<b></b><b></b></span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div id="navigations">
+    <select onchange="tasks()" name="tag" id="select_tag" class="textInput3">
+      <option selected value="0">Тэг</option>
+      <% @selected_tags.each do |tag| %>
+        <option value="<%= tag %>"><%= tag %></option>
+      <% end %>
+    </select>
+    <select id="select_user" name="user_id" onchange="tasks()" class="textInput3">
+      <option selected value="0">Пользователь</option>
+      <% @selected_users.each do |user| %>
+        <option value="<%= user[0] %>"><%= user[1] %> <%= user[2] %></option>
+      <% end %>
+    </select>
+    <br>
+    <button class="active_but" onclick="tasks('')" id="all_tasks">все задачки</button>
+    <button class="active_but" onclick="tasks(false)" id="inactive_tasks">закрытые задачки</button>
+    <button class="active_but" onclick="tasks(true)" id="active_tasks">открытые задачки</button>
+  </div>
+  <br>
+  <div class="tasks" id="min_tasks"></div>
+</div>
+<script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    function create_task() {
+        var subject = document.forms.taskForm.subject.value;
+        var body2 = document.forms.taskForm.body.value;
+        var until_date = document.forms.taskForm.until_date.value;
+        var tag = document.forms.taskForm.tag.value;
+        var user_id = document.forms.taskForm.user_id.value;
+        var token = document.forms.taskForm.authenticity_token.value
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("POST", "/create_task.json")
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        body = 'subject=' + encodeURIComponent(subject) +
+            '&body=' + encodeURIComponent(body2) +
+            '&until_date=' + encodeURIComponent(until_date) +
+            '&tag=' + encodeURIComponent(tag) +
+            '&user_id=' + encodeURIComponent(user_id) +
+            '&authenticity_token=' + encodeURIComponent(token);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                tasks("")
+            }
+        }
+        xhr.send(body)
+        return false
+    }
+
+    function tasks(active) {
+        var xhr = new XMLHttpRequest();
+        var params = ''
+        var user_id = document.getElementById('select_user').value
+        var tag = document.getElementById('select_tag').value
+
+        if (active === true || active === false){
+             params+= 'active=' + encodeURIComponent(active) + '&';
+             if (active === true ){
+                 document.getElementById('active_tasks').classList.add('i_active');
+                 document.getElementById('inactive_tasks').classList.remove('i_active');
+                 document.getElementById('all_tasks').classList.remove('i_active');
+             } else {
+                 document.getElementById('active_tasks').classList.remove('i_active');
+                 document.getElementById('inactive_tasks').classList.add('i_active');
+                 document.getElementById('all_tasks').classList.remove('i_active');
+             }
+        } else {
+            document.getElementById('all_tasks').classList.add('i_active');
+            document.getElementById('inactive_tasks').classList.remove('i_active');
+            document.getElementById('active_tasks').classList.remove('i_active');
+        }
+
+        if (user_id !== '0'){
+            params+= 'user_id=' + encodeURIComponent(user_id) + '&';
+        }
+
+        if (tag !== '0'){
+            params+= 'tag=' + encodeURIComponent(tag);
+        }
+
+        xhr.open("GET", "/tasks?" + params)
+
+        xhr.onreadystatechange = function (){
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                data = JSON.parse(xhr.responseText)
+
+                if (data.length == 0) {
+                    document.getElementById('min_tasks').innerHTML = "<span>Не найдено ни одной задачки</span>"
+                } else {
+                    document.getElementById('min_tasks').innerHTML = ''
+                    let list_tasks = ``;
+                    for (let i = 0; i < data.length; i++){
+                        list_tasks += `<div class="one-task"><span class="subject-task">${data[i][1]}</span>` +
+                            `<br> <div class="body-task">${data[i][2]}</div> <div class="tag-task">${data[i][3]}</div>` +
+                            `<div class="name-task">${data[i][5]}</div>`
+                        if (data[i][4]) {
+                            list_tasks += `<button class="button-task" onclick="inactive('${data[i][0]}')">inactive</button></div>`
+                        } else {
+                            list_tasks += `</div>`
+                        }
+                        if (i%3 === 2){
+                        list_tasks += '<br><br>'
+                        }
+                    }
+                    document.getElementById('min_tasks').innerHTML = list_tasks
+                }
+            }
+        }
+        xhr.send()
+    }
+
+    function inactive(id){
+        if (!confirm('Вы уверены, что хотите сделать задачу неактивной?')){
+            return
+        }
+
+        var xhr = new XMLHttpRequest();
+        params = 'id=' + encodeURIComponent(id);
+
+        xhr.open("GET", "/inactive?" + params)
+
+        xhr.onreadystatechange = function (){
+            if (xhr.readyState == 4 && xhr.status == 200) {
+             tasks(false)
+            }
+        }
+        xhr.send()
+    }
+</script>
+

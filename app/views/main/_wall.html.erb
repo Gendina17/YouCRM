@@ -1,0 +1,137 @@
+<%= stylesheet_link_tag 'wall', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+<div id="wall">
+  <section class="chatbox">
+    <section class="chat-window" id="chat-window"></section>
+    <div id="emoji2" class="hidden"></div>
+    <div id="tags" class="hidden">
+      <% Wall::TAGS.each do |tag| %>
+        <input id="<%= tag[0] %>" form="i_am_form" type="radio"
+               name="tag" value="<%= tag[0] %>" <% if tag[0] == :advertisement %> checked <% end %>>
+        <label for="<%= tag[0] %>"><%= tag[1] %></label><br>
+      <% end %>
+    </div>
+    <div id="attach" class="hidden">
+      <form method="post" action="/create_wall_with_attach" enctype="multipart/form-data">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <div class="example-1">
+          <div class="form-group" id="att">
+            <label class="label" id="label2">
+              <i class="material-icons" id="icon">attach_file</i>
+              <span class="title" id="file">Выбрать файл</span>
+              <input type="file"name="attach" id="avatar" onchange="alert_about_choise(this)">
+            </label>
+          </div>
+        </div>
+        <input name="body" required id="inp_avatar">
+        <input type="submit" value="Отправить" id="but_avatar" class="att" maxlength="200">
+      </form>
+    </div>
+    <form class="chat-input" onsubmit="send_wall_form();return false" id="i_am_form" name="wallForm">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <input type="text" autocomplete="on" placeholder="Type a message" id="message_input" name="body" required maxlength="200"/>
+      <svg onclick="show_emojis('attach')"  xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+           class="bi bi-paperclip send_icon" viewBox="0 0 16 16"><path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3
+           0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z"/>
+      </svg>
+      <svg onclick="show_emojis('tags')" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+           class="bi bi-tag send_icon" viewBox="0 0 16 16">
+        <path d="M6 4.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-1 0a.5.5 0 1 0-1 0 .5.5 0 0 0 1 0z"/>
+        <path d="M2 1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 1
+        6.586V2a1 1 0 0 1 1-1zm0 5.586 7 7L13.586 9l-7-7H2v4.586z"/>
+      </svg>
+      <svg onclick="show_emojis('emoji2')" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+           class="bi bi-emoji-smile send_icon" viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+        <path d="M4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1
+        .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM7 6.5C7 7.328 6.552 8 6
+        8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z"/>
+      </svg>
+      <button id="send_but" type="submit">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" id="send_icon" height="25" fill="currentColor"
+             class="bi bi-send-fill send_icon" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M15.964.686a.5.5 0 0 0-.65-.65l-.095.038L.767 5.854l-.001.001-.452.18a.5.5 0 0
+          0-.082.887l.41.26.001.002 4.563 2.903.432.275.275.432 2.903 4.563.002.002.26.41a.5.5 0 0 0
+          .886-.083l.181-.453L15.926.78l.038-.095Zm-1.833 1.89.471-1.178-1.178.471L5.93 9.363l.338.215a.5.5 0 0 1
+          .154.154l.215.338 7.494-7.494Z"/>
+        </svg>
+      </button>
+    </form>
+  </section>
+</div>
+<script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    function send_wall_form(){
+
+        var body = document.forms.wallForm.body.value;
+        var token = document.forms.wallForm.authenticity_token.value;
+        var tag = document.forms.wallForm.tag.value;
+
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/create_wall.json");
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        body = 'body=' + encodeURIComponent(body) +
+            '&authenticity_token=' + encodeURIComponent(token) +
+            '&tag=' + encodeURIComponent(tag);
+
+        xhr.onreadystatechange = function (){
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById('message_input').value = '';
+                data = JSON.parse(xhr.responseText)
+                document.getElementById("chat-window").innerHTML += `<article class="msg-container msg-self" id="msg-0"><div class="msg-box msg-${data[1]}">` +
+                    `<div class="flr"><div class="messages"><p class="msg" id="msg-1">${data[0]}</p></div>`+
+                    `<span class="timestamp"><span class="username">Вы</span>&bull;<span class="posttime"> ${data[2]} </span> &bull;` +
+                    `${data[3]}</span></div><img class="user-img" id="user-0" src="${data[4]}" /></div></article>`;
+                document.getElementById("chat-window").scrollTo(0,30000000000000);
+            }
+        }
+        xhr.send(body)
+    }
+
+    function show_walls(){
+        if (document.getElementById('notification')){
+            document.getElementById('notification').classList.add('hidden');
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/all_walls.json");
+
+        xhr.onreadystatechange = function (){
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                data = JSON.parse(xhr.responseText)
+                data.forEach(function(item, i, arr) {
+                    if (item[5] == '1') {
+                        document.getElementById("chat-window").innerHTML += `<article class="msg-container msg-self" id="msg-0"><div class="msg-box msg-${item[1]}">` +
+                            `<div class="flr"><div class="messages"><p class="msg" id="msg-1">${item[0]}</p></div>`+
+                            `<span class="timestamp"><span class="username">Вы</span>&bull;<span class="posttime"> ${item[2]} </span> &bull;` +
+                            `${item[3]}</span></div><img class="user-img" id="user-0" src="${item[4]}"/>${item[6]}</div></article>`;
+                    } else {
+                        document.getElementById("chat-window").innerHTML += `<article class="msg-container msg-remote ${item[7]}" id="msg-0"><div class="msg-box msg-${item[1]}">` +
+                            `<img class="user-img" id="user-0" src="${item[4]}" />${item[6]}<div class="flr"><div class="messages"><p class="msg" id="msg-0">${item[0]}</p></div>`+
+                            `<span class="timestamp"><span class="username">Вы</span>&bull;<span class="posttime"> ${item[2]} </span> &bull;` +
+                            `${item[3]}</span></div></div></article>`;
+                    }
+                });
+                document.getElementById("chat-window").scrollTo(0,30000000000000);
+            }
+        }
+        xhr.send()
+    }
+
+    function alert_about_choise(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                document.getElementById('file').innerText = 'Файл выбран';
+                document.getElementById('file').style.color = 'black';
+                document.getElementById('icon').style.color = 'black';
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

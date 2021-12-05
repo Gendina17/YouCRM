@@ -1,0 +1,126 @@
+<header id="header" class="header w">
+  <div class="header__inner" style="flex-direction: row-reverse">
+    <a href="#header" data-target="toggle" class="header__door button2 button3">
+      <%if @current_user.state.present? %>
+        <div id="state" onclick="show_states();">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-circle-fill <%= @current_user.state%>" viewBox="0 0 16 16">
+            <circle cx="8" cy="8" r="8"/>
+          </svg> <%= @current_user.state%>
+        </div>
+        <div id="states" class="hidden">
+      <% else %>
+        <div id="states">
+      <% end %>
+      <a id="inactive" onclick="change_state('inactive');">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill " viewBox="0 0 16 16">
+          <circle cx="8" cy="8" r="8"/>
+        </svg>
+      </a>
+      <a id="busy" onclick="change_state('busy');">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="yellow" class="bi bi-circle-fill" viewBox="0 0 16 16">
+          <circle cx="8" cy="8" r="8"/>
+        </svg>
+      </a>
+      <a id="active" onclick="change_state('active');">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-circle-fill" viewBox="0 0 16 16">
+          <circle cx="8" cy="8" r="8"/>
+        </svg>
+      </a>
+      </div>
+      <nav class="four">
+        <ul class="topmenu">
+          <li><a href="#">
+            <div class="qqq">
+              <div class="aaa">
+                <% if @current_user.avatar.attached? %>
+                  <img src="<%= @current_user.avatar.url %>" class="www" width="70" height="50" id="for_scale">
+                <% else %>
+                  <img class="www" src="../assets/avatar<%= rand(5) + 1 %>.jpeg">
+                <% end %>
+                <span id="my_name"><%= @current_user.name %> <%= @current_user.surname %></span>
+              </div>
+              <div id="my_icon">
+                <img src="../assets/arrow.svg">
+              </div>
+              <div id="my_bot"></div>
+            </div>
+          </a>
+            <ul class="submenu">
+              <li><a class="a" href="/settings">Настройки</a></li>
+              <li><a class="a" href="/admin">Админка</a></li>
+              <li><a class="a" href="/admin/analytics">Аналитика</a></li>
+              <li><a class="a" href="/destroy">Выход</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <nav class="four">
+        <ul class="topmenu">
+          <li><a href="#">
+            <div class="qqq">
+              <div class="aaa">
+                ___________Пользователи___________
+              </div>
+            </div>
+          </a>
+            <ul class="submenu">
+              <% @users.where.not(id: @current_user.id).each do |user| %>
+                <li><a class="a" href="#win1" onclick="show_user('<%= user.name %>', '<%= user.surname %> ',
+                  '<%= user.state%>', '<%= user.mood%>', '<%= user.info&.strip%>',
+                  '<%= user.role&.name%>', '<%= user.email%>',
+                  '<%= user.contacts.present? ? JSON.parse(user.contacts).to_a.map{|w| w.join('-')}.join('#') : '' %>',
+                  '<%= user.created_at.to_date.to_s.split('-').reverse.join('-') %>',
+                  '<%= user.avatar.attached? ? user.avatar.url : '' %>');">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-circle-fill <%= user.state%>" viewBox="0 0 16 16">
+                    <circle cx="8" cy="8" r="8"/>
+                  </svg>
+                  <span id="full_name">
+                    <%= user.name %> <%= user.surname %> - <%= user.role.name %>
+                  </span>
+                </a>
+                </li>
+              <% end %>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <nav>
+        <span id="lupa">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+          </svg>
+        </span>
+        <input type="search" id="search" autocomplete="false">
+      </nav>
+    </a>
+    <a href="#" id="title"><%= @company.name %></a>
+    <% if @current_user&.company&.avatar&.attached? && @current_user.company.is_show_avatar %>
+      <img src="<%= @current_user.company.avatar.url %>" id="img" class="www" width="70" height="50">
+    <% end %>
+  </div>
+  <div class="dm-overlay" id="win1">
+    <div class="dm-table">
+      <div class="dm-cell">
+        <div class="dm-modal">
+          <a href="#close" class="close"></a>
+          <h3 id="user_title"></h3>
+          <div class="pl-left info">
+            <img src="../assets/avatar<%= rand(5) + 1 %>.jpeg" id="user_avatar">
+          </div>
+          <div class="info">
+            <div>
+              <p id="user-mood"></p>
+              <p id="info"></p>
+              <p id="time"> В YouCRM уже 1000 дней</p>
+            </div>
+            <div id="contacts">
+              <img src="../assets/white-gmail.svg" class="icons">
+              <span id="mail"></span><br>
+              <span id="contact_list"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

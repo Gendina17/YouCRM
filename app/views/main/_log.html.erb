@@ -1,0 +1,204 @@
+<%= stylesheet_link_tag 'log', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+<div id="log" class="hidden">
+  <div id="actions">
+    <div id="email_button"></div>
+    <form id="noteForm" name="noteForm" onsubmit="create_note();return false">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <textarea rows="4" placeholder="Оставить заметку..." name="body" class="textInput" required maxlength="300"></textarea>
+      <button type="submit" id="note_but" title="Отпрвить">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#848484" class="bi bi-pencil" viewBox="0 0 16 16">
+          <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1
+           .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0
+           1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5
+           12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+        </svg>
+      </button>
+      <button id="note_but2"  title="Очистить" onclick="document.forms.noteForm.body.value = ''" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#848484" class="bi bi-eraser" viewBox="0 0 16 16">
+          <path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828l6.879-6.879zm2.121.707a1 1 0 0 0-1.414 0L4.16 7.547l5.293 5.293 4.633-4.633a1 1 0 0 0 0-1.414l-3.879-3.879zM8.746 13.547 3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293l.16-.16z"/>
+        </svg>
+      </button>
+      <input type="hidden" id="ticket_id_for_note" name="id">
+    </form>
+  </div>
+  <div id="div_but_log_not">
+    <button class="bb i_active" onclick="set_focus(this);" id="bb_1">Лог тикета</button>
+    <button class="bb" onclick="set_focus(this);" id="bb_2">Заметки</button>
+  </div>
+  <div id="logs"></div>
+  <div id="notes" class="hidden">
+    <ul id="notes2"></ul>
+  </div>
+</div>
+<div class="dm-overlay" id="win1010">
+  <div class="dm-table">
+    <div class="dm-cell">
+      <div class="dm-modal2" id="block_emails">
+        <a href="#close" class="close"></a>
+        <div class="info">
+          <div>
+            <div id="block_show_emails"></div>
+            <div id="block_send_email">
+              <form name="mailForm" onsubmit="send_client_mail();return false">
+                <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                <p>
+                  <input class="textInput inputs_email" name="subject" type="text" required maxlength="40" placeholder="Тема письма">
+                </p>
+                <p>
+                  <textarea rows="4" class="textInput inputs_email" name="body" required maxlength="500" placeholder="Письмо..."></textarea>
+                </p>
+                <input type="hidden" name="id" id="input_email_for_id">
+                <div class="submit submit-with-social">
+                  <button name="submit_login" type="submit" id="menu4" class="log">
+                    <span class="menu_text" id="menu_text40">Отправить<b></b><b></b></span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="dm-overlay" id="win2020">
+  <div class="dm-table">
+    <div class="dm-cell">
+      <div class="dm-modal2" id="block_calendar">
+        <a href="#close" class="close"></a>
+        <div class="info">
+          <%= month_calendar do |date| %>
+            <%= date.day %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function send_client_mail() {
+      document.getElementById('menu_text40').innerText = 'Отправляется'
+      var subject = document.forms.mailForm.subject.value;
+      var body = document.forms.mailForm.body.value;
+      var token = document.forms.mailForm.authenticity_token.value;
+      var id = document.forms.mailForm.id.value;
+
+      params = 'subject=' + encodeURIComponent(subject) +
+          '&body=' + encodeURIComponent(body) +
+          '&id=' + encodeURIComponent(id) +
+          '&authenticity_token=' + encodeURIComponent(token);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "/send_client_mail.json?" + params);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+      xhr.onreadystatechange = function (){
+          if (xhr.readyState == 4 && xhr.status == 200) {
+              data = JSON.parse(xhr.responseText)
+              document.getElementById('block_show_emails').innerHTML += `<article class="msg-container msg-self"><div class="msg-box"><div class="flr"><div class="messages"><p>${data[0]}</p><p class="msg" id="msg-1">${data[1]}</p></div><span class="timestamp"><span class="username">${data[2]}</span>&bull;<span class="posttime"> ${data[3]} </span></span></div></div></article>`;
+              document.getElementById('menu_text40').innerText = 'Доставлено'
+              setTimeout(document.getElementById('menu_text40').innerText = 'Отправить', 2000)
+              document.forms.mailForm.body.value = ''
+              document.forms.mailForm.subject.value = ''
+              document.getElementById("block_show_emails").scrollTo(1000,30000000000000);
+          }
+      }
+      xhr.send()
+  }
+
+  function show_emails(ticket_id){
+      params = 'id=' + encodeURIComponent(ticket_id);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "/show_emails.json?" + params);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+      xhr.onreadystatechange = function (){
+          if (xhr.readyState == 4 && xhr.status == 200) {
+              data = JSON.parse(xhr.responseText);
+              document.getElementById('block_show_emails').innerHTML = ''
+              if (data['key_present']) {
+                  emails = data['emails']
+                  for (i=0; i<emails.length; i++) {
+                      if (emails[i][4]) {
+                          document.getElementById('block_show_emails').innerHTML += `<article class="msg-container msg-remote"><div class="msg-box"><div class="flr"><div class="messages"><p>${emails[i][0]}</p><p class="msg" id="msg-1">${emails[i][1]}</p></div><span class="timestamp"><span class="username">${emails[i][2]}</span>&bull;<span class="posttime"> ${emails[i][3]} </span></span></div></div></article>`;
+                      } else {
+                          document.getElementById('block_show_emails').innerHTML += `<article class="msg-container msg-self"><div class="msg-box"><div class="flr"><div class="messages"><p>${emails[i][0]}</p><p class="msg" id="msg-1">${emails[i][1]}</p></div><span class="timestamp"><span class="username">${emails[i][2]}</span>&bull;<span class="posttime"> ${emails[i][3]} </span></span></div></div></article>`;
+                      }
+                  }
+              } else {
+                  document.getElementById('block_show_emails').innerHTML = 'С данным пользователем пока нет переписки'
+              }
+
+              if (data['key_sent']) {
+                  document.getElementById('input_email_for_id').value = ticket_id;
+              } else {
+                  document.getElementById('block_send_email').innerHTML = data['message']
+              }
+              document.getElementById("block_show_emails").scrollTo(1000,30000000000000);
+          }
+      }
+      xhr.send()
+  }
+
+  function create_note() {
+      var body_ = document.forms.noteForm.body.value;
+      var id = document.forms.noteForm.id.value;
+      var token = document.forms.noteForm.authenticity_token.value
+
+      var xhr = new XMLHttpRequest();
+
+      xhr.open("POST", "/create_note")
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+      body = 'body=' + encodeURIComponent(body_) +
+          '&ticket_id=' + encodeURIComponent(id) +
+          '&authenticity_token=' + encodeURIComponent(token);
+
+      xhr.onreadystatechange = function () {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+              data = JSON.parse(xhr.responseText)
+              current_value = document.getElementById('notes2').innerHTML
+
+              document.getElementById('notes2'). innerHTML =  (`<li id="note_${data.id}"><p contenteditable="true" id_ticket='${data.id}' name='body' type_object='note'>${data.body}</p><span onclick="delete_note('${data.id}')" style="cursor: pointer"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">` +
+                  `<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>` +
+                  `<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg></span><span class="note_manager">Вы</span></li>`);
+              document.getElementById('notes2'). innerHTML += current_value
+              document.forms.noteForm.body.value = ''
+          }
+      }
+      xhr.send(body)
+      return false;
+  }
+
+  function delete_note(id) {
+      if (!confirm("Вы уверены что хотите удалить Заметку? Это необратимый процесс.")) {
+          return
+      } else {
+          var xhr = new XMLHttpRequest();
+          var params = 'id=' + encodeURIComponent(id);
+          xhr.open("GET", "/delete_note?" + params)
+
+          xhr.onreadystatechange = function () {
+              if (xhr.readyState == 4 && xhr.status == 200) {
+              }
+          }
+          xhr.send()
+          document.getElementById(`note_${id}`).style.display = 'none'
+      }
+  }
+  function set_focus(el) {
+      for(i=1; i<3; i++){
+          document.getElementById(`bb_${i}`).classList.remove("i_active");
+      }
+      el.classList.add("i_active");
+      if (el.id == 'bb_1') {
+          document.getElementById('notes').classList.add('hidden');
+          document.getElementById('logs').classList.remove('hidden');
+      } else {
+          document.getElementById('logs').classList.add('hidden');
+          document.getElementById('notes').classList.remove('hidden');
+      }
+  }
+</script>

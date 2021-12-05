@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  subject: MyString
+  body: 
+  creator_id: 1
+  user_id: 1
+  until_date: 2021-10-13
+
+two:
+  subject: MyString
+  body: 
+  creator_id: 1
+  user_id: 1
+  until_date: 2021-10-13
