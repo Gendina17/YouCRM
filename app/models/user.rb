@@ -16,6 +16,7 @@ class User < ApplicationRecord
   has_and_belongs_to_many :walls
   has_many :emails
   has_many :notes
+  has_many :events
 
   before_create :confirmation_token
 

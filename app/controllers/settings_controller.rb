@@ -2,7 +2,7 @@ class SettingsController < ApplicationController
   include MainHelper
 
   before_action :set_paper_trail_whodunnit
-  before_action :contacts, :roles, :selected_params, :company, only: :settings
+  before_action :contacts, :roles, :selected_params, :company, :define_events, only: :settings
 
   def settings
     @users = User.where(company_id: current_user.company_id)
@@ -278,6 +278,10 @@ class SettingsController < ApplicationController
     else
       return render json: 'Что то не вышло('
     end
+  end
+
+  def define_events
+    @events = Event.company(company.id)
   end
 
   private

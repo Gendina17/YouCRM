@@ -1,15 +1,117 @@
-
+<%= stylesheet_link_tag 'main', media: 'all', 'data-turbolinks-track': 'reload' %>
+<header id="header" class="header w">
+  <div class="header__inner" style="flex-direction: row-reverse">
+    <a href="#header" data-target="toggle" class="header__door button2 button3">
+      <nav class="four">
+        <ul class="topmenu">
+          <li><a href="#">
+            <div class="qqq">
+              <div class="aaa">
+                <% if @current_user.avatar.attached? %>
+                  <img src="<%= @current_user.avatar.url %>" class="www" width="70" height="50" id="for_scale">
+                <% else %>
+                  <img class="www" src="../assets/avatar<%= rand(5) + 1 %>.jpeg">
+                <% end %>
+                <span id="my_name"><%= @current_user.name %> <%= @current_user.surname %></span>
+              </div>
+              <div id="my_icon">
+                <img src="../assets/arrow.svg">
+              </div>
+              <div id="my_bot"></div>
+            </div>
+          </a>
+            <ul class="submenu">
+              <li><a class="a" href="/settings">Настройки</a></li>
+              <li><a class="a" href="/admin">Админка</a></li>
+              <li><a class="a" href="/admin/analytics">Аналитика</a></li>
+              <li><a class="a" href="/destroy">Выход</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </a>
+    <a href="/" id="title"><%= @company.name %></a>
+    <% if @current_user&.company&.avatar&.attached? && @current_user.company.is_show_avatar %>
+      <img src="<%= @current_user.company.avatar.url %>" id="img" class="www" width="70" height="50">
+    <% end %>
+  </div>
+</header>
+<div id="uploading">
+  <span style="font-size: 30px">Загружаем аналитику</span><br>
+  <img src="../assets/loading.gif" width="250px" height="200px"></div>
+<div id="date_block">
+<form>
+  <p>
+    <label>Укажите временной промежуток</label><br>
+    <input type="date" name="from">
+    <input type="date" name="to">
+  </p>
+  <p>
+  <input type="checkbox">
+  <label>Этот месяц</label>
+  </p>
+  <p>
+  <input type="checkbox">
+  <label>Это год</label>
+  </p>
+  <p>
+  <input type="checkbox">
+  <label>Это неделя</label>
+  </p>
+  <p>
+  <input type="checkbox">
+  <label>сегодня</label>
+  </p>
+</form>
+</div>
+<div>
+<form id="visualisation_block">
+  <span>Не показывать блоки</span>
+  <div>
+  <p>
+  <input type="checkbox" onclick="hidden_block('piechart', this)">
+  <label>Диаграмма выручки конкретного менеджера за месяц</label>
+  </p>
+  <p>
+  <input type="checkbox" onclick="hidden_block('columnchart_values', this)">
+  <label>Количество созданных товаров за месяц</label>
+  </p>
+  <p>
+  <input type="checkbox" onclick="hidden_block('table', this)">
+  <label>Общая статистика за месяц</label>
+  </p>
+  <p>
+  <input type="checkbox" onclick="hidden_block('barchart_values', this)">
+  <label>Распределение тикетов по категориям</label>
+  </p>
+  </div>
+  <div>
+  <p>
+  <input type="checkbox" onclick="hidden_block('barchart_values2', this)">
+  <label>Распределение тикетов по статусам</label>
+  </p>
+  <p>
+  <input type="checkbox" onclick="hidden_block('curve_chart', this)">
+  <label>Выручка по месяцам</label>
+  </p>
+  <p>
+  <input type="checkbox" onclick="hidden_block('piechart2', this)">
+  <label>Выручка в зависимости от категории тикета</label>
+  </p>
+  </div>
+</form>
+</div>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
     google.charts.load("current", {packages:["corechart"]});
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
-        var data = google.visualization.arrayToDataTable(JSON.parse("<%= @a %>".replace(/&quot;/g, '"')))
+        var data = google.visualization.arrayToDataTable(JSON.parse("<%= @manager_analytics %>".replace(/&quot;/g, '"')))
 
         var options = {
             legend: 'none',
             pieSliceText: 'label',
-            title: 'Swiss Language Use (100 degree rotation)',
+            title: 'Диаграмма выручки конкретного менеджера за месяц',
             pieStartAngle: 100,
         };
 
@@ -23,13 +125,7 @@
     google.charts.load("current", {packages:['corechart']});
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-            ["Element", "Density", { role: "style" } ],
-            ["Copper", 8.94, "#b87333"],
-            ["Silver", 10.49, "silver"],
-            ["Gold", 19.30, "gold"],
-            ["Platinum", 21.45, "color: #e5e4e2"]
-        ]);
+        var data = google.visualization.arrayToDataTable([["Товар", "Количество", { role: "style" } ]].concat(JSON.parse("<%= @order_count %>".replace(/&quot;/g, '"'))));
 
         var view = new google.visualization.DataView(data);
         view.setColumns([0, 1,
@@ -40,7 +136,7 @@
             2]);
 
         var options = {
-            title: "Density of Precious Metals, in g/cm^3",
+            title: "Количество созданных товаров за месяц",
             width: 600,
             height: 400,
             bar: {groupWidth: "95%"},
@@ -50,12 +146,39 @@
         chart.draw(view, options);
     }
 </script>
-<div id="columnchart_values" style="width: 900px; height: 300px;"></div>
+<div id="columnchart_values" style="max-width: 900px; max-height: 600px; width: 600px"></div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['table']});
+    google.charts.setOnLoadCallback(drawTable);
+
+    function drawTable() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Категория');
+        data.addColumn('number', 'Значение');
+        data.addRows(JSON.parse("<%= @general_statics %>".replace(/&quot;/g, '"')));
+
+        var table = new google.visualization.Table(document.getElementById('table_div'));
+
+        table.draw(data, {showRowNumber: true, width: '70%', height: '100%'});
+    }
+</script>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div id="table">
+<span id="table_span">Общая статистика за месяц</span>
+<div id="table_div"></div>
+</div>
 <script type="text/javascript">
     google.charts.load("current", {packages:["corechart"]});
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
-        var data = google.visualization.arrayToDataTable(JSON.parse("<%= @b %>".replace(/&quot;/g, '"')));
+        var data = google.visualization.arrayToDataTable([["Категория", "Количество тикетов", { role: "style" } ]].concat(JSON.parse("<%= @ticket_categories_statistics %>".replace(/&quot;/g, '"'))));
 
         var view = new google.visualization.DataView(data);
         view.setColumns([0, 1,
@@ -66,7 +189,7 @@
             2]);
 
         var options = {
-            title: "Density of Precious Metals, in g/cm^3",
+            title: "Распределение тикетов по категориям",
             width: 600,
             height: 400,
             bar: {groupWidth: "95%"},
@@ -77,3 +200,125 @@
     }
 </script>
 <div id="barchart_values" style="width: 900px; height: 300px;"></div>
+<script type="text/javascript">
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([["Статус", "Количество тикетов", { role: "style" } ]].concat(JSON.parse("<%= @ticket_status_statistics %>".replace(/&quot;/g, '"'))));
+
+        var view = new google.visualization.DataView(data);
+        view.setColumns([0, 1,
+            { calc: "stringify",
+                sourceColumn: 1,
+                type: "string",
+                role: "annotation" },
+            2]);
+
+        var options = {
+            title: "Распределение тикетов по статусам",
+            width: 600,
+            height: 400,
+            bar: {groupWidth: "95%"},
+            legend: { position: "none" },
+        };
+        var chart = new google.visualization.BarChart(document.getElementById("barchart_values2"));
+        chart.draw(view, options);
+    }
+</script>
+<div id="barchart_values2" style="width: 900px; height: 300px;"></div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Year', 'Sales'],
+            ['2004',  1000],
+            ['2005',  1170],
+            ['2006',  660],
+            ['2007',  1030]
+        ]);
+
+        var options = {
+            title: 'Выручка по месяцам',
+            curveType: 'function',
+            legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+    }
+</script>
+<div id="curve_chart" style="width: 900px; height: 500px"></div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable(JSON.parse("<%= @revenues_in_category %>".replace(/&quot;/g, '"')))
+
+        var options = {
+            legend: 'none',
+            pieSliceText: 'label',
+            title: 'Выручка в зависимости от категории тикета',
+            pieStartAngle: 100,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
+        chart.draw(data, options);
+    }
+</script>
+<div id="piechart2" style="width: 900px; height: 500px;"></div>
+<style>
+  body {
+      background-image: url("../assets/back.png") !important;
+  }
+  #piechart {
+      border: 1px solid grey;
+      display: inline-block;
+  }
+  #table_div {
+      margin-left: 25%;
+      margin-top: 25px;
+  }
+  #table_span {
+      margin-left: 25%;
+  }
+  #uploading {
+      width: 1700px !important;
+      height: 1000px !important;
+      position: absolute;
+      text-align: center;
+      z-index: 1;
+      background: white;
+      padding-top: 15%;
+      background-image: url("../assets/back.png") !important;
+  }
+  #date_block {
+display: inline-block;
+      border: 1px solid grey;
+  }
+  #visualisation_block {
+      display: inline-block;
+      border: 1px solid grey;
+  }
+  #visualisation_block > div {
+      display: inline-block;
+  }
+</style>
+<script>
+
+    setTimeout(hidden_uploading_image, 1700)
+  function hidden_uploading_image() {
+      document.getElementById('uploading').style.display = 'none'
+  }
+  function hidden_block(name, el){
+        if (el.checked) {
+            document.getElementById(name).style.display = 'none'
+        } else {
+            document.getElementById(name).style.display = 'block'
+        }
+  }
+</script>

@@ -9,6 +9,7 @@ class ClientCompany < ApplicationRecord
 
   belongs_to :company
   has_many :tickets, as: :client
+  has_many :events, as: :client
   has_many :emails, as: :client
 
   before_create :set_default_name

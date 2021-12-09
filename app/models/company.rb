@@ -12,6 +12,8 @@ class Company < ApplicationRecord
   has_many :statuses
   has_many :categories
   has_many :email_templates
+  has_many :events
+
   belongs_to :email_template, foreign_key: :default_email_id
 
   TYPE_CLIENTS = [[:human, 'Человек'], [:company, 'Компания']]
