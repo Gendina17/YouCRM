@@ -7,16 +7,17 @@
 <div id="tickets">
   <% @tickets.each do |ticket| %>
     <div id="ticket_<%= ticket.id %>" class="ticket" onclick="show_ticket('<%= ticket.id %>')">
-      <div class="manager">Нина Гендина</div>
       <div class="subject"><%= ticket.subject %></div>
-      <div class="status_category2"><span>статус</span> <span>категория</span></div>
+      <div class="status_category2" title="Статус"><span><%= ticket.status.title if @company.show_statuses && ticket.status.present?%>
+      </span> <span title="Категория"><%= ticket.category.title if @company.show_categories && ticket.category.present?%></span></div>
       <div class="client_product">
-        <span>Клиент: <%= ticket.client&.full_name %></span><br>
-        <span>Заказ: <%= ticket.product&.name %></span>
+        <span>Клиент: <%= ticket.client&.reverse_full_name %></span><br>
+        <span><%= 'Заказ: ' + ticket.product&.name if ticket.product&.name.present? %></span>
       </div>
-      <span class="create_at"> <%= ticket.description %></span>
+      <span class="manager" title="Менеджер"><%= ticket.manager.full_name if ticket.manager.present?%></span>
+      <span class="create_at" title="Дата создания"> <%= ticket.description %></span>
     </div>
-    <div class="product2">
+    <div class="product2" id="product_<%= ticket.id %>">
       <% if @company.type_product == Company::TYPE_PRODUCT.first.first.to_s && ticket.product.present?%>
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#848484" class="bi bi-boxes" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1
@@ -28,6 +29,12 @@
         </svg>
       <% elsif @company.type_product == Company::TYPE_PRODUCT.second.first.to_s && ticket.product.present? %>
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#848484" class="bi bi-pin-map" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1
+          0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z"/>
+          <path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/>
+        </svg>
+        <% else %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" fill="inherit" class="bi bi-pin-map" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1
           0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z"/>
           <path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/>

@@ -119,7 +119,7 @@
         chart.draw(data, options);
     }
 </script>
-<div id="piechart" style="width: 900px; height: 500px;"></div>
+<div id="piechart" style="width: 900px; height: 500px;" class="<%= Ticket.company(@company.id).present? %>"></div>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
     google.charts.load("current", {packages:['corechart']});
@@ -146,7 +146,7 @@
         chart.draw(view, options);
     }
 </script>
-<div id="columnchart_values" style="max-width: 900px; max-height: 600px; width: 600px"></div>
+<div id="columnchart_values" style="max-width: 900px; max-height: 600px; width: 600px" class="<%=  %>"></div>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
@@ -170,7 +170,7 @@
 <br>
 <br>
 <br>
-<div id="table">
+<div id="table" class="<%= Ticket.company(@company.id).present? %>">
 <span id="table_span">Общая статистика за месяц</span>
 <div id="table_div"></div>
 </div>
@@ -199,7 +199,7 @@
         chart.draw(view, options);
     }
 </script>
-<div id="barchart_values" style="width: 900px; height: 300px;"></div>
+<div id="barchart_values" style="width: 900px; height: 300px;" class="<%= Ticket.company(@company.id).present? %>"></div>
 <script type="text/javascript">
     google.charts.load("current", {packages:["corechart"]});
     google.charts.setOnLoadCallback(drawChart);
@@ -225,7 +225,7 @@
         chart.draw(view, options);
     }
 </script>
-<div id="barchart_values2" style="width: 900px; height: 300px;"></div>
+<div id="barchart_values2" style="width: 900px; height: 300px;" class="<%= Ticket.company(@company.id).present? %>"></div>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
     google.charts.load('current', {'packages':['corechart']});
@@ -270,7 +270,7 @@
         chart.draw(data, options);
     }
 </script>
-<div id="piechart2" style="width: 900px; height: 500px;"></div>
+<div id="piechart2" style="width: 900px; height: 500px;" class="<%= Ticket.company(@company.id).present? %>"></div>
 <style>
   body {
       background-image: url("../assets/back.png") !important;
@@ -306,6 +306,9 @@ display: inline-block;
   }
   #visualisation_block > div {
       display: inline-block;
+  }
+  .false {
+      display: none !important;
   }
 </style>
 <script>

@@ -34,40 +34,61 @@
       <div class="dm-modal2" id="add_ticket">
         <a href="#close" class="close"></a>
         <div class="info">
-          <form>
+          <form name="ticketForm" onsubmit="create_ticket('<%= @company.type_product %>');return false">
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
             <p>
-            <input placeholder="Тема" class="textInput" type="text" maxlength="30" required>
+            <input placeholder="Тема" class="textInput" type="text" maxlength="30" required name="subject">
             </p>
-            <p><textarea rows="2" class="textInput" placeholder="Описание" maxlength="60"></textarea></p>
+            <p><textarea rows="2" class="textInput" placeholder="Описание" maxlength="60" name="description"></textarea></p>
 <p>
-            <input placeholder="Статус" class="textInput" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input placeholder="Категория" class="textInput" >
+  <% if @company.show_statuses %>
+    <select  style="margin-right: 47px" placeholder="Статус" class="textInput" name="status">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <option selected disabled value="">Статус..</option>
+              <% Status.company(@company.id).each do |status| %>
+              <option value="<%= status.id %>"><%= status.title %></option>
+              <% end %>
+    </select>
+    <% end %>
+  <% if @company.show_categories %>
+    <select placeholder="Категория" class="textInput" name="category" >
+      <option selected disabled value="">Категория..</option>
+    <% Category.company(@company.id).each do |category| %>
+      <option value="<%= category.id %>"><%= category.title %></option>
+    <% end %>
+    </select>
+<% end %>
 </p>
             <p>
-            <input placeholder="Клиент" required class="textInput" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input placeholder="Менеджер" required class="textInput" >
+            <input placeholder="Введите id или почту клиента..." required class="textInput" name="client">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+              <select placeholder="Менеджер" class="textInput" name="manager">
+                <option selected disabled value="">Менеджер..</option>
+                <% User.company(@company.id).each do |user| %>
+                  <option value="<%= user.id %>"><%= user.full_name %></option>
+                <% end %>
+              </select>
             </p>
 
-            <div id="a_add_order"><a onclick="show_block_product('block_service')" >ПРИКРЕПИТЬ ТОВАР</a>
+            <div id="a_add_order"><a onclick="show_block_product('block_<%= @company.type_product %>')" >ПРИКРЕПИТЬ ТОВАР</a>
             </div>
 
-<div id="block_tovar" class="hidden">
+<div id="block_product" class="hidden">
 <p>
-            <input placeholder="Название" class="textInput" maxlength="30" required type="text">
-  <input placeholder="Тип товара" class="textInput" type="text" maxlength="30">
+            <input placeholder="Название" name="product_name" class="textInput" maxlength="30" required type="text">
+  <input placeholder="Тип товара" name="product_type" class="textInput" type="text" maxlength="30">
 </p>
   <p>
-            <input placeholder="Дата" class="textInput" type="date">
+            <input placeholder="Дата" name="product_date" class="textInput" type="date">
 
-            <input placeholder="Количество" class="textInput" type="number">
+            <input placeholder="Количество" class="textInput" type="number" name="product_number">
   </p>
 
-  <p><textarea rows="2" class="textInput" placeholder="Описание" maxlength="60"></textarea></p>
+  <p><textarea rows="2" class="textInput" placeholder="Описание" maxlength="60" name="product_description"></textarea></p>
   <p>
-            <input placeholder="Цена" class="textInput" type="number">
-            <input placeholder="Cкидка (в %)" class="textInput" type="number" >
+            <input placeholder="Цена" class="textInput" type="number" name="product_price">
+            <input placeholder="Cкидка (в %)" class="textInput" type="number" name="product_discount">
   </p>
-  <input placeholder="важность" class="textInput" type="checkbox" id="is_important"><label for="is_important" id="is_important_label">Важный заказ</label>
+  <input placeholder="важность" class="textInput" type="checkbox" id="is_important" name="product_important"><label for="is_important" id="is_important_label">Важный заказ</label>
 
 
 
@@ -75,24 +96,24 @@
 
 <div id="block_service" class="hidden">
 <p>
-  <input placeholder="Название" class="textInput" maxlength="30" required type="text">
+  <input placeholder="Название" class="textInput" maxlength="30" required type="text" name="service_name">
 
-  <input placeholder="Тип услуги" class="textInput" type="text" maxlength="30">
+  <input placeholder="Тип услуги" class="textInput" type="text" maxlength="30" name="service_type">
 </p>
   <p>
-  <input placeholder="Дата" class="textInput" type="date">
-            <input placeholder="Продолжительность" class="textInput" type="number">
+  <input placeholder="Дата" class="textInput" type="date" name="service_date">
+    <input placeholder="Продолжительность" class="textInput" type="number" name="service_duration">
   </p>
-  <p><textarea rows="2" class="textInput" placeholder="Описание" maxlength="60"></textarea></p>
+  <p><textarea rows="2" class="textInput" placeholder="Описание" maxlength="60" name="service_description"></textarea></p>
   <p>
-  <input placeholder="Цена" class="textInput" type="number">
-  <input placeholder="Cкидка (в %)" class="textInput" type="number">
-  </p>
-  <p>
-  <input placeholder="важность" class="textInput" type="checkbox" id="is_important"><label for="is_important" id="is_important_label2">Важный заказ</label>
+  <input placeholder="Цена" class="textInput" type="number" name="service_price">
+  <input placeholder="Cкидка (в %)" class="textInput" type="number" name="service_discount">
   </p>
   <p>
-  <select placeholder="исполнитель" class="textInput"></select>
+  <input placeholder="важность" class="textInput" type="checkbox" id="is_important" name="service_important"><label for="is_important" id="is_important_label2">Важный заказ</label>
+  </p>
+  <p>
+  <select placeholder="исполнитель" class="textInput" name="service_executor"></select>
   </p>
 
 </div>

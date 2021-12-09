@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   post '/update_note', to: 'main#update_note'
   get '/delete_note', to: 'main#delete_note'
   post '/update_product', to: 'main#update_product'
+  post '/create_ticket', to: 'main#create_ticket'
 
   get '/settings', to: 'settings#settings'
   post '/update', to: 'settings#update'

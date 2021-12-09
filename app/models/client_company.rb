@@ -20,7 +20,11 @@ class ClientCompany < ApplicationRecord
   }
 
   def full_name
-    name
+    self.name
+  end
+
+  def reverse_full_name
+    self.name
   end
 
   private

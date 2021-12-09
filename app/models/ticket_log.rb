@@ -4,7 +4,7 @@ class TicketLog < ApplicationRecord
     status_id: 'статус', category_id: 'категорю', description: 'описание', manager_id: 'ответственного',
     subject: 'тему', Ticket: 'тикет', Service: 'услугу', name: 'имя', date: 'дату', type_service: 'тип услуги',
     duration: 'продолжительность', price: 'цену', discount: 'скидку', executor: 'исполнителя', type_product: 'тип товара',
-    number: 'количество', Product: 'тивар', surname: 'фамилию', phone: 'телефон', email: 'почту', address: 'адрес',
+    number: 'количество', Product: 'товар', surname: 'фамилию', phone: 'телефон', email: 'почту', address: 'адрес',
     points: 'баллы', password: 'номер паспорта', patronymic: 'отчество', Client: 'клиента', responsible: 'ответственного',
     ClientCompany: 'компанию'
   }

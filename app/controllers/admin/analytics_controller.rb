@@ -13,7 +13,7 @@ class Admin::AnalyticsController < ApplicationController
 
     @manager_analytics = [['Менеджер', 'Общая выручка']] + array.each_with_object(sum) {|a, sum| sum[a[0]] +=a[1] }.to_a
   end
-
+  #выудить компанию
   def order_count
     if current_user.company.type_product == Company::TYPE_PRODUCT.first.first.to_s
       @order_count = Product.select(:name, :created_at).group(:name).count(:created_at).
@@ -45,12 +45,12 @@ class Admin::AnalyticsController < ApplicationController
     tickets = Ticket.company(company.id).select('created_at, updated_at').where(is_closed: true)
                     .map{|w| (w.updated_at - w.created_at)/3600/24}
 
-    avg_close_time = tickets.sum / tickets.size
+    avg_close_time = tickets.sum / tickets.size unless tickets.size.zero?
 
     orders_for_client_count = Ticket.company(company.id).where.not(product_id: nil)
           .pluck(:client_id).each_with_object(Hash.new(0)){ |num, hash| hash[num] += 1 }.values
 
-    avg_orders_for_client_count = orders_for_client_count.sum / orders_for_client_count.size
+    avg_orders_for_client_count = orders_for_client_count.sum / orders_for_client_count.size unless orders_for_client_count.size.zero?
 
     total_revenues = Ticket.company(company.id).map{|w| w.product&.price if w.product.present?}.compact.sum
 

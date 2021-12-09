@@ -112,10 +112,23 @@ function sort_tickets(value = false){
             data = JSON.parse(xhr.responseText)
             document.getElementById('tickets').innerHTML = ''
             for (i = 0; i< data.length; i++) {
-                document.getElementById('tickets').innerHTML += `<div id="ticket_${data[i].id}" class="ticket" onclick="show_ticket('${data[i].id}')"><div class="manager">Нина Гендина</div><div class="subject">${data[i].subject}</div><div class="status_category2"><span>статус</span> <span>категория</span></div><div class="client_product"><span>Клиент: ${data[i].client_type}</span><br><span>Заказ: ${data[i].product_type}</span></div><span class="create_at"> ${data[i].created_at}</span></div><div class="product2">` +
-                    `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#848484" class="bi bi-boxes" viewBox="0 0 16 16">` +
-                    `<path fill-rule="evenodd" d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z"/></svg>` +
-                    `</div>`
+                document.getElementById('tickets').innerHTML += `<div id="ticket_${data[i][0]}" class="ticket" onclick="show_ticket('${data[i][0]}')">` +
+                    `<div class="subject">${data[i][1]}</div><div class="status_category2">` +
+                    `<span title="Статус">${data[i][7] !== null ? data[i][7] : '' }</span> <span title="Категория">${data[i][6] !== null ? data[i][6] : '' }</span></div><div class="client_product">` +
+                    `<span>Клиент: ${data[i][2]}</span><br><span> ${data[i][3] !== null ? 'Заказ: ' + data[i][3] : '' }</span></div><span class="manager" title="Менеджер">${data[i][4] !== null ? data[i][4] : '' }</span><span class="create_at" title="Дата создания"> ${data[i][5]}</span>`;
+                if (data[i][8] == 'Product') {
+                    document.getElementById('tickets').innerHTML += `<div class="product2" id="product_${data[i][0]}"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#848484" class="bi bi-boxes" viewBox="0 0 16 16">` +
+                        `<path fill-rule="evenodd" d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z"/></svg>` +
+                        `</div></div>`
+                } else if (data[i][8] == 'Service') {
+                    document.getElementById('tickets').innerHTML += `<div class="product2" id="product_${data[i][0]}"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#848484"className="bi bi-pin-map" viewBox="0 0 16 16">` +
+                        `<path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 10-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z"/>` +
+                        `<path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/></svg></div></div>`
+                } else {
+                    document.getElementById('tickets').innerHTML += `<div class="product2" id="product_${data[i][0]}"><svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" fill="#848484"className="bi bi-pin-map" viewBox="0 0 16 16">` +
+                        `<path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 10-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z"/>` +
+                        `<path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/></svg></div></div>`
+                }
             }
         }
     }
@@ -131,10 +144,23 @@ function show_close_tickets(){
             data = JSON.parse(xhr.responseText)
             document.getElementById('tickets').innerHTML = ''
             for (i = 0; i< data.length; i++) {
-                document.getElementById('tickets').innerHTML += `<div id="ticket_${data[i].id}" class="ticket" onclick="show_ticket('${data[i].id}', true)"><div class="manager">Нина Гендина</div><div class="subject">${data[i].subject}</div><div class="status_category2"><span>статус</span> <span>категория</span></div><div class="client_product"><span>Клиент: ${data[i].client_type}</span><br><span>Заказ: ${data[i].product_type}</span></div><span class="create_at"> ${data[i].created_at}</span></div><div class="product2">` +
-                    `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#848484" class="bi bi-boxes" viewBox="0 0 16 16">` +
-                    `<path fill-rule="evenodd" d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z"/></svg>` +
-                    `</div>`
+                document.getElementById('tickets').innerHTML += `<div id="ticket_${data[i][0]}" class="ticket" onclick="show_ticket('${data[i][0]}', true)">` +
+                    `<div class="subject">${data[i][1]}</div><div class="status_category2">` +
+                    `<span title="Статус">${data[i][7] !== null ? data[i][7] : '' }</span> <span title="Категория">${data[i][6] !== null ? data[i][6] : '' }</span></div><div class="client_product">` +
+                    `<span>Клиент: ${data[i][2]}</span><br><span> ${data[i][3] !== null ? 'Заказ: ' + data[i][3] : '' }</span></div><span class="manager" title="Менеджер">${data[i][4] !== null ? data[i][4] : '' }</span><span class="create_at" title="Дата создания"> ${data[i][5]}</span>`;
+                if (data[i][8] == 'Product') {
+                    document.getElementById('tickets').innerHTML += `<div class="product2" id="product_${data[i][0]}"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#848484" class="bi bi-boxes" viewBox="0 0 16 16">` +
+                        `<path fill-rule="evenodd" d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z"/></svg>` +
+                        `</div></div>`
+                } else if (data[i][8] == 'Service') {
+                    document.getElementById('tickets').innerHTML += `<div class="product2" id="product_${data[i][0]}"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#848484"className="bi bi-pin-map" viewBox="0 0 16 16">` +
+                        `<path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 10-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z"/>` +
+                        `<path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/></svg></div></div>`
+                } else {
+                    document.getElementById('tickets').innerHTML += `<div class="product2" id="product_${data[i][0]}"><svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" fill="#848484"className="bi bi-pin-map" viewBox="0 0 16 16">` +
+                        `<path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 10-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z"/>` +
+                        `<path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/></svg></div></div>`
+                }
             }
         }
     }
@@ -208,4 +234,76 @@ function close_ticket(id){
     xhr.send()
     document.getElementById(`icon_${id}`).style.display = 'none'
     document.getElementById(`ticket_${id}`).style.display = 'none'
+    document.getElementById(`product_${id}`).style.display = 'none'
+}
+
+function create_ticket(type_product) {
+    var subject = document.forms.ticketForm.subject.value;
+    var description = document.forms.ticketForm.description.value;
+    var status = document.forms.ticketForm.status.value;
+    var category = document.forms.ticketForm.category.value;
+    var client = document.forms.ticketForm.client.value;
+    var manager = document.forms.ticketForm.manager.value;
+    var token = document.forms.ticketForm.authenticity_token.value
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.open("POST", "/create_ticket")
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    body = 'subject=' + encodeURIComponent(subject) +
+        '&description=' + encodeURIComponent(description) +
+        '&status_id=' + encodeURIComponent(status) +
+        '&category_id=' + encodeURIComponent(category) +
+        '&client=' + encodeURIComponent(client) +
+        '&manager_id=' + encodeURIComponent(manager) +
+        '&authenticity_token=' + encodeURIComponent(token);
+    if (type_product === 'product') {
+        var product_name = document.forms.ticketForm.product_name.value;
+        var product_type = document.forms.ticketForm.product_type.value;
+        var product_date = document.forms.ticketForm.product_date.value;
+        var product_number = document.forms.ticketForm.product_number.value;
+        var product_description = document.forms.ticketForm.product_description.value;
+        var product_price = document.forms.ticketForm.product_price.value;
+        var product_discount = document.forms.ticketForm.product_discount.value;
+        var product_important = !!document.forms.ticketForm.product_important.checked;
+
+        body += '&type=product' +
+            '&product[name]=' + encodeURIComponent(product_name) +
+            '&product[type_product]=' + encodeURIComponent(product_type) +
+            '&product[date]=' + encodeURIComponent(product_date) +
+            '&product[number]=' + encodeURIComponent(product_number) +
+            '&product[description]=' + encodeURIComponent(product_description) +
+            '&product[price]=' + encodeURIComponent(product_price) +
+            '&product[discount]=' + encodeURIComponent(product_discount) +
+            '&product[important]=' + encodeURIComponent(product_important);
+    } else {
+        var service_name = document.forms.ticketForm.service_name.value;
+        var service_type = document.forms.ticketForm.service_type.value;
+        var service_date = document.forms.ticketForm.service_date.value;
+        var service_duration = document.forms.ticketForm.service_duration.value;
+        var service_description = document.forms.ticketForm.service_description.value;
+        var service_price = document.forms.ticketForm.service_price.value;
+        var service_discount = document.forms.ticketForm.service_discount.value;
+        var service_executor = document.forms.ticketForm.service_executor.value;
+        var service_important = !!document.forms.ticketForm.service_important.checked;
+
+        body += '&type=service' +
+            '&product[name]=' + encodeURIComponent(service_name) +
+            '&product[type_service]=' + encodeURIComponent(service_type) +
+            '&product[date]=' + encodeURIComponent(service_date) +
+            '&product[duration]=' + encodeURIComponent(service_duration) +
+            '&product[description]=' + encodeURIComponent(service_description) +
+            '&product[price]=' + encodeURIComponent(service_price) +
+            '&product[discount]=' + encodeURIComponent(service_discount) +
+            '&product[executor]=' + encodeURIComponent(service_executor) +
+            '&product[important]=' + encodeURIComponent(service_important);
+    }
+
+    xhr.onreadystatechange = function (){
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            data = JSON.parse(xhr.responseText)
+        }
+    }
+    xhr.send(body)
 }

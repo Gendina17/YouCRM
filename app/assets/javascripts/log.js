@@ -43,9 +43,9 @@ function show_emails(ticket_id){
                 emails = data['emails']
                 for (i=0; i<emails.length; i++) {
                     if (emails[i][4]) {
-                        document.getElementById('block_show_emails').innerHTML += `<article class="msg-container msg-remote"><div class="msg-box"><div class="flr"><div class="messages"><p>${emails[i][0]}</p><p class="msg" id="msg-1">${emails[i][1]}</p></div><span class="timestamp"><span class="username">${emails[i][2]}</span>&bull;<span class="posttime"> ${emails[i][3]} </span></span></div></div></article>`;
+                        document.getElementById('block_show_emails').innerHTML += `<article class="msg-container msg-remote"><div class="msg-box"><div class="flr"><div class="messages"><p>${emails[i][0]}</p><p class="msg" id="msg-1">${emails[i][1]}</p></div><span class="timestamp"><span class="username">${emails[i][2] == null ? '' : emails[i][2]}</span>&bull;<span class="posttime"> ${emails[i][3]} </span></span></div></div></article>`;
                     } else {
-                        document.getElementById('block_show_emails').innerHTML += `<article class="msg-container msg-self"><div class="msg-box"><div class="flr"><div class="messages"><p>${emails[i][0]}</p><p class="msg" id="msg-1">${emails[i][1]}</p></div><span class="timestamp"><span class="username">${emails[i][2]}</span>&bull;<span class="posttime"> ${emails[i][3]} </span></span></div></div></article>`;
+                        document.getElementById('block_show_emails').innerHTML += `<article class="msg-container msg-self"><div class="msg-box"><div class="flr"><div class="messages"><p>${emails[i][0]}</p><p class="msg" id="msg-1">${emails[i][1]}</p></div><span class="timestamp"><span class="username">${emails[i][2] == null ? '' : emails[i][2]}</span>&bull;<span class="posttime"> ${emails[i][3]} </span></span></div></div></article>`;
                     }
                 }
             } else {

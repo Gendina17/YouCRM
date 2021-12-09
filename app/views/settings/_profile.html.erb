@@ -36,7 +36,7 @@
           <span>в crm более <%= time/30/365 %> years</span><br>
         <% end %>
         <textarea class="some-input" name="info" placeholder="О себе...." maxlength="300" cols="30"
-                  rows="5" id="some-input"><%= @current_user.info.strip %></textarea>
+                  rows="5" id="some-input"><%= @current_user.info&.strip %></textarea>
         <br>
         <img src="../assets/gmail.svg" class="some-img"><input type="text" value="<%= @current_user.email %>"
                                                                class="some-input" readonly title="email"><br>

@@ -12,14 +12,13 @@ class MainController < ApplicationController
   end
 
   def sort_ticket
-    return render json: Ticket.company(company.id).open.order(:created_at).reverse if params[:all] == 'true'
+    tickets = Ticket.company(company.id).open.order(:created_at).reverse if params[:all] == 'true'
+    render json: ticket_format(tickets)
   end
 
   def ticket_close
-    render json: Ticket.company(company.id).where(is_closed: true).order(:created_at).reverse.each do |e|
-      e[:client_type]= e.client.full_name
-      e[:product_type]= e.product&.name
-    end
+    tickets = Ticket.company(company.id).where(is_closed: true).order(:created_at).reverse
+    render json: ticket_format(tickets)
   end
 
   def update_close_ticket
@@ -123,7 +122,7 @@ class MainController < ApplicationController
     key_present = emails.present? ? true : false
     key_sent = company.email.present? && client.email.present? && company.is_send
     response_hash = { key_present: key_present, key_sent: key_sent}
-    email_array = emails&.map{ |mail| [mail.subject, mail.body, mail.incoming ? mail.client&.full_name : mail.manager&.full_name, define_text_time(mail.created_at), mail.incoming]}
+    email_array = emails&.map{ |mail| [mail.subject, mail.body, mail.incoming ? mail.client&.reverse_full_name : mail.manager&.full_name, define_text_time(mail.created_at), mail.incoming]}
     response_hash.merge!(emails: email_array) if key_present
     response_hash.merge!(message: 'Чтобы иметь возможность написать клиенту, укажите его email и email компании') unless key_sent
     render json: response_hash
@@ -162,6 +161,35 @@ class MainController < ApplicationController
     Task.where(user_id: current_user.id, active: true).update(is_new: false)
   end
 
+  def create_ticket
+    if company.product_type == Company::TYPE_PRODUCT.first.first
+      product = Product.new(product_params)
+    else
+      product = Service.new(service_params)
+    end
+
+    return render json: {success: false, message:'Ошибка при сохранении товара'} unless product.save!
+
+    if company.client_type == Company::TYPE_CLIENTS.first.first
+      client = params[:client].include?('@') ?
+                 Client.company(company.id).find_by(email: params[:client]) :
+                 Client.company(company.id).find_by(id: params[:client])
+    else
+      client = params[:client].include?('@') ?
+                 ClientCompany.company(company.id).find_by(email: params[:client]) :
+                 ClientCompany.company(company.id).find_by(id: params[:client])
+    end
+    return render json: {success: false, message:'Клиент с данными параметрами не найден'} unless client.present?
+
+    ticket = Ticket.new(params.permit(:subject, :description, :manager_id, :status_id, :category_id))
+    ticket.client = client
+    ticket.product = product
+
+    if ticket.save!
+      render json: ticket_format([ticket])
+    end
+  end
+
   private
 
   def company
@@ -171,6 +199,21 @@ class MainController < ApplicationController
   def task_for_index
     @tasks = Task.where(user_id: current_user.id, active: true)
     @is_new = @tasks.where(is_new: true).present?
+  end
+
+  def ticket_format(tickets)
+    tickets.map do |ticket|
+      [ticket.id, ticket.subject, ticket.client&.reverse_full_name, ticket.product&.name, ticket.manager&.full_name,
+        define_text_time(ticket.created_at), ticket.category&.title, ticket.status&.title, ticket.product_type]
+    end
+  end
+
+  def product_params
+    params.require(:product).permit(:name, :type_product, :date, :number, :description, :price, :discount, :important)
+  end
+
+  def service_params
+    params.require(:service).permit(:name, :type_service, :date, :duration, :description, :price, :discount, :important, :executor)
   end
 end
 
@@ -185,7 +228,9 @@ end
 # полоска отчеркивающая дату создания тикета или цвет
 # мб к письмам тикет айди чтоб понятно было к какому тикету
 # добавить к логам компани айди чтоб в админку
-#
+# какое т обновление логов
+# улучшить путем не селектов а подгрузки
+# незя без имени клиенту
 #
 # перспектива - тригеры и партнеры
 # выбрать имеющийся заказ

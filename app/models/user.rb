@@ -49,4 +49,8 @@ class User < ApplicationRecord
   def full_name
     [self.surname, self.name].join(' ')
   end
+
+  def reverse_full_name
+    [self.name, self.surname].join(' ')
+  end
 end

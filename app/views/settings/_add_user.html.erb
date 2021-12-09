@@ -2,7 +2,7 @@
 
 <div id="add_users">
   <% if JSON.parse(@current_user.role.the_role).include?('show_users') %>
-    <p id="first_title">Пользователи компании <%= @company.name.upcase %>
+    <p id="first_title">Пользователи компании <%= @company.name %>
       <br><br><br></p>
     <div class="input-wrapper" data-text="">
       <input id="my-input" type="text" placeholder="Найти...." >

@@ -21,7 +21,11 @@ class Client < ApplicationRecord
   scope :company,    ->(id) { where(company_id: id) }
 
   def full_name
-    [surname, name].join(' ')
+    [self.surname, self.name].join(' ')
+  end
+
+  def reverse_full_name
+    [self.name, self.surname].join(' ')
   end
 
   private

@@ -21,7 +21,7 @@
         </p>
         <p class="password">
           <input type="password" name="password" class="textInput" placeholder="Пароль..." id="password-input"
-                 autocomplete="new-password" required value="<%= ApplicationController.new.crypt.decrypt_and_verify(@company.password) %>">
+                 autocomplete="new-password" required value="<%= ApplicationController.new.crypt.decrypt_and_verify(@company.password) if @company.password.present?%>">
           <a href="#" class="password-control" onclick="return show_hide_password(this);"></a>
         </p>
         <section class="pen check" title="Получать и обрабатывать письма">
@@ -80,7 +80,7 @@
     </form>
   </div>
   <div id="select_tovar" class="hidden">
-    <span>Выберите, пожалуйста, на чем специализируется ваша компания</span>
+    <span>Выберите, пожалуйста, на чем специализируется ваша компания</span><br>
     <span id="alert_product"></span>
     <form id="productForm" name="productForm" onsubmit="set_type_product();return false">
       <%= hidden_field_tag :authenticity_token, form_authenticity_token %>

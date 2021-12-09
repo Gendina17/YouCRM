@@ -68,12 +68,9 @@
       <div class="dm-modal2" id="block_calendar">
         <a href="#close" class="close"></a>
         <div class="info" id="calendar_block">
-          <%#= month_calendar(attribute: :starts_at, end_attribute: :end_date) do |date| %>
-            <%#= date.day %>
-          <%# end %>
-          <div id="events_calendar">
-
-          </div>
+          <%= month_calendar(attribute: :starts_at, end_attribute: :end_date) do |date| %>
+            <%= date.day %>
+          <% end %>
         </div>
       </div>
     </div>

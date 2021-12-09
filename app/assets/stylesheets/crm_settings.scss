@@ -318,6 +318,7 @@
   border-radius: 5px;
   padding: 20px 15px;
 }
+
 .wrapper .option{
   background: #fff;
   height: 100%;
@@ -332,6 +333,11 @@
   border: 2px solid lightgrey;
   transition: all 0.3s ease;
 }
+
+.wrapper > input[type="radio" i] {
+  display: none;
+}
+
 .wrapper .option .dot{
   height: 20px;
   width: 20px;
@@ -339,6 +345,7 @@
   border-radius: 50%;
   position: relative;
 }
+
 .wrapper .option .dot::before{
   position: absolute;
   content: "";
