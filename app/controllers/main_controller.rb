@@ -12,7 +12,23 @@ class MainController < ApplicationController
   end
 
   def sort_ticket
-    tickets = Ticket.company(company.id).open.order(:created_at).reverse if params[:all] == 'true'
+    tickets = Ticket.company(company.id).open.order(:created_at).reverse_order
+    tickets = tickets.where(status_id: params[:status_id]) if params[:status_id].present?
+    tickets = tickets.where(category_id: params[:category_id]) if params[:category_id].present?
+    tickets = tickets.where(manager_id: params[:manager_id]) if params[:manager_id].present?
+    tickets = tickets.where(client_id: params[:client_id]) if params[:client_id].present?
+
+    case params[:date_id]
+    when '2'
+      tickets = tickets.reverse
+    when '3'
+      tickets = tickets.select {|ticket| ticket.product.present? && ticket.product.date.present?}
+      tickets = tickets.sort_by {|ticket| ticket.product.date}.reverse
+    when '4'
+      tickets = tickets.select {|ticket| ticket.product.present? && ticket.product.date.present?}
+      tickets = tickets.sort_by {|ticket| ticket.product.date}
+    end
+
     render json: ticket_format(tickets)
   end
 
@@ -162,15 +178,17 @@ class MainController < ApplicationController
   end
 
   def create_ticket
-    if company.product_type == Company::TYPE_PRODUCT.first.first
+    if params[:product][:name].present? &&  company.type_product == Company::TYPE_PRODUCT.first.first.to_s
       product = Product.new(product_params)
-    else
+    elsif params[:service]&[:name].present?
       product = Service.new(service_params)
     end
 
-    return render json: {success: false, message:'Ошибка при сохранении товара'} unless product.save!
+    if product.present?
+      return render json: {success: false, message:'Ошибка при сохранении товара'} unless product.save!
+    end
 
-    if company.client_type == Company::TYPE_CLIENTS.first.first
+    if company.type_client == Company::TYPE_CLIENTS.first.first.to_s
       client = params[:client].include?('@') ?
                  Client.company(company.id).find_by(email: params[:client]) :
                  Client.company(company.id).find_by(id: params[:client])
@@ -184,6 +202,7 @@ class MainController < ApplicationController
     ticket = Ticket.new(params.permit(:subject, :description, :manager_id, :status_id, :category_id))
     ticket.client = client
     ticket.product = product
+    ticket.company_id = company.id
 
     if ticket.save!
       render json: ticket_format([ticket])

@@ -39,7 +39,7 @@
             <p>
             <input placeholder="Тема" class="textInput" type="text" maxlength="30" required name="subject">
             </p>
-            <p><textarea rows="2" class="textInput" placeholder="Описание" maxlength="60" name="description"></textarea></p>
+            <p><textarea rows="2" class="textInput" placeholder="Описание" maxlength="200" name="description"></textarea></p>
 <p>
   <% if @company.show_statuses %>
     <select  style="margin-right: 47px" placeholder="Статус" class="textInput" name="status">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -74,7 +74,7 @@
 
 <div id="block_product" class="hidden">
 <p>
-            <input placeholder="Название" name="product_name" class="textInput" maxlength="30" required type="text">
+            <input placeholder="Название" name="product_name" class="textInput" maxlength="30" type="text">
   <input placeholder="Тип товара" name="product_type" class="textInput" type="text" maxlength="30">
 </p>
   <p>
@@ -83,7 +83,7 @@
             <input placeholder="Количество" class="textInput" type="number" name="product_number">
   </p>
 
-  <p><textarea rows="2" class="textInput" placeholder="Описание" maxlength="60" name="product_description"></textarea></p>
+  <p><textarea rows="2" class="textInput" placeholder="Описание" maxlength="200" name="product_description"></textarea></p>
   <p>
             <input placeholder="Цена" class="textInput" type="number" name="product_price">
             <input placeholder="Cкидка (в %)" class="textInput" type="number" name="product_discount">
@@ -96,7 +96,7 @@
 
 <div id="block_service" class="hidden">
 <p>
-  <input placeholder="Название" class="textInput" maxlength="30" required type="text" name="service_name">
+  <input placeholder="Название" class="textInput" maxlength="30" type="text" name="service_name">
 
   <input placeholder="Тип услуги" class="textInput" type="text" maxlength="30" name="service_type">
 </p>
@@ -104,7 +104,7 @@
   <input placeholder="Дата" class="textInput" type="date" name="service_date">
     <input placeholder="Продолжительность" class="textInput" type="number" name="service_duration">
   </p>
-  <p><textarea rows="2" class="textInput" placeholder="Описание" maxlength="60" name="service_description"></textarea></p>
+  <p><textarea rows="2" class="textInput" placeholder="Описание" maxlength="200" name="service_description"></textarea></p>
   <p>
   <input placeholder="Цена" class="textInput" type="number" name="service_price">
   <input placeholder="Cкидка (в %)" class="textInput" type="number" name="service_discount">
@@ -163,12 +163,12 @@
       <div class="dm-modal2" id="block_sort">
         <a href="#close" class="close"></a>
         <div class="info">
-          <form>
+          <form name="sortForm" onsubmit="sort_tickets();return false">
             <p>
             <% if @company.show_statuses %>
               <label>Статус</label>
-              <select class="textInput" >
-                <option disabled selected>Выберите статус</option>
+              <select class="textInput" name="status_id">
+                <option disabled selected value="">Выберите статус</option>
                 <% Status.all.each do |status| %>
                   <option value="<%= status.id %>"><%= status.title %></option>
                 <% end %>
@@ -177,22 +177,40 @@
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <% if @company.show_categories %>
               <label>Категория</label>
-              <select class="textInput" >
-                <option disabled selected="select">Выберите категорию</option>
+              <select class="textInput" name="category_id">
+                <option disabled selected="select" value="">Выберите категорию</option>
                 <% Category.all.each do |category| %>
-
                   <option value="<%= category.id %>"><%= category.title %></option>
                 <% end %>
               </select>
             <% end %>
             </p>
             <p>
-            <a href="">отсортировать по клиенту</a>
-            <a href="">отсортировать по менеджеру</a>
+              <label>Клиент</label>
+              <select class="textInput" style="margin-right: 10px" name="client_id">
+                <option selected disabled value="">Выберите клиента</option>
+                <% if @company.type_client == Company::TYPE_CLIENTS.first.first.to_s %>
+                <% Client.company(@company.id).each do |user| %>
+                  <option value="<%= user.id %>"><%= user.reverse_full_name %>(<%= user.email %>)</option>
+                <% end %>
+                  <% else %>
+                  <% ClientCompany.company(@company.id).each do |user| %>
+                    <option value="<%= user.id %>"><%= user.reverse_full_name %>(<%= user.email %>)</option>
+                  <% end %>
+                <% end %>
+              </select>
+
+              <label style="margin-left: 20px">Менеджер</label>
+            <select class="textInput" name="manager_id">
+              <option selected disabled value="">Выберите менеджера</option>
+              <% @users.each do |user| %>
+              <option value="<%= user.id %>"><%= user.full_name %></option>
+              <% end %>
+            </select>
 
             </p>
             <p>
-            <select class="textInput" id="long_select">
+            <select class="textInput" id="long_select" name="date_id">
               <option value="1" selected>По дате создания(сначала новые)</option>
               <option value="2">По дате создания(сначала старые)</option>
               <option value="3">По дате заказа(сначала новые)</option>
