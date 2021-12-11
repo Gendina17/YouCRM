@@ -62,11 +62,13 @@ class MainController < ApplicationController
     product = ticket.product
     client = ticket.client
     another_tickets = client.tickets.where.not(id: params[:id]).order(:created_at).reverse
+
     type_product = company.type_product
     type_client = company.type_client
     notes = ticket.notes.order(:created_at).reverse.map do |note|
       [note.id, note.body, note.manager.full_name, note.manager == current_user ? true : false ]
     end
+
     loggable_type1 = type_client == 'human' ? 'Client' : 'ClientCompany'
     loggable_type2 = type_product == 'product' ? 'Product' : 'Service'
     logs = TicketLog.where(item_id: client.id, loggable_type: loggable_type1).or(TicketLog.where(ticket_id: ticket.id))
@@ -74,7 +76,7 @@ class MainController < ApplicationController
                     .order(:created_at).reverse.map do |log|
       [log.message, define_text_time(log.created_at), log.loggable_type]
     end
-    render json: { ticket: ticket, client: client, another_tickets: another_tickets, product: product,
+    render json: { ticket: ticket_format([ticket]).first, client: client, another_tickets: ticket_format(another_tickets), product: product,
       type_product: type_product,  type_client: type_client, notes: notes, logs: logs }
   end
 
@@ -230,7 +232,8 @@ class MainController < ApplicationController
   def ticket_format(tickets)
     tickets.map do |ticket|
       [ticket.id, ticket.subject, ticket.client&.reverse_full_name, ticket.product&.name, ticket.manager&.full_name,
-        define_text_time(ticket.created_at), ticket.category&.title, ticket.status&.title, ticket.product_type]
+        define_text_time(ticket.created_at), ticket.category&.title, ticket.status&.title, ticket.product_type,
+        ticket.description, ticket.is_closed]
     end
   end
 
@@ -243,25 +246,12 @@ class MainController < ApplicationController
   end
 end
 
-# лог расписание
-# основное
-# поиск по всему
-# аналитика
-#
-#норм доделать отображение  создание
 # если такой клиент уже есть то говорить что есть
-# хэш где ключ тору или фолс или наоборот
-# полоска отчеркивающая дату создания тикета или цвет
-# мб к письмам тикет айди чтоб понятно было к какому тикету
-# добавить к логам компани айди чтоб в админку
-# какое т обновление логов
-# улучшить путем не селектов а подгрузки
-# незя без имени клиенту
-#
-# перспектива - тригеры и партнеры
-# выбрать имеющийся заказ
-# автоматич добавления в календарь др или даты
+# хэш где ключ тору или фолс или наоборот, спан селект
 
-
-
-#календарь, логи норм, дабавить шаблоны, поиск и все отображение норм(клиенты как че) - основное
+# ПЕРСПЕКТИВА
+# - тригеры и партнеры, выбрать имеющийся заказ, автоматич добавления в календарь др или даты, календарь, логи норм, поиск
+# - улучшить путем не селектов а подгрузки
+# - добавить к логам компани айди чтоб в админку и вообще норм админка
+# - к письмам тикет айди чтоб понятно было к какому тикету
+# - полоска отчеркивающая дату создания тикета или цвет

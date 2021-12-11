@@ -6,7 +6,7 @@ class TicketLog < ApplicationRecord
     duration: 'продолжительность', price: 'цену', discount: 'скидку', executor: 'исполнителя', type_product: 'тип товара',
     number: 'количество', Product: 'товар', surname: 'фамилию', phone: 'телефон', email: 'почту', address: 'адрес',
     points: 'баллы', password: 'номер паспорта', patronymic: 'отчество', Client: 'клиента', responsible: 'ответственного',
-    ClientCompany: 'компанию'
+    ClientCompany: 'компанию', is_important: 'важность'
   }
 
   def self.log_by_paper_trail!(version)
