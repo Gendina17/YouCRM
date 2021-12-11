@@ -1,4 +1,5 @@
 <%= stylesheet_link_tag 'main', media: 'all', 'data-turbolinks-track': 'reload' %>
+
 <header id="header" class="header w">
   <div class="header__inner" style="flex-direction: row-reverse">
     <a href="#header" data-target="toggle" class="header__door button2 button3">
@@ -23,7 +24,7 @@
             <ul class="submenu">
               <li><a class="a" href="/settings">Настройки</a></li>
               <li><a class="a" href="/admin">Админка</a></li>
-              <li><a class="a" href="/admin/analytics">Аналитика</a></li>
+              <li><a class="a" href="/admin/analytics?date=1">Аналитика</a></li>
               <li><a class="a" href="/destroy">Выход</a></li>
             </ul>
           </li>
@@ -39,67 +40,77 @@
 <div id="uploading">
   <span style="font-size: 30px">Загружаем аналитику</span><br>
   <img src="../assets/loading.gif" width="250px" height="200px"></div>
+<div id="block_date_vusualisation">
 <div id="date_block">
 <form>
   <p>
     <label>Укажите временной промежуток</label><br>
-    <input type="date" name="from">
-    <input type="date" name="to">
+    <input type="date" name="from" value="<%= @range_start %>">&nbsp;&nbsp;-&nbsp;&nbsp;
+    <input type="date" name="to" value="<%= @range_end %>">
+  </p>
+  <div style="text-align: left; margin-left: 145px">
+  <p>
+    <input type="radio" name="date" value="1" <% if @date == '1' %> checked <%end %>>
+    <label>Этот месяц</label>
   </p>
   <p>
-  <input type="checkbox">
-  <label>Этот месяц</label>
+    <input type="radio" name="date" value="2" <% if @date == '2' %> checked <%end %>>
+    <label>Это год</label>
   </p>
   <p>
-  <input type="checkbox">
-  <label>Это год</label>
+    <input type="radio" name="date" value="3" <% if @date == '3' %> checked <%end %>>
+    <label>Это неделя</label>
   </p>
-  <p>
-  <input type="checkbox">
-  <label>Это неделя</label>
+    <p>
+    <input type="radio" name="date" value="4" <% if @date == '4' %> checked <%end %>>
+    <label>Сегодня</label>
   </p>
-  <p>
-  <input type="checkbox">
-  <label>сегодня</label>
-  </p>
+  <button type="submit" id="reload_but">
+    <svg id="reload" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#848484" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+      <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+    </svg>
+  </button>
+  </div>
 </form>
 </div>
-<div>
-<form id="visualisation_block">
-  <span>Не показывать блоки</span>
-  <div>
-  <p>
-  <input type="checkbox" onclick="hidden_block('piechart', this)">
-  <label>Диаграмма выручки конкретного менеджера за месяц</label>
-  </p>
-  <p>
-  <input type="checkbox" onclick="hidden_block('columnchart_values', this)">
-  <label>Количество созданных товаров за месяц</label>
-  </p>
-  <p>
-  <input type="checkbox" onclick="hidden_block('table', this)">
-  <label>Общая статистика за месяц</label>
-  </p>
-  <p>
-  <input type="checkbox" onclick="hidden_block('barchart_values', this)">
-  <label>Распределение тикетов по категориям</label>
-  </p>
+  <div id="visualisation_block">
+    <span style="font-weight: bold; margin-left: 50px">Не показывать блоки</span>
+    <form id="visualisation_form">
+      <div>
+        <p>
+          <input type="checkbox" onclick="hidden_block('piechart', this)">
+          <label>Диаграмма выручки конкретного менеджера</label>
+        </p>
+        <p>
+          <input type="checkbox" onclick="hidden_block('columnchart_values', this)">
+          <label>Количество созданных товаров</label>
+        </p>
+        <p>
+          <input type="checkbox" onclick="hidden_block('table', this)">
+          <label>Общая статистика за месяц</label>
+        </p>
+        <p>
+          <input type="checkbox" onclick="hidden_block('barchart_values', this)">
+          <label>Распределение тикетов по категориям</label>
+        </p>
+      </div>
+      <div>
+        <p>
+          <input type="checkbox" onclick="hidden_block('barchart_values2', this)">
+          <label>Распределение тикетов по статусам</label>
+        </p>
+        <p>
+          <input type="checkbox" onclick="hidden_block('curve_chart', this)">
+          <label>Выручка по месяцам</label>
+        </p>
+        <p>
+          <input type="checkbox" onclick="hidden_block('piechart2', this)">
+          <label>Выручка в зависимости от категории тикета</label>
+        </p>
+      </div>
+    </form>
   </div>
-  <div>
-  <p>
-  <input type="checkbox" onclick="hidden_block('barchart_values2', this)">
-  <label>Распределение тикетов по статусам</label>
-  </p>
-  <p>
-  <input type="checkbox" onclick="hidden_block('curve_chart', this)">
-  <label>Выручка по месяцам</label>
-  </p>
-  <p>
-  <input type="checkbox" onclick="hidden_block('piechart2', this)">
-  <label>Выручка в зависимости от категории тикета</label>
-  </p>
-  </div>
-</form>
 </div>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
@@ -111,7 +122,7 @@
         var options = {
             legend: 'none',
             pieSliceText: 'label',
-            title: 'Диаграмма выручки конкретного менеджера за месяц',
+            title: 'Диаграмма выручки конкретного менеджера',
             pieStartAngle: 100,
         };
 
@@ -119,12 +130,24 @@
         chart.draw(data, options);
     }
 </script>
-<div id="piechart" style="width: 900px; height: 500px;" class="<%= Ticket.company(@company.id).present? %>"></div>
+<div style="display: flex">
+  <div id="piechart" style="width: 900px; height: 500px; margin-left: 35px" class="<%= Ticket.company(@company.id).present? %>"></div>
+  <div style="border: 1px solid grey; margin-left: 50px">
+    <div id="columnchart_values" style="max-width: 900px; max-height: 600px; width: 600px; border-right: 1px solid grey;" class="<%=  %>"></div>
+  </div>
+</div>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
     google.charts.load("current", {packages:['corechart']});
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
+        if ("<%= @order_count %>" == "[]") {
+            document.getElementById("columnchart_values").innerText = 'Нет данных'
+            document.getElementById("columnchart_values").style.textAlign = 'center'
+            document.getElementById("columnchart_values").style.fontWeight = 'bold'
+            document.getElementById("columnchart_values").style.marginTop = '100px'
+            return
+        }
         var data = google.visualization.arrayToDataTable([["Товар", "Количество", { role: "style" } ]].concat(JSON.parse("<%= @order_count %>".replace(/&quot;/g, '"'))));
 
         var view = new google.visualization.DataView(data);
@@ -136,7 +159,7 @@
             2]);
 
         var options = {
-            title: "Количество созданных товаров за месяц",
+            title: "Количество созданных товаров",
             width: 600,
             height: 400,
             bar: {groupWidth: "95%"},
@@ -146,8 +169,6 @@
         chart.draw(view, options);
     }
 </script>
-<div id="columnchart_values" style="max-width: 900px; max-height: 600px; width: 600px" class="<%=  %>"></div>
-
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
     google.charts.load('current', {'packages':['table']});
@@ -170,14 +191,21 @@
 <br>
 <br>
 <br>
-<div id="table" class="<%= Ticket.company(@company.id).present? %>">
-<span id="table_span">Общая статистика за месяц</span>
-<div id="table_div"></div>
+<div id="table" style="margin-top: -120px"  class="<%= Ticket.company(@company.id).present? %>">
+  <span id="table_span" style="font-weight: bold; margin-left: 450px">Общая статистика за месяц</span>
+  <div id="table_div"></div>
 </div>
 <script type="text/javascript">
     google.charts.load("current", {packages:["corechart"]});
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
+        if ("<%= @order_count %>" == "[]") {
+            document.getElementById("barchart_values").innerText = 'Нет данных'
+            document.getElementById("barchart_values").style.textAlign = 'center'
+            document.getElementById("barchart_values").style.fontWeight = 'bold'
+            document.getElementById("barchart_values").style.marginTop = '100px'
+            return
+        }
         var data = google.visualization.arrayToDataTable([["Категория", "Количество тикетов", { role: "style" } ]].concat(JSON.parse("<%= @ticket_categories_statistics %>".replace(/&quot;/g, '"'))));
 
         var view = new google.visualization.DataView(data);
@@ -190,7 +218,7 @@
 
         var options = {
             title: "Распределение тикетов по категориям",
-            width: 600,
+            width: 550,
             height: 400,
             bar: {groupWidth: "95%"},
             legend: { position: "none" },
@@ -199,11 +227,21 @@
         chart.draw(view, options);
     }
 </script>
-<div id="barchart_values" style="width: 900px; height: 300px;" class="<%= Ticket.company(@company.id).present? %>"></div>
+<div style="display: flex; margin-top: 50px; margin-bottom: 50px; background: white">
+  <div id="barchart_values" style="width: 500px; height: 400px; margin-left: 200px" class="<%= Ticket.company(@company.id).present? %>"></div>
+  <div id="barchart_values2" style="width: 400px; height: 400px; margin-left: 300px" class="<%= Ticket.company(@company.id).present? %>"></div>
+</div>
 <script type="text/javascript">
     google.charts.load("current", {packages:["corechart"]});
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
+        if ("<%= @order_count %>" == "[]") {
+            document.getElementById("barchart_values2").innerText = 'Нет данных'
+            document.getElementById("barchart_values2").style.textAlign = 'center'
+            document.getElementById("barchart_values2").style.fontWeight = 'bold'
+            document.getElementById("barchart_values2").style.marginTop = '100px'
+            return
+        }
         var data = google.visualization.arrayToDataTable([["Статус", "Количество тикетов", { role: "style" } ]].concat(JSON.parse("<%= @ticket_status_statistics %>".replace(/&quot;/g, '"'))));
 
         var view = new google.visualization.DataView(data);
@@ -225,20 +263,13 @@
         chart.draw(view, options);
     }
 </script>
-<div id="barchart_values2" style="width: 900px; height: 300px;" class="<%= Ticket.company(@company.id).present? %>"></div>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-            ['Year', 'Sales'],
-            ['2004',  1000],
-            ['2005',  1170],
-            ['2006',  660],
-            ['2007',  1030]
-        ]);
+        var data = google.visualization.arrayToDataTable([['Дата', 'Выручка']].concat(JSON.parse("<%= @revenue_by_month %>".replace(/&quot;/g, '"'))));
 
         var options = {
             title: 'Выручка по месяцам',
@@ -251,7 +282,10 @@
         chart.draw(data, options);
     }
 </script>
-<div id="curve_chart" style="width: 900px; height: 500px"></div>
+<div style="display: flex">
+  <div id="curve_chart" style="width: 900px; height: 500px"></div>
+  <div id="piechart2" style="width: 900px; height: 500px;" class="<%= Ticket.company(@company.id).present? %>"></div>
+</div>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
     google.charts.load("current", {packages:["corechart"]});
@@ -270,47 +304,6 @@
         chart.draw(data, options);
     }
 </script>
-<div id="piechart2" style="width: 900px; height: 500px;" class="<%= Ticket.company(@company.id).present? %>"></div>
-<style>
-  body {
-      background-image: url("../assets/back.png") !important;
-  }
-  #piechart {
-      border: 1px solid grey;
-      display: inline-block;
-  }
-  #table_div {
-      margin-left: 25%;
-      margin-top: 25px;
-  }
-  #table_span {
-      margin-left: 25%;
-  }
-  #uploading {
-      width: 1700px !important;
-      height: 1000px !important;
-      position: absolute;
-      text-align: center;
-      z-index: 1;
-      background: white;
-      padding-top: 15%;
-      background-image: url("../assets/back.png") !important;
-  }
-  #date_block {
-display: inline-block;
-      border: 1px solid grey;
-  }
-  #visualisation_block {
-      display: inline-block;
-      border: 1px solid grey;
-  }
-  #visualisation_block > div {
-      display: inline-block;
-  }
-  .false {
-      display: none !important;
-  }
-</style>
 <script>
 
     setTimeout(hidden_uploading_image, 1700)
@@ -325,3 +318,78 @@ display: inline-block;
         }
   }
 </script>
+<style>
+    body {
+        background-image: url("../assets/back.png") !important;
+    }
+
+    #piechart {
+        border: 1px solid grey;
+        display: inline-block;
+    }
+
+    #table_div {
+        margin-left: 25%;
+        margin-top: 25px;
+    }
+
+    #table_span {
+        margin-left: 25%;
+    }
+
+    #uploading {
+        width: 1700px !important;
+        height: 1000px !important;
+        position: absolute;
+        text-align: center;
+        z-index: 1;
+        background: white;
+        padding-top: 15%;
+        background-image: url("../assets/back.png") !important;
+    }
+
+    #date_block {
+        display: inline-block !important;
+        border: 2px solid grey;
+        padding: 15px;
+        box-shadow: 0 0 15px;
+        border-radius: 5px;
+        margin: 50px 50px 50px 10%;
+        width: 600px;
+        height: 290px;
+        text-align: center;
+    }
+
+    #visualisation_block {
+        display: inline-block !important;
+        border: 2px solid grey;
+        padding: 15px;
+        margin: 50px 50px 50px 10%;
+        box-shadow: 0 0 15px;
+        border-radius: 5px;
+    }
+
+    #visualisation_form {
+        display: flex;
+    }
+
+    .false {
+        display: none !important;
+    }
+
+    #block_date_vusualisation {
+        display: flex;
+    }
+
+    #reload:hover {
+        fill: black;
+    }
+
+    #reload_but {
+        background: inherit;
+        border: none;
+        position: relative;
+        left: 300px;
+        bottom: 50px;
+    }
+</style>

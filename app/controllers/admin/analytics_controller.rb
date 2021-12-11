@@ -1,25 +1,49 @@
 class Admin::AnalyticsController < ApplicationController
-  before_action :manager_analytics, :order_count, :general_statics, :ticket_categories_statistics, :ticket_status_statistics,
+  before_action :define_date, :manager_analytics, :order_count, :general_statics, :ticket_categories_statistics, :ticket_status_statistics,
     :revenue_by_month, :revenues_in_category, only: :index
 
-  def index
+  MONTH = %w[январь февраль март апрель май июнь июль август сентябрь октябрь ноябрь декабрь]
 
+  def define_date
+    @date = params[:date]
+    @range_start = case @date
+             when '1'
+               Time.now.beginning_of_month
+             when '2'
+               Time.now.beginning_of_year
+             when '3'
+               Time.now.beginning_of_week
+             when '4'
+               Time.now.beginning_of_day
+             else
+               Time.now.beginning_of_month
+                   end
+    @range_end = Time.now
+
+    if params[:from].present? && params[:to].present?
+      @range_start = params[:from]
+      @range_end = params[:to]
+    end
   end
 
   def manager_analytics
     sum = Hash.new(0)
-    array = Ticket.company(company.id)
-                  .map{|w| [w.manager&.full_name, w.product&.price] if w.manager.present? && w.product.present?}.compact
+    array = Ticket.company(company.id).where('created_at BETWEEN ? AND ?', @range_start, @range_end)
+                  .map{|w| [w.manager&.full_name, w.product&.price] if w.manager.present? && w.product.present? && w.product.price.present?}.compact
 
-    @manager_analytics = [['Менеджер', 'Общая выручка']] + array.each_with_object(sum) {|a, sum| sum[a[0]] +=a[1] }.to_a
+    @manager_analytics = [['Менеджер', 'Общая выручка']] + array.each_with_object(sum) {|a, sum| sum[a[0]] +=a[1] if a[1].present?}.to_a
   end
-  #выудить компанию
+
   def order_count
     if current_user.company.type_product == Company::TYPE_PRODUCT.first.first.to_s
-      @order_count = Product.select(:name, :created_at).group(:name).count(:created_at).
+      @order_count = Product.joins(:tickets).where('tickets.company_id = ?', company.id).distinct.
+        where('products.created_at BETWEEN ? AND ?', @range_start, @range_end).
+        select(:name, :created_at).group(:name).count(:created_at).
         map {|hash| [hash[0], hash[1], get_colors[rand(get_colors.size)]] }
     else
-      @order_count = Service.select(:name, :created_at).group(:name).count(:created_at).
+      @order_count = Service.joins(:tickets).where('tickets.company_id = ?', company.id).distinct.
+        where('services.created_at BETWEEN ? AND ?', @range_start, @range_end).
+        select(:name, :created_at).group(:name).count(:created_at).
         map {|hash| [hash[0], hash[1], get_colors[rand(get_colors.size)]] }
     end
   end
@@ -35,11 +59,15 @@ class Admin::AnalyticsController < ApplicationController
     close_ticket_count = Ticket.company(company.id).where(is_closed: true).where('created_at > ?', Date.today.at_beginning_of_month).count
 
     if current_user.company.type_product == Company::TYPE_PRODUCT.first.first.to_s
-      new_product_count = Product.where('created_at > ?', Date.today.at_beginning_of_month).count
-      important_count = Product.where('created_at > ?', Date.today.at_beginning_of_month).where(is_important: true).count
+      new_product_count = Product.joins(:tickets).where('tickets.company_id = ?', company.id).distinct.
+        where('products.created_at > ?', Date.today.at_beginning_of_month).count
+      important_count = Product.joins(:tickets).where('tickets.company_id = ?', company.id).distinct.
+        where('products.created_at > ?', Date.today.at_beginning_of_month).where(is_important: true).count
     else
-      new_product_count = Service.where('created_at > ?', Date.today.at_beginning_of_month).count
-      important_count = Service.where('created_at > ?', Date.today.at_beginning_of_month).where(is_important: true).count
+      new_product_count = Service.joins(:tickets).where('tickets.company_id = ?', company.id).distinct.
+        where('services.created_at > ?', Date.today.at_beginning_of_month).count
+      important_count = Service.joins(:tickets).where('tickets.company_id = ?', company.id).distinct.
+        where('service.created_at > ?', Date.today.at_beginning_of_month).where(is_important: true).count
     end
 
     tickets = Ticket.company(company.id).select('created_at, updated_at').where(is_closed: true)
@@ -54,37 +82,46 @@ class Admin::AnalyticsController < ApplicationController
 
     total_revenues = Ticket.company(company.id).map{|w| w.product&.price if w.product.present?}.compact.sum
 
-                           @general_statics = [['Новые клиенты', new_client_count], ['Открытые тикеты', open_ticket_count],
+    @general_statics = [['Новые клиенты', new_client_count], ['Открытые тикеты', open_ticket_count],
       ['Закрытые тикеты', close_ticket_count], ['Количество созданных заказов', new_product_count],
       ['Важные заказы', important_count], ['Продолжительность жизни тикета до закрытия (дн)', avg_close_time],
       ['Среднее количество заказов у клиента', avg_orders_for_client_count], ['Общая выручка (руб)', total_revenues]]
   end
 
   def ticket_status_statistics
-    @ticket_status_statistics = Ticket.company(company.id).pluck(:status_id)
+    @ticket_status_statistics = Ticket.company(company.id).where('created_at BETWEEN ? AND ?', @range_start, @range_end).pluck(:status_id)
                                       .compact.each_with_object(Hash.new(0)){ |num, hash| hash[num] += 1 }
                                   .map{|key, value|[Status.find(key).title, value, get_colors[rand(get_colors.size)]]}
   end
 
   def ticket_categories_statistics
-    @ticket_categories_statistics = Ticket.company(company.id).pluck(:category_id).compact
+    @ticket_categories_statistics = Ticket.company(company.id).where('created_at BETWEEN ? AND ?', @range_start, @range_end).pluck(:category_id).compact
                                           .each_with_object(Hash.new(0)){ |num, hash| hash[num] += 1 }
                                       .map{|key, value|[Category.find(key).title, value, get_colors[rand(get_colors.size)]]}
   end
 
   def revenues_in_category
     if current_user.company.type_product == Company::TYPE_PRODUCT.first.first.to_s
-      category_with_price =  Ticket.company(company.id).pluck(:category_id, :product_id)
+      category_with_price =  Ticket.company(company.id).where('created_at BETWEEN ? AND ?', @range_start, @range_end).pluck(:category_id, :product_id)
                                      .map{|w| [Category.find(w[0]).title, Product.find(w[1]).price] if w[0].present? && w[1].present?}.compact
     else
-      category_with_price =  Ticket.company(company.id).pluck(:category_id, :product_id)
+      category_with_price =  Ticket.company(company.id).where('created_at BETWEEN ? AND ?', @range_start, @range_end).pluck(:category_id, :product_id)
                                      .map{|w| [Category.find(w[0]).title, Service.find(w[1]).price] if w[0].present? && w[1].present?}.compact
     end
-    @revenues_in_category = [%w[Категория Выручка]] + category_with_price.each_with_object(Hash.new(0)){ |num, hash| hash[num[0]] += num[1] }.to_a
+    @revenues_in_category = [%w[Категория Выручка]] + category_with_price.each_with_object(Hash.new(0)){ |num, hash| hash[num[0]] += num[1] if num[1].present?}.to_a
   end
 
   def revenue_by_month
-
+    if current_user.company.type_product == Company::TYPE_PRODUCT.first.first.to_s
+      @revenue_by_month = Product.joins(:tickets).where('tickets.company_id = ?', company.id).distinct.
+        select('products.created_at, price').where('products.created_at > ?', Time.current.beginning_of_year).
+        map{|w| [w.price, w.created_at.month] if w.price.present?}.compact.
+        each_with_object(Hash.new(0)){ |num, hash| hash[num[1]] += num[0] }.to_a.map{ |a| [MONTH[a[0]-1], a[1]] }
+    else
+      @revenue_by_month = Service.select('services.created_at, price').where('services.created_at > ?', Time.current.beginning_of_year).
+        map{|w| [w.price, w.created_at.month] if w.price.present?}.compact.
+        each_with_object(Hash.new(0)){ |num, hash| hash[num[1]] += num[0] }.to_a.map{ |a| [MONTH[a[0]-1], a[1]] }
+    end
   end
 
   private
@@ -98,9 +135,4 @@ class Admin::AnalyticsController < ApplicationController
   end
 end
 
-# просмотреть все запросы чтоб компания и время и все нормуч
-# выручка по месяцам
-# в этом месяце кто активней всего в месяце(на основе писем и тп)
-# видеть не видеть схему и картинка закрузки
-# в куках
-
+# обработать когда нет данных
