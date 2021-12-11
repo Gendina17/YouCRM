@@ -2,7 +2,7 @@ class Client < ApplicationRecord
   has_many_attached :files
   has_paper_trail versions: { class_name: 'TicketVersion' }, ignore: [:updated_at, :created_at]
 
-  validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
+  validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})|^\s*$\Z/i
   validates :name, :surname, length: { maximum: 30 }
 
   belongs_to :company

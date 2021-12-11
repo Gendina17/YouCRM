@@ -76,8 +76,9 @@ class MainController < ApplicationController
                     .order(:created_at).reverse.map do |log|
       [log.message, define_text_time(log.created_at), log.loggable_type]
     end
-    render json: { ticket: ticket_format([ticket]).first, client: client, another_tickets: ticket_format(another_tickets), product: product,
-      type_product: type_product,  type_client: type_client, notes: notes, logs: logs }
+    render json: { ticket: ticket_format([ticket]).first, client: JSON.parse(client.to_json).
+      merge(manager: User.find_by(id: client.manager_id)&.full_name), another_tickets: ticket_format(another_tickets),
+      product: product, type_product: type_product,  type_client: type_client, notes: notes, logs: logs }
   end
 
   def update_client
@@ -218,6 +219,43 @@ class MainController < ApplicationController
     render json: [email_template.parse_body(ticket.client_id, current_user.id, ticket.product_id), email_template.subject]
   end
 
+  def create_client
+    if params[:type] == 'human'
+      return render json: {success: false, message: 'Клиент с указанной почтой уже существует'} if Client.find_by(email: params[:email]).present?
+      client = Client.new(params.permit(:name, :surname, :phone, :email, :address, :description, :points,
+        :password, :patronymic, :manager_id))
+      client.company = company
+      render json: {client: client, type_client: company.type_client} if client.save!
+    else
+      return render json: {success: false, message: 'Клиент с указанной почтой уже существует'} if ClientCompany.find_by(email: params[:email]).present?
+      client = ClientCompany.create(params.permit(:name, :phone, :email, :address, :description, :points,
+        :responsible, :manager_id))
+      client.company = company
+      render json: {client: client, type_client: company.type_client} if client.save!
+    end
+  end
+
+  def update_params
+    ticket = Ticket.find_by(id: params[:ticket_id])
+    case params[:type]
+    when 'manager_client'
+      ticket.client.update(manager_id: params[:manager_id])
+      return render json: { value: User.find_by(id: params[:manager_id]).full_name, type: 'manager_client' }
+    when 'status_update'
+      ticket.update(status_id: params[:status_id])
+      return render json: { value: ticket.status.title, type: 'status_update' }
+    when 'category_update'
+      ticket.update(category_id: params[:category_id])
+      return render json: { value: ticket.category.title, type: 'category_update' }
+    when 'manager_ticket'
+      ticket.update(manager_id: params[:manager_id])
+      return render json: { value: ticket.manager.full_name, type: 'manager_ticket' }
+    when 'date'
+      ticket.product.update(date: params[:date])
+      return render json: { value: ticket.product.date, type: 'date' }
+    end
+  end
+
   private
 
   def company
@@ -250,7 +288,7 @@ end
 # хэш где ключ тору или фолс или наоборот, спан селект
 
 # ПЕРСПЕКТИВА
-# - тригеры и партнеры, выбрать имеющийся заказ, автоматич добавления в календарь др или даты, календарь, логи норм, поиск
+# - тригеры и партнеры, выбрать имеющийся заказ и прикрепить, автоматич добавления в календарь др или даты, календарь, логи норм, поиск
 # - улучшить путем не селектов а подгрузки
 # - добавить к логам компани айди чтоб в админку и вообще норм админка
 # - к письмам тикет айди чтоб понятно было к какому тикету

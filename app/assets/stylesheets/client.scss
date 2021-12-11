@@ -12,6 +12,20 @@
   background-color: rgba(220, 220, 220, 0.38);
 }
 
+#client2 {
+  height: 95%;
+  max-height: 95%;
+  margin-left: 15px;
+  width: 500px;
+  max-width: 500px;
+  border: 1px solid grey;
+  position: absolute;
+  top: 52px;
+  left: 450px;
+  overflow-x: auto;
+  background-color: rgba(220, 220, 220, 0.38);
+}
+
 #active_ticket {
   height: 460px;
   background-image: url('../../assets/back.png');
@@ -20,6 +34,13 @@
 }
 
 #client_info {
+  height: 350px;
+  padding: 5px 15px;
+  background: white;
+  overflow: auto;
+}
+
+#client_info2 {
   height: 335px;
   padding: 5px 15px;
   background: white;
@@ -33,6 +54,16 @@
   text-align: center;
   padding-left: 18%;
   max-height: 400px;
+  overflow: auto;
+}
+
+#another_tickets2 {
+  background-image: url('../../assets/back.png');
+  height: 600px;
+  border-top: 1px solid grey;
+  text-align: center;
+  padding-left: 18%;
+  max-height: 600px;
   overflow: auto;
 }
 
@@ -257,4 +288,35 @@
   position: absolute;
   top: 182px;
   left: 470px;
+}
+
+#no_product {
+  font-size: 24px;
+  margin-left: 24%;
+  margin-top: 10%;
+  width: 250px;
+  padding: 15px;
+  border: 1px solid rgba(128, 128, 128, 0.33);
+}
+
+#no_product_but {
+  border: 1px solid grey;
+  background: white;
+  border-radius: 5px;
+  font-size: 24px;
+  margin-left: 25.5%;
+  margin-top: 17%;
+  box-shadow: 2px 2px 2px #000;
+}
+
+#no_product_but:hover {
+  background: rgba(134, 134, 134, 0.39);
+}
+
+#update_block {
+  width: 450px;
+  height: 250px;
+  max-height: 300px;
+  padding-left: 100px;
+  padding-top: 50px;
 }

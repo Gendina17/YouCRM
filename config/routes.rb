@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   post '/update_product', to: 'main#update_product'
   post '/create_ticket', to: 'main#create_ticket'
   get '/template_selection', to: 'main#template_selection'
+  post '/create_client', to: 'main#create_client'
+  get '/update_params', to: 'main#update_params'
 
   get '/settings', to: 'settings#settings'
   post '/update', to: 'settings#update'

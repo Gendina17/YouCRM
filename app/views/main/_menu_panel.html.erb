@@ -1,3 +1,5 @@
+<%= stylesheet_link_tag 'menu_panel', media: 'all', 'data-turbolinks-track': 'reload' %>
+
 <div id="menu">
   <a href="#win5" title="Создать новый тикет" class="aa"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#848484" class="bi bi-file-earmark-plus i_t" viewBox="0 0 16 16">
     <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z"/>
@@ -24,10 +26,6 @@
     </svg>
   </a>
 </div>
-
-
-
-
 <div class="dm-overlay" id="win5">
   <div class="dm-table">
     <div class="dm-cell">
@@ -37,30 +35,31 @@
           <form name="ticketForm" onsubmit="create_ticket('<%= @company.type_product %>');return false">
             <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
             <p>
-            <input placeholder="Тема" class="textInput" type="text" maxlength="30" required name="subject">
+              <input placeholder="Тема" class="textInput" type="text" maxlength="30" required name="subject">
             </p>
-            <p><textarea rows="2" class="textInput" placeholder="Описание" maxlength="200" name="description"></textarea></p>
-<p>
-  <% if @company.show_statuses %>
-    <select  style="margin-right: 47px" placeholder="Статус" class="textInput" name="status">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <option selected disabled value="">Статус..</option>
-              <% Status.company(@company.id).each do |status| %>
-              <option value="<%= status.id %>"><%= status.title %></option>
-              <% end %>
-    </select>
-    <% end %>
-  <% if @company.show_categories %>
-    <select placeholder="Категория" class="textInput" name="category" >
-      <option selected disabled value="">Категория..</option>
-    <% Category.company(@company.id).each do |category| %>
-      <option value="<%= category.id %>"><%= category.title %></option>
-    <% end %>
-    </select>
-<% end %>
-</p>
             <p>
-            <input placeholder="Введите id или почту клиента..." required class="textInput" name="client">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
+              <textarea rows="2" class="textInput" placeholder="Описание" maxlength="200" name="description"></textarea>
+            </p>
+            <p>
+              <% if @company.show_statuses %>
+                <select  style="margin-right: 47px" placeholder="Статус" class="textInput" name="status">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <option selected disabled value="">Статус..</option>
+                  <% Status.company(@company.id).each do |status| %>
+                    <option value="<%= status.id %>"><%= status.title %></option>
+                  <% end %>
+                </select>
+              <% end %>
+              <% if @company.show_categories %>
+                <select placeholder="Категория" class="textInput" name="category" >
+                  <option selected disabled value="">Категория..</option>
+                  <% Category.company(@company.id).each do |category| %>
+                    <option value="<%= category.id %>"><%= category.title %></option>
+                  <% end %>
+                </select>
+              <% end %>
+            </p>
+            <p>
+              <input placeholder="Введите id или почту клиента..." required class="textInput" name="client">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <select placeholder="Менеджер" class="textInput" name="manager">
                 <option selected disabled value="">Менеджер..</option>
                 <% User.company(@company.id).each do |user| %>
@@ -68,55 +67,52 @@
                 <% end %>
               </select>
             </p>
-
-            <div id="a_add_order"><a onclick="show_block_product('block_<%= @company.type_product %>')" >ПРИКРЕПИТЬ ТОВАР</a>
+            <div id="a_add_order">
+              <a onclick="show_block_product('block_<%= @company.type_product %>')" >ПРИКРЕПИТЬ ТОВАР</a>
             </div>
-
-<div id="block_product" class="hidden">
-<p>
-            <input placeholder="Название" name="product_name" class="textInput" maxlength="30" type="text">
-  <input placeholder="Тип товара" name="product_type" class="textInput" type="text" maxlength="30">
-</p>
-  <p>
-            <input placeholder="Дата" name="product_date" class="textInput" type="date">
-
-            <input placeholder="Количество" class="textInput" type="number" name="product_number">
-  </p>
-
-  <p><textarea rows="2" class="textInput" placeholder="Описание" maxlength="200" name="product_description"></textarea></p>
-  <p>
-            <input placeholder="Цена" class="textInput" type="number" name="product_price">
-            <input placeholder="Cкидка (в %)" class="textInput" type="number" name="product_discount">
-  </p>
-  <input placeholder="важность" class="textInput" type="checkbox" id="is_important" name="product_important"><label for="is_important" id="is_important_label">Важный заказ</label>
-
-
-
-</div>
-
-<div id="block_service" class="hidden">
-<p>
-  <input placeholder="Название" class="textInput" maxlength="30" type="text" name="service_name">
-
-  <input placeholder="Тип услуги" class="textInput" type="text" maxlength="30" name="service_type">
-</p>
-  <p>
-  <input placeholder="Дата" class="textInput" type="date" name="service_date">
-    <input placeholder="Продолжительность" class="textInput" type="number" name="service_duration">
-  </p>
-  <p><textarea rows="2" class="textInput" placeholder="Описание" maxlength="200" name="service_description"></textarea></p>
-  <p>
-  <input placeholder="Цена" class="textInput" type="number" name="service_price">
-  <input placeholder="Cкидка (в %)" class="textInput" type="number" name="service_discount">
-  </p>
-  <p>
-  <input placeholder="важность" class="textInput" type="checkbox" id="is_important" name="service_important"><label for="is_important" id="is_important_label2">Важный заказ</label>
-  </p>
-  <p>
-  <select placeholder="исполнитель" class="textInput" name="service_executor"></select>
-  </p>
-
-</div>
+            <div id="block_product" class="hidden">
+              <p>
+                <input placeholder="Название" name="product_name" class="textInput" maxlength="30" type="text">
+                <input placeholder="Тип товара" name="product_type" class="textInput" type="text" maxlength="30">
+              </p>
+              <p>
+                <input placeholder="Дата" name="product_date" class="textInput" type="date">
+                <input placeholder="Количество" class="textInput" type="number" name="product_number">
+              </p>
+              <p>
+                <textarea rows="2" class="textInput" placeholder="Описание" maxlength="200" name="product_description"></textarea>
+              </p>
+              <p>
+                <input placeholder="Цена" class="textInput" type="number" name="product_price">
+                <input placeholder="Cкидка (в %)" class="textInput" type="number" name="product_discount">
+              </p>
+              <input placeholder="важность" class="textInput" type="checkbox" id="is_important" name="product_important">
+              <label for="is_important" id="is_important_label">Важный заказ</label>
+            </div>
+            <div id="block_service" class="hidden">
+              <p>
+                <input placeholder="Название" class="textInput" maxlength="30" type="text" name="service_name">
+                <input placeholder="Тип услуги" class="textInput" type="text" maxlength="30" name="service_type">
+              </p>
+              <p>
+                <input placeholder="Дата" class="textInput" type="date" name="service_date">
+                <input placeholder="Продолжительность" class="textInput" type="number" name="service_duration">
+              </p>
+              <p>
+                <textarea rows="2" class="textInput" placeholder="Описание" maxlength="200" name="service_description"></textarea>
+              </p>
+              <p>
+                <input placeholder="Цена" class="textInput" type="number" name="service_price">
+                <input placeholder="Cкидка (в %)" class="textInput" type="number" name="service_discount">
+              </p>
+              <p>
+                <input placeholder="важность" class="textInput" type="checkbox" id="is_important" name="service_important">
+                <label for="is_important" id="is_important_label2">Важный заказ</label>
+              </p>
+              <p>
+                <select placeholder="исполнитель" class="textInput" name="service_executor"></select>
+              </p>
+            </div>
             <div class="submit submit-with-social">
               <button name="submit_login" type="submit" id="menu3" class="log">
                 <span class="menu_text" id="menu_text3">Создать тикет<b></b><b></b></span>
@@ -128,35 +124,110 @@
     </div>
   </div>
 </div>
-
-
-
 <div class="dm-overlay" id="win50">
   <div class="dm-table">
     <div class="dm-cell">
       <div class="dm-modal2" id="block">
         <a href="#close" class="close"></a>
         <div class="info">
-          <form>
-            <p><input placeholder="Имя" class="textInput" type="text" maxlength="30"> <input class="textInput" placeholder="Фамилия" type="text" maxlength="30"> <input class="textInput" placeholder="Отчество" type="text" maxlength="30"> </p>
-            <p><input class="textInput" placeholder="Телефон" type="text" maxlength="12"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="textInput" class="textInput" placeholder="Почта" type="email" maxlength="30"></p>
-            <p><input class="textInput" placeholder="Адрес" type="text" maxlength="40">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input class="textInput" placeholder="Паспорт" type="text" maxlength="10"></p>
-            <p><textarea rows="2" class="textInput" placeholder="Описание" maxlength="60"></textarea></p>
-            <p>
-            <input class="textInput" placeholder="Ответственный">
-            </p>
-            <div class="submit submit-with-social">
-              <button name="submit_login" type="submit" id="menu3" class="log">
-                <span class="menu_text" id="menu_text3">Создать клиента<b></b><b></b></span>
-              </button>
-            </div>
-          </form>
+          <% if @company.type_client == Company::TYPE_CLIENTS.first.first.to_s %>
+            <form name="humanForm" onsubmit="create_client('human'); return false">
+              <span id="alert"></span>
+              <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+              <p>
+                <input placeholder="Имя" class="textInput" type="text" maxlength="30" name="name">
+                <input class="textInput" placeholder="Фамилия" type="text" maxlength="30" name="surname">
+                <% if JSON.parse(@company.client_fields).include? 'patronymic' %>
+                  <input class="textInput" placeholder="Отчество" type="text" maxlength="30" name="patronymic">
+                <% end %>
+              </p>
+              <p>
+                <% if JSON.parse(@company.client_fields).include? 'phone' %>
+                  <input class="textInput" placeholder="Телефон" type="text" maxlength="12" name="phone"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <% end %>
+                <% if JSON.parse(@company.client_fields).include? 'email' %>
+                  <input class="textInput" class="textInput" placeholder="Почта" type="email" maxlength="30" name="email">
+                <% end %>
+              </p>
+              <p>
+                <% if JSON.parse(@company.client_fields).include? 'address' %>
+                  <input class="textInput" placeholder="Адрес" type="text" maxlength="40" name="address">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <% end %>
+                <% if JSON.parse(@company.client_fields).include? 'password' %>
+                  <input class="textInput" placeholder="Паспорт" type="text" maxlength="10" name="password">
+                <% end %>
+              </p>
+              <p>
+                <% if JSON.parse(@company.client_fields).include? 'description' %>
+                  <textarea rows="2" class="textInput" placeholder="Описание" maxlength="60" name="description"></textarea>
+                <% end %>
+              </p>
+              <p>
+                <% if JSON.parse(@company.client_fields).include? 'manager_id' %>
+                  <select class="textInput" placeholder="Ответственный" name="manager_id">
+                    <option selected disabled value="">Выберите менеджера</option>
+                    <% @users.each do |user| %>
+                      <option value="<%= user.id %>"><%= user.full_name %></option>
+                    <% end %>
+                  </select>
+                <% end %>
+              </p>
+              <div class="submit submit-with-social">
+                <button name="submit_login" type="submit" id="menu3" class="log">
+                  <span class="menu_text" id="menu_text3">Создать клиента<b></b><b></b></span>
+                </button>
+              </div>
+            </form>
+          <% else %>
+            <form name="clientCompanyForm" onsubmit="create_client('company'); return false">
+              <span id="alert"></span>
+              <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+              <p>
+                <input placeholder="Имя" class="textInput" type="text" maxlength="30" name="name">
+              </p>
+              <p>
+                <% if JSON.parse(@company.client_fields).include? 'phone' %>
+                  <input class="textInput" placeholder="Телефон" type="text" maxlength="12" name="phone"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <% end %>
+                <% if JSON.parse(@company.client_fields).include? 'email' %>
+                  <input class="textInput" class="textInput" placeholder="Почта" type="email" maxlength="30" name="email">
+                <% end %>
+              </p>
+              <p>
+                <% if JSON.parse(@company.client_fields).include? 'address' %>
+                  <input class="textInput" placeholder="Адрес" type="text" maxlength="40" name="address">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <% end %>
+                <% if JSON.parse(@company.client_fields).include? 'responsible' %>
+                  <input class="textInput" placeholder="Паспорт" type="text" maxlength="10" name="responsible">
+                <% end %>
+              </p>
+              <p>
+                <% if JSON.parse(@company.client_fields).include? 'description' %>
+                  <textarea rows="2" class="textInput" placeholder="Описание" maxlength="60"></textarea>
+                <% end %>
+              </p>
+              <p>
+                <% if JSON.parse(@company.client_fields).include? 'manager_id' %>
+                  <select class="textInput" placeholder="Ответственный">
+                    <option selected disabled value="">Выберите менеджера</option>
+                    <% @users.each do |user| %>
+                      <option value="<%= user.id %>"><%= user.full_name %></option>
+                    <% end %>
+                  </select>
+                <% end %>
+              </p>
+              <div class="submit submit-with-social">
+                <button name="submit_login" type="submit" id="menu3" class="log">
+                  <span class="menu_text" id="menu_text3">Создать клиента<b></b><b></b></span>
+                </button>
+              </div>
+            </form>
+          <% end %>
         </div>
       </div>
     </div>
   </div>
 </div>
-
 <div class="dm-overlay" id="win500">
   <div class="dm-table">
     <div class="dm-cell">
@@ -165,57 +236,55 @@
         <div class="info">
           <form name="sortForm" onsubmit="sort_tickets();return false">
             <p>
-            <% if @company.show_statuses %>
-              <label>Статус</label>
-              <select class="textInput" name="status_id">
-                <option disabled selected value="">Выберите статус</option>
-                <% Status.all.each do |status| %>
-                  <option value="<%= status.id %>"><%= status.title %></option>
-                <% end %>
-              </select>
-            <% end %>
+              <% if @company.show_statuses %>
+                <label>Статус</label>
+                <select class="textInput" name="status_id">
+                  <option disabled selected value="">Выберите статус</option>
+                  <% Status.all.each do |status| %>
+                    <option value="<%= status.id %>"><%= status.title %></option>
+                  <% end %>
+                </select>
+              <% end %>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <% if @company.show_categories %>
-              <label>Категория</label>
-              <select class="textInput" name="category_id">
-                <option disabled selected="select" value="">Выберите категорию</option>
-                <% Category.all.each do |category| %>
-                  <option value="<%= category.id %>"><%= category.title %></option>
-                <% end %>
-              </select>
-            <% end %>
+              <% if @company.show_categories %>
+                <label>Категория</label>
+                <select class="textInput" name="category_id">
+                  <option disabled selected="select" value="">Выберите категорию</option>
+                  <% Category.all.each do |category| %>
+                    <option value="<%= category.id %>"><%= category.title %></option>
+                  <% end %>
+                </select>
+              <% end %>
             </p>
             <p>
               <label>Клиент</label>
               <select class="textInput" style="margin-right: 10px" name="client_id">
                 <option selected disabled value="">Выберите клиента</option>
                 <% if @company.type_client == Company::TYPE_CLIENTS.first.first.to_s %>
-                <% Client.company(@company.id).each do |user| %>
-                  <option value="<%= user.id %>"><%= user.reverse_full_name %>(<%= user.email %>)</option>
-                <% end %>
-                  <% else %>
+                  <% Client.company(@company.id).each do |user| %>
+                    <option value="<%= user.id %>"><%= user.reverse_full_name %>(<%= user.email %>)</option>
+                  <% end %>
+                <% else %>
                   <% ClientCompany.company(@company.id).each do |user| %>
                     <option value="<%= user.id %>"><%= user.reverse_full_name %>(<%= user.email %>)</option>
                   <% end %>
                 <% end %>
               </select>
-
               <label style="margin-left: 20px">Менеджер</label>
-            <select class="textInput" name="manager_id">
-              <option selected disabled value="">Выберите менеджера</option>
-              <% @users.each do |user| %>
-              <option value="<%= user.id %>"><%= user.full_name %></option>
-              <% end %>
-            </select>
-
+              <select class="textInput" name="manager_id">
+                <option selected disabled value="">Выберите менеджера</option>
+                <% @users.each do |user| %>
+                  <option value="<%= user.id %>"><%= user.full_name %></option>
+                <% end %>
+              </select>
             </p>
             <p>
-            <select class="textInput" id="long_select" name="date_id">
-              <option value="1" selected>По дате создания(сначала новые)</option>
-              <option value="2">По дате создания(сначала старые)</option>
-              <option value="3">По дате заказа(сначала новые)</option>
-              <option value="4">По дате заказа(сначала старые)</option>
-            </select>
+              <select class="textInput" id="long_select" name="date_id">
+                <option value="1" selected>По дате создания(сначала новые)</option>
+                <option value="2">По дате создания(сначала старые)</option>
+                <option value="3">По дате заказа(сначала новые)</option>
+                <option value="4">По дате заказа(сначала старые)</option>
+              </select>
             </p>
             <div class="submit submit-with-social">
               <button name="submit_login" type="submit" id="menu3" class="log">
@@ -228,127 +297,3 @@
     </div>
   </div>
 </div>
-<style>
-  #block {
-      width: 1400px;
-      height: 430px;
-      max-height: 430px;
-      text-align: center;
-      padding-left: 1%;
-  }
-
-  .textInput {
-      margin: 0;
-      border: 1px solid #1c1c1c;
-      border-bottom-width: 3px;
-      border-right-width: 2px;
-      background: #fff;
-      color: #1c1c1c;
-      border-radius: 5px;
-      outline: 0;
-      width: 250px;
-      resize: none;
-  }
-
-  .b, .textInput {
-      padding: 8px 8px 8px 9px;
-      font: 400 16px/20px pf_isotext_proregular,Arial,Helvetica,sans-serif;
-  }
-
-  .log {
-      border: none;
-      background: 0 0;
-      outline: 0;
-  }
-
-
-  .menu_text {
-      display: inline-block;
-      height: 54px;
-      font-family: pf_isotext_proregular,Arial,Helvetica,sans-serif;
-      font-weight: 700;
-      font-size: 18px;
-      line-height: 52px;
-      color: #1C1C1C;
-      text-decoration: none;
-      text-transform: uppercase;
-      font-style: normal;
-      padding: 0 30px;
-      border-radius: 40px;
-      border: 2px solid #1C1C1C;
-      box-shadow: 4px 8px 0 0 #1c1c1c;
-      background: #fff;
-      text-align: center;
-      position: relative;
-      white-space: nowrap;
-  }
-
-  .menu_text:before {
-      cursor: pointer;
-      content: '';
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      right: 3px;
-      bottom: 3px;
-      border: 1px solid #1C1C1C;
-      border-radius: 40px;
-      box-shadow: 0 0 0 3px #fff;
-  }
-
-
-
-  .menu_text:active {
-      border-color: #fff;
-      background: #000;
-      box-shadow: 0 0 0 3px #000;
-      color: #fff;
-  }
-  .log:hover {
-      margin-top: 8px;
-
-  }
-  .menu_text:hover {
-      box-shadow: none;
-  }
-  .menu:hover {
-      margin-top: 8px;
-
-  }
-  .menu_text:hover {
-      box-shadow: none;
-  }
-  .hidden {
-      display: none;
-  }
-  #add_ticket {
-      text-align: center;
-  }
-  #a_add_order {
-      margin-top: 10px;
-      margin-bottom: 10px;
-  }
-  #is_important_label {
-      margin-bottom: 20px;
-      margin-left: -105px;
-  }
-  #is_important_label2 {
-      margin-left: -105px;
-  }
-  #long_select {
-      width: 350px;
-  }
-  #block_sort {
-      text-align: center;
-      width: 850px;
-      max-width: 850px;
-      height: 300px;
-      max-height: 300px;
-      padding-left: 30px;
-  }
-</style>
-<script>
-  function show_block_product(name){
-      document.getElementById(name).classList.remove('hidden');
-  }
-</script>
