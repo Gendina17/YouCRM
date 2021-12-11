@@ -122,3 +122,39 @@ function set_focus(el) {
         document.getElementById('notes').classList.remove('hidden');
     }
 }
+
+function remove_hidden() {
+    document.getElementById('win3030').style.display = 'block';
+}
+
+function add_hidden() {
+    document.getElementById('win3030').style.display = 'none';
+}
+
+function template_selection() {
+    id = document.getElementById('for_value').value
+    ticket_id = document.getElementById('id_fot_templates').value
+
+    params = 'id=' + encodeURIComponent(id) +
+        '&ticket_id=' + encodeURIComponent(ticket_id);
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.open("GET", "/template_selection?" + params);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    xhr.onreadystatechange = function (){
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            data = JSON.parse(xhr.responseText)
+            document.getElementById('subject_input').value = data[1]
+            document.getElementById('subject_body').value = data[0]
+        }
+    }
+    xhr.send()
+    document.getElementById('win3030').style.display = 'none';
+}
+
+function show_template(id) {
+    document.getElementById('show_templates').innerHTML = document.getElementById(`tmp_${id}`).innerHTML
+    document.getElementById('for_value').value = id
+}

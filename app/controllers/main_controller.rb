@@ -6,6 +6,7 @@ class MainController < ApplicationController
 
   def index
     @users = User.where(company_id: current_user.company_id).order(:state)
+    @email_templates = EmailTemplate.select(:id, :name, :body).company(company.id).order(:created_at).reverse
     @tickets = Ticket.company(company.id).open.order(:created_at).reverse.each do |el|
       el[:description] = define_text_time(el.created_at)
     end
@@ -209,6 +210,12 @@ class MainController < ApplicationController
     end
   end
 
+  def template_selection
+    email_template = EmailTemplate.find_by(id: params[:id])
+    ticket = Ticket.find_by(id: params[:ticket_id])
+    render json: [email_template.parse_body(ticket.client_id, current_user.id, ticket.product_id), email_template.subject]
+  end
+
   private
 
   def company
@@ -254,3 +261,7 @@ end
 # перспектива - тригеры и партнеры
 # выбрать имеющийся заказ
 # автоматич добавления в календарь др или даты
+
+
+
+#календарь, логи норм, дабавить шаблоны, поиск и все отображение норм(клиенты как че) - основное

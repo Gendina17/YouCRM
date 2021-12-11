@@ -1,6 +1,7 @@
 <%= stylesheet_link_tag 'log', media: 'all', 'data-turbolinks-track': 'reload' %>
 
 <div id="log" class="hidden">
+  <input type="hidden" id="id_fot_templates">
   <div id="actions">
     <div id="email_button"></div>
     <form id="noteForm" name="noteForm" onsubmit="create_note();return false">
@@ -43,10 +44,11 @@
               <form name="mailForm" onsubmit="send_client_mail();return false">
                 <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
                 <p>
-                  <input class="textInput inputs_email" name="subject" type="text" required maxlength="40" placeholder="Тема письма">
+                  <input id="subject_input" class="textInput inputs_subject" name="subject" type="text" required maxlength="40" placeholder="Тема письма">
+                  <input class="textInput but_input" type="button" value="Использовать шаблон" onclick="remove_hidden()">
                 </p>
                 <p>
-                  <textarea rows="4" class="textInput inputs_email" name="body" required maxlength="500" placeholder="Письмо..."></textarea>
+                  <textarea id="subject_body" rows="4" class="textInput inputs_email" name="body" required maxlength="500" placeholder="Письмо..."></textarea>
                 </p>
                 <input type="hidden" name="id" id="input_email_for_id">
                 <div class="submit submit-with-social">
@@ -71,6 +73,34 @@
           <%= month_calendar(attribute: :starts_at, end_attribute: :end_date) do |date| %>
             <%= date.day %>
           <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="dm-overlay" id="win3030">
+  <div class="dm-table">
+    <div class="dm-cell">
+      <div class="dm-modal2" id="template_block">
+        <a class="close" onclick="add_hidden()"></a>
+        <div class="info">
+          <div>
+            <div>Имеющиеся шаблоны:</div>
+            <br>
+            <% @email_templates.each do |template| %>
+              <div class="template">
+                <a class="one_template" onclick="show_template('<%= template.id %>')"><%= template.name %></a>
+                <span id="tmp_<%= template.id %>" class="hidden"><%= template.body.html_safe %></span>
+              </div>
+              <br>
+            <% end %>
+          </div>
+          <div style="width: 55%; height: 100%">
+            <input type="hidden" id="for_value">
+            <div id="show_templates"></div>
+            <br>
+            <a class="one_template" style="float: right" onclick="template_selection()">Выбрать</a>
+          </div>
         </div>
       </div>
     </div>

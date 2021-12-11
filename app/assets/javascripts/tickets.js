@@ -21,6 +21,7 @@ function show_ticket(id, close = false) {
             product = data['product']
             i = getRandomInt(4) + 1
             client_info = data['client']
+            document.getElementById('id_fot_templates').value = ticket.id
 
             if (close) {
                 document.getElementById('client_info').innerHTML += `<img id="avatar_client" src="../assets/client_avatar${i}.png"><div id="client_name_block"><span id="client_name">${client_info.name}</span> <span id="client_surname">${client_info.surname}</span><br><span id="client_patronymic">${client_info.patronymic}</span></div><br><div id="client_description_block"><span id="client_description">${client_info.description}</span></div>` +
