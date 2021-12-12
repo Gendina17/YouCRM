@@ -354,3 +354,17 @@ function show_template(id) {
     }
     xhr.send()
 }
+
+function start_worker(){
+    var xhr = new XMLHttpRequest();
+    document.getElementById('menu_text333').innerText = 'Обрабатывается'
+    xhr.open("GET", "/start_worker")
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            document.getElementById('alert_worker').innerHTML = xhr.responseText;
+            document.getElementById('menu_text333').innerText = 'Проверить почтовый ящик'
+          }
+    }
+    xhr.send()
+}

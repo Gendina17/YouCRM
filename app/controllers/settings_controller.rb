@@ -284,6 +284,11 @@ class SettingsController < ApplicationController
     @events = Event.company(company.id)
   end
 
+  def start_worker
+    EmailsIncomingJob.new.perform(company.id)
+    render json: 'Завершено успешно'
+  end
+
   private
 
   def selected_params

@@ -3,8 +3,14 @@ require 'mail'
 class EmailsIncomingJob < ApplicationJob
   queue_as :default
 
-  def perform(*args)
-    companies_data = Company.select(:id, :email, :password, :type_client, :default_email_id).where(is_send: true).where.not(email: nil, password: nil)
+  def perform(id)
+    if id.present?
+      companies_data = Company.select(:id, :email, :password, :type_client, :default_email_id).where(is_send: true).
+        where.not(email: nil, password: nil).where(id: id)
+    else
+      companies_data = Company.select(:id, :email, :password, :type_client, :default_email_id).where(is_send: true).
+        where.not(email: nil, password: nil)
+    end
 
     companies_data.each do |company_data|
       Mail.defaults do

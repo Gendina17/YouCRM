@@ -54,6 +54,7 @@ Rails.application.routes.draw do
   get '/delete_status', to: 'settings#delete_status'
   post '/create_category', to: 'settings#create_category'
   get '/delete_category', to: 'settings#delete_category'
+  get '/start_worker', to: 'settings#start_worker'
 
   get '/identification', to: 'registration#identification'
   get '/destroy', to: 'registration#destroy'
