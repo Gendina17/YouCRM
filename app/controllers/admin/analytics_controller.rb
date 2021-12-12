@@ -135,4 +135,3 @@ class Admin::AnalyticsController < ApplicationController
   end
 end
 
-# обработать когда нет данных

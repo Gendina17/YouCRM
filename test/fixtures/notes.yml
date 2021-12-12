@@ -2,12 +2,10 @@
 
 one:
   body: MyText
-  subject: MyString
   manager_id: 1
   company_id: 1
 
 two:
   body: MyText
-  subject: MyString
   manager_id: 1
   company_id: 1

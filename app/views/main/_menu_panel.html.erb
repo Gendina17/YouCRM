@@ -114,7 +114,7 @@
               </p>
             </div>
             <div class="submit submit-with-social">
-              <button name="submit_login" type="submit" id="menu3" class="log">
+              <button name="submit_login" type="submit" id="menu3" class="log" title="Создать тикет">
                 <span class="menu_text" id="menu_text3">Создать тикет<b></b><b></b></span>
               </button>
             </div>
@@ -137,33 +137,33 @@
               <p>
                 <input placeholder="Имя" class="textInput" type="text" maxlength="30" name="name">
                 <input class="textInput" placeholder="Фамилия" type="text" maxlength="30" name="surname">
-                <% if JSON.parse(@company.client_fields).include? 'patronymic' %>
+                <% if @company.client_fields.present? && JSON.parse(@company.client_fields).include?('patronymic') %>
                   <input class="textInput" placeholder="Отчество" type="text" maxlength="30" name="patronymic">
                 <% end %>
               </p>
               <p>
-                <% if JSON.parse(@company.client_fields).include? 'phone' %>
+                <% if @company.client_fields.present? && JSON.parse(@company.client_fields).include?('phone') %>
                   <input class="textInput" placeholder="Телефон" type="text" maxlength="12" name="phone"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <% end %>
-                <% if JSON.parse(@company.client_fields).include? 'email' %>
+                <% if @company.client_fields.present? && JSON.parse(@company.client_fields).include?('email') %>
                   <input class="textInput" class="textInput" placeholder="Почта" type="email" maxlength="30" name="email">
                 <% end %>
               </p>
               <p>
-                <% if JSON.parse(@company.client_fields).include? 'address' %>
+                <% if @company.client_fields.present? && JSON.parse(@company.client_fields).include?('address') %>
                   <input class="textInput" placeholder="Адрес" type="text" maxlength="40" name="address">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <% end %>
-                <% if JSON.parse(@company.client_fields).include? 'password' %>
+                <% if @company.client_fields.present? && JSON.parse(@company.client_fields).include?('password') %>
                   <input class="textInput" placeholder="Паспорт" type="text" maxlength="10" name="password">
                 <% end %>
               </p>
               <p>
-                <% if JSON.parse(@company.client_fields).include? 'description' %>
+                <% if @company.client_fields.present? && JSON.parse(@company.client_fields).include?('description') %>
                   <textarea rows="2" class="textInput" placeholder="Описание" maxlength="60" name="description"></textarea>
                 <% end %>
               </p>
               <p>
-                <% if JSON.parse(@company.client_fields).include? 'manager_id' %>
+                <% if @company.client_fields.present? && JSON.parse(@company.client_fields).include?('manager_id') %>
                   <select class="textInput" placeholder="Ответственный" name="manager_id">
                     <option selected disabled value="">Выберите менеджера</option>
                     <% @users.each do |user| %>
@@ -186,28 +186,28 @@
                 <input placeholder="Имя" class="textInput" type="text" maxlength="30" name="name">
               </p>
               <p>
-                <% if JSON.parse(@company.client_fields).include? 'phone' %>
+                <% if @company.client_fields.present? && JSON.parse(@company.client_fields).include?('phone') %>
                   <input class="textInput" placeholder="Телефон" type="text" maxlength="12" name="phone"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <% end %>
-                <% if JSON.parse(@company.client_fields).include? 'email' %>
+                <% if @company.client_fields.present? && JSON.parse(@company.client_fields).include?('email') %>
                   <input class="textInput" class="textInput" placeholder="Почта" type="email" maxlength="30" name="email">
                 <% end %>
               </p>
               <p>
-                <% if JSON.parse(@company.client_fields).include? 'address' %>
+                <% if @company.client_fields.present? && JSON.parse(@company.client_fields).include?('address') %>
                   <input class="textInput" placeholder="Адрес" type="text" maxlength="40" name="address">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <% end %>
-                <% if JSON.parse(@company.client_fields).include? 'responsible' %>
+                <% if @company.client_fields.present? && JSON.parse(@company.client_fields).include?('responsible') %>
                   <input class="textInput" placeholder="Паспорт" type="text" maxlength="10" name="responsible">
                 <% end %>
               </p>
               <p>
-                <% if JSON.parse(@company.client_fields).include? 'description' %>
+                <% if @company.client_fields.present? && JSON.parse(@company.client_fields).include?('description') %>
                   <textarea rows="2" class="textInput" placeholder="Описание" maxlength="60"></textarea>
                 <% end %>
               </p>
               <p>
-                <% if JSON.parse(@company.client_fields).include? 'manager_id' %>
+                <% if @company.client_fields.present? && JSON.parse(@company.client_fields).include?('manager_id') %>
                   <select class="textInput" placeholder="Ответственный">
                     <option selected disabled value="">Выберите менеджера</option>
                     <% @users.each do |user| %>
@@ -217,7 +217,7 @@
                 <% end %>
               </p>
               <div class="submit submit-with-social">
-                <button name="submit_login" type="submit" id="menu3" class="log">
+                <button name="submit_login" type="submit" id="menu3" class="log" title="Создать клиента">
                   <span class="menu_text" id="menu_text3">Создать клиента<b></b><b></b></span>
                 </button>
               </div>

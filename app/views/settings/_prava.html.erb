@@ -4,7 +4,7 @@
   <span id="role_alert"></span>
   <div id="role_blocks">
     <div id="new_role" class="role_blocks">
-      <% if JSON.parse(@current_user.role.the_role).include?('create_role') %>
+      <% if @current_user.role.the_role.present? && JSON.parse(@current_user.role.the_role).include?('create_role') %>
         <span>Новая должность</span>
         <br>
         <form name="roleForm" id="roleForm" onsubmit="create_role();return false">
@@ -29,7 +29,7 @@
         <div class="nothing_selected">У вас нет прав для создания новой должности</div>
       <% end %>
     </div>
-    <% if JSON.parse(@current_user.role.the_role).include?('add_user_role') %>
+    <% if @current_user.role.the_role.present? && JSON.parse(@current_user.role.the_role).include?('add_user_role') %>
       <div class="role_blocks" id="role_to_user">
         <span>Присвоить человеку должность</span>
         <form name="roleUserForm" onsubmit="create_role_user();return false">
@@ -104,7 +104,7 @@
                 <% Role::ACTIONS.each_with_index do |action, i| %>
                   <input class="wwww-<%= role.id %>" type="checkbox"
                          name="permission[<%= i %>]" value="<%= action.first %>"
-                         <% if JSON.parse(role.the_role).include?(action.first.to_s) %> checked <% end %> >
+                         <% if role.the_role.present? && JSON.parse(role.the_role).include?(action.first.to_s) %> checked <% end %> >
                   <%= action.last %><br>
                 <% end %>
               </div>

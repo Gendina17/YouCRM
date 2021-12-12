@@ -4,10 +4,8 @@ one:
   name: MyString
   surname: MyString
   phone: MyString
-  : 
 
 two:
   name: MyString
   surname: MyString
   phone: MyString
-  : 

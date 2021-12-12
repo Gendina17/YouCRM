@@ -1,7 +1,7 @@
 <%= stylesheet_link_tag 'add_user', media: 'all', 'data-turbolinks-track': 'reload' %>
 
 <div id="add_users">
-  <% if JSON.parse(@current_user.role.the_role).include?('show_users') %>
+  <% if @current_user.role.the_role.present? && JSON.parse(@current_user.role.the_role).include?('show_users') %>
     <p id="first_title">Пользователи компании <%= @company.name %>
       <br><br><br></p>
     <div class="input-wrapper" data-text="">
@@ -28,7 +28,7 @@
   <% else %>
     <div class="nothing_selected">У вас нет прав для просмотра пользователей компании</div>
   <% end %>
-  <% if JSON.parse(@current_user.role.the_role).include?('add_users') %>
+  <% if @current_user.role.the_role.present? && JSON.parse(@current_user.role.the_role).include?('add_users') %>
     <div class="submit submit-with-social for_position">
       <button name="submit_login" type="submit" id="menu4" class="log" >
         <a href="#win2">

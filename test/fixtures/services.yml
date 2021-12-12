@@ -3,9 +3,7 @@
 one:
   name: MyString
   date: 2021-11-21 20:24:01
-  type: 
   duration: MyString
-  note: MyText
   price: 1
   is_important: false
   discount: 1
@@ -15,9 +13,7 @@ one:
 two:
   name: MyString
   date: 2021-11-21 20:24:01
-  type: 
   duration: MyString
-  note: MyText
   price: 1
   is_important: false
   discount: 1
