@@ -1,0 +1,332 @@
+<%= stylesheet_link_tag 'crm_settings', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+<div id="settings_crm">
+  <div id="button_section">
+    <button id="but_1" onclick="show('add_email');set_focus(this)" class="active_but">Добавить почту</button>
+    <button id="but_2" onclick="show('change_company_avatar');set_focus(this)" class="active_but">Изменить логотип</button>
+    <button id="but_3" onclick="show('show_templates');set_focus(this)" class="active_but">Управление шаблонами</button>
+    <button id="but_4" onclick="show('select_client');set_focus(this)" class="active_but">Настроить клиента</button>
+    <button id="but_5" onclick="show('select_tovar');set_focus(this)" class="active_but">Настроить продукцию</button>
+  </div>
+  <hr class="hr-shelf">
+  <div id="add_email" class="hidden">
+    <span id="span">Почта для взаимодействия с клиентами</span>
+    <div id="company_mail">
+      <form name="emailForm" class="feedback-form-1" id="emailForm" onsubmit="add_email();return false">
+        <div id="alert"></div>
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <p>
+          <input class="textInput" name="email" type="email" placeholder="Email..."
+                 value="<%= @company.email %>" id="email" autocomplete="new-password">
+        </p>
+        <p class="password">
+          <input type="password" name="password" class="textInput" placeholder="Пароль..." id="password-input"
+                 autocomplete="new-password" required value="<%= ApplicationController.new.crypt.decrypt_and_verify(@company.password) if @company.password.present?%>">
+          <a href="#" class="password-control" onclick="return show_hide_password(this);"></a>
+        </p>
+        <section class="pen check" title="Получать и обрабатывать письма">
+          <span class="container">
+            <input type="checkbox" style="opacity:0" class="ubuntu-touch" name="send" id="send" value="true"
+                   <% if @company.is_send %> checked <% end %> >
+            <label for="ubuntu-touch" class="state"></label>
+            <label for="ubuntu-touch" class="switch"></label>
+          </span>
+        </section>
+        <div class="submit submit-with-social" id="am_but">
+          <button name="submit_login" id="menu3" class="log" type="submit">
+            <span class="menu_text" id="menu_text3">Сохранить<b></b><b></b></span>
+          </button>
+        </div>
+      </form>
+    </div>
+    <br>
+    <button name="submit_login" id="menu3" class="log" type="submit" onclick="start_worker()">
+      <span class="menu_text" id="menu_text333">Проверить почтовый ящик<b></b><b></b></span>
+    </button>
+    <br><br>
+    <span id="alert_worker"></span>
+  </div>
+  <div id="change_company_avatar" class="hidden">
+    <form method="post" action="/update_company_avatar" enctype="multipart/form-data">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <div>
+        <div style="display: flex">
+          <div class="example-1">
+            <div class="form-group">
+              <label class="label" id="label">
+                <% if @current_user.company.avatar.attached? %>
+                  <img src="<%= @current_user.company.avatar.url %>" id="img">
+                <% else %>
+                  <img src="../assets/avatar1.jpeg" id="img" href="#win1">
+                <% end %>
+                <input type="file"name="avatar" id="avatar" value="<%= @current_user.company.avatar.url %>"
+                       onchange="alert_about_photo(this)">
+              </label>
+            </div>
+          </div>
+        </div>
+        <div id="but_and_check">
+          <span id="span_litle">Отображать логотип на главной странице и иконке сайта</span>
+          <section class="pen check" title="Получать и обрабатывать письма">
+            <span class="container">
+              <input type="checkbox" style="opacity:0" class="ubuntu-touch" name="is_show_avatar"
+                     value="true" <% if @company.is_show_avatar %> checked <% end %> >
+              <label for="ubuntu-touch" class="state" id="state2" ></label>
+              <label for="ubuntu-touch" class="switch"></label>
+            </span>
+          </section>
+          <div class="submit submit-with-social" id="am_but">
+            <button name="submit_login" id="menu3" class="log" type="submit">
+              <span class="menu_text" id="menu_text3">Сохранить<b></b><b></b></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div id="select_tovar" class="hidden">
+    <span>Выберите, пожалуйста, на чем специализируется ваша компания</span><br>
+    <span id="alert_product"></span>
+    <form id="productForm" name="productForm" onsubmit="set_type_product();return false">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <div>
+        <div class="wrapper">
+          <input type="radio" onclick="show_block(0)" name="type_product" value="<%= Company::TYPE_PRODUCT.second.first %>"id="option-1">
+          <input type="radio" onclick="show_block(1)" name="type_product" value="<%= Company::TYPE_PRODUCT.first.first %>" id="option-2">
+          <label for="option-1" class="option option-1">
+            <div class="dot"></div>
+            <span>Услуги</span>
+          </label>
+          <label for="option-2" class="option option-2">
+            <div class="dot"></div>
+            <span>Товар</span>
+          </label>
+        </div>
+      </div>
+      <div class="submit submit-with-social" id="am_but">
+        <button name="submit_login" id="menu3" class="log" type="submit">
+          <span class="menu_text" id="menu_text3">Выбрать<b></b><b></b></span>
+        </button>
+      </div>
+    </form>
+    <div class="hidden" id="service_fields" title="Характеристики услуги" onclick="none_block('service_fields')">
+      <% Service::FIELDS.each do |action| %>
+        <span> <%= action %></span><br>
+      <% end %>
+    </div>
+    <div class="hidden" id="fields_product" title="Характеристики товара" onclick="none_block('fields_product')">
+      <% Product::FIELDS.each do |action| %>
+        <span> <%= action %></span><br>
+      <% end %>
+    </div>
+    <div id="block_about_statuses">
+      <form id="statusForm" name="statusForm" onsubmit="create_status();return false">
+        <span>Добавить статусы тикетов</span>
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <br><br>
+        <input type="checkbox" name="show_statuses" <% if @company.show_statuses %> checked <% end %>>
+        <label>Отображать статусы</label>
+        <br>
+        <p>
+          <input class="textInput" type="text" placeholder="Название" required maxlength="20" name="title" id="st_in1">
+        </p>
+        <p>
+          <input class="textInput" type="text" placeholder="Описание" maxlength="30" name="description" id="st_in2">
+        </p>
+        <div class="submit submit-with-social" id="am_but">
+          <button name="submit_login" id="menu3" class="log" type="submit">
+            <span class="menu_text" id="menu_text3">Добавить<b></b><b></b></span>
+          </button>
+        </div>
+      </form>
+      <div id="statuses">
+        <div>Статусы</div>
+        <% if @statuses.count == 0 %>
+          У вашей комании еще нет статусов
+        <% else %>
+          <% @statuses.each do |status| %>
+            <span id="sp_<%= status.id %>">
+              <span title="<%= status.description %>">
+                <%= status.title %>
+              </span>
+              <svg onclick="delete_status('<%= status.id %>')" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                    fill="grey" class="bi bi-x-circle del" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0
+                   1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+              </svg>
+              <br>
+            </span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <div id="block_about_categories">
+      <form id="categoryForm" name="categoryForm" onsubmit="create_category();return false">
+        <span>Добавить категории тикетов</span>
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <br><br>
+        <input type="checkbox" name="show_categories" <% if @company.show_categories %> checked <% end %>>
+        <label>Отображать категории</label>
+        <br>
+        <p>
+          <input class="textInput"  type="text" placeholder="Название" required maxlength="20" name="title" id="c_in1">
+        </p>
+        <p>
+          <input  class="textInput" type="text" placeholder="Описание" maxlength="30" name="description" id="c_in2">
+        </p>
+        <div class="submit submit-with-social" id="am_but">
+          <button name="submit_login" id="menu3" class="log" type="submit">
+            <span class="menu_text" id="menu_text3">Добавить<b></b><b></b></span>
+          </button>
+        </div>
+      </form>
+      <div id="categories">
+        <div>Категории</div>
+        <% if @categories.count == 0 %>
+          У вашей комании еще нет категорий
+        <% else %>
+          <% @categories.each do |category| %>
+            <span id="sp2_<%= category.id %>">
+              <span title="<%= category.description %>">
+                <%= category.title %>
+              </span>
+              <svg onclick="delete_category('<%= category.id %>')" xmlns="http://www.w3.org/2000/svg" width="18"
+                   height="18" fill="grey" class="bi bi-x-circle del" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0
+                   1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+              </svg>
+              <br>
+            </span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div id="show_templates" class="hidden">
+    <div id="info_temolates">
+      &nbsp;Вы можете создать шаблоны для писем в формате text или html и использовать их при отправки клиентам. <br>
+      &nbsp;Для удобства, используйте переменные:
+      <div>
+        {{ client.full_name }} <br> {{ manager.full_name }} <br>
+        {{ manager.email }} <br> {{ product.name })
+      </div>
+    </div>
+    <div id="exist_templates">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token, id: 'token' %>
+      <span>Имеющиеся шаблоны:</span>
+      <% @email_templates.each do |template| %>
+        <div id="template_<%= template.id %>" class="template">
+          <a href="#win100500" onclick="show_template('<%= template.id %>')" class="one_template"><%= template.name %></a>
+        </div>
+      <% end %>
+    </div>
+    <div id="templateForm">
+      <form name="templateForm" onsubmit="create_template();return false">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <p>
+          <input name="name" type="text" required maxlength="40" class="textInput textInputLong" placeholder="Название шаблона...">
+        </p>
+        <p>
+          <input name="subject" type="text" required maxlength="50" placeholder="Тема писма..." class="textInput textInputLong">
+        </p>
+        <p>
+          <textarea rows="5" name="body" required maxlength="400" placeholder="Тело письма..." class="textInput textInputLong"></textarea>
+        </p>
+        <div class="submit submit-with-social" id="am_but">
+          <button name="submit_login" id="menu3" class="log" type="submit">
+            <span class="menu_text" id="menu_text3">Создать шаблон<b></b><b></b></span>
+          </button>
+        </div>
+      </form>
+    </div>
+    <div id="info_temolates">
+      <span>Также вы можете назначить шаблон, который будет отправляться клиентам в качестве пимьма по умолчанию,
+        когда они будут писать впервые. </span>
+    </div>
+    <form onsubmit="set_default_template();return false" name="defaultTemplateForm" id="defaultTemplateForm">
+      <p>
+        <select class="textInput textInputLong" name="id">
+          <option value="0">Отсутствие дефолтного письма</option>
+          <% @email_templates.each do |template| %>
+            <option value="<%= template.id %>" <% if @company.default_email_id == template.id %> selected <% end %>>
+              <%= template.name %>
+            </option>
+          <% end %>
+        </select>
+      </p>
+      <button name="submit_login" id="menu3" class="log" type="submit">
+        <span class="menu_text" id="menu_text3">Назначить<b></b><b></b></span>
+      </button>
+    </form>
+  </div>
+  <div id="select_client" class="hidden">
+    <span>Выберите, пожалуйста, кто является клиентами вашей компании и какие им необходимы характеристики</span>
+    <div id="client_buttons">
+      <button name="submit_login" id="menu13" class="log" type="submit" onclick="show_form(0)">
+        <span class="menu_text" id="menu_text3">Люди<b></b><b></b></span>
+      </button>
+      <button name="submit_login" id="menu23" class="log" type="submit" onclick="show_form(1)">
+        <span class="menu_text" id="menu_text3">Компании<b></b><b></b></span>
+      </button>
+    </div>
+    <span id="client_alert"></span>
+    <form id="clientForm" class="hidden" name="clientForm" onsubmit="set_clients_fields('clientForm', 'h_fields');return false">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <input type="hidden" name="type_client" value="<%= Company::TYPE_CLIENTS.first.first %>">
+      <% Client::FIELDS.each_with_index do |action, i| %>
+        <input class="h_fields" type="checkbox" name="field[<%= i %>]"
+               value="<%= action.first %>"
+               <% if @company.type_client == Company::TYPE_CLIENTS.first.first.to_s &&
+                 @company.client_fields.present? &&
+                 JSON.parse(@company.client_fields).include?(action.first.to_s) %> checked <% end %>>
+        <%= action.last %><br>
+      <% end %>
+      <div class="submit submit-with-social" id="client_but">
+        <button name="submit_login" id="menu3" class="log" type="submit">
+          <span class="menu_text" id="menu_text3">Сохранить<b></b><b></b></span>
+        </button>
+      </div>
+    </form>
+    <form id="clientCompanyForm" class="hidden" name="clientCompanyForm"
+          onsubmit="set_clients_fields('clientCompanyForm', 'c_fields');return false">
+      <span id="client_alert"></span>
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <input type="hidden" name="type_client" value="<%= Company::TYPE_CLIENTS.second.first %>">
+      <% ClientCompany::FIELDS.each_with_index do |action, i| %>
+        <input class="c_fields" type="checkbox" name="field[<%= i %>]"
+               value="<%= action.first %>"
+               <% if @company.type_client == Company::TYPE_CLIENTS.second.first.to_s &&
+                 @company.client_fields.present? &&
+                 JSON.parse(@company.client_fields).include?(action.first.to_s) %> checked <% end %>>
+        <%= action.last %><br>
+      <% end %>
+      <div class="submit submit-with-social" id="client_but">
+        <button name="submit_login" id="menu3" class="log" type="submit">
+          <span class="menu_text" id="menu_text3">Сохранить<b></b><b></b></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<div id="template_alert2" class="hidden">
+  <span>Дефолтный шаблон установлен</span>
+</div>
+<div class="dm-overlay" id="win100500">
+  <div class="dm-table">
+    <div class="dm-cell">
+      <div class="dm-modal">
+        <a href="#close" class="close"></a>
+        <div id="info_about_template">
+        </div>
+        <div id="template_alert" class="hidden">
+          <span>Шаблон успешно изменен</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
+<script src="../assets/settings.js"></script>

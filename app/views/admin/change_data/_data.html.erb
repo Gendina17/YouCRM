@@ -1,0 +1,24 @@
+<%= form_with url: 'change_data/data', method: :post do |form| %>
+  <fieldset class="inputs">
+    <legend>
+      <span>Почта для взаимодействия с клиентами</span>
+    </legend>
+    <ol>
+      <li>
+        <%= form.label 'Почта' %>
+        <%= form.email_field :email, value: company.email%>
+      </li>
+      <li>
+        <%= form.label 'Пароль' %>
+        <%= form.password_field :password, placeholder: '***'%>
+      </li>
+      <li>
+        <%= form.label 'Получать и обрабатывать письма' %>
+        <%= form.check_box :is_send, checked: company.is_send%>
+      </li>
+      <li>
+        <%= form.submit 'Сохранить' %>
+      </li>
+    </ol>
+  </fieldset>
+<% end %>

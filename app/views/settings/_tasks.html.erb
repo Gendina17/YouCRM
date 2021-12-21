@@ -1,0 +1,61 @@
+<%= stylesheet_link_tag 'tasks', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+<div id="tasks">
+  <span id="task_alert"></span>
+  <div class="new_task one-task2">
+    <div id="popup-login" class="popup popup-login" style="opacity: 1; display: block;">
+      <form name="taskForm" onsubmit="create_task();return false" id="taskForm">
+        <div class="login-input">
+          <div class="login-loader"></div>
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+          <div class="p">
+            <input type="text" name="subject" placeholder="Заголовок..." class="textInput3" required maxlength="30">
+          </div>
+          <textarea name="body" placeholder="Тело..." class="textInput3" required
+                    maxlength="200" id="area-body"></textarea>
+          <div class="p">
+            <input type="date" name="until_date" class="textInput3" required id="date-input">
+          </div>
+          <div class="p">
+            <input type="text" name="tag" placeholder="Тэг..." class="textInput3" maxlength="20">
+          </div>
+          <div class="p">
+            <select name="user_id" class="textInput3" required id="select-input">
+              <% @users.each do |user| %>
+                <option value="<%= user.id %>"><%= user.name %> <%= user.surname %></option>
+              <% end %>
+            </select>
+          </div>
+          <div class="submit submit-with-social">
+            <button name="submit_login" type="submit" id="menu4" class="log">
+              <span class="menu_text" id="menu_text4">Создать<b></b><b></b></span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div id="navigations">
+    <select onchange="tasks()" name="tag" id="select_tag" class="textInput3">
+      <option selected value="0">Тэг</option>
+      <% @selected_tags.each do |tag| %>
+        <option value="<%= tag %>"><%= tag %></option>
+      <% end %>
+    </select>
+    <select id="select_user" name="user_id" onchange="tasks()" class="textInput3">
+      <option selected value="0">Пользователь</option>
+      <% @selected_users.each do |user| %>
+        <option value="<%= user[0] %>"><%= user[1] %> <%= user[2] %></option>
+      <% end %>
+    </select>
+    <br>
+    <button class="active_but" onclick="tasks('')" id="all_tasks">все задачки</button>
+    <button class="active_but" onclick="tasks(false)" id="inactive_tasks">закрытые задачки</button>
+    <button class="active_but" onclick="tasks(true)" id="active_tasks">открытые задачки</button>
+  </div>
+  <br>
+  <div class="tasks" id="min_tasks"></div>
+</div>
+<script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
+<script src="../assets/tasks.js"></script>
+

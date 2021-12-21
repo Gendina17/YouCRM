@@ -1,0 +1,137 @@
+.ticket {
+  border: 1px solid grey;
+  width: 330px;
+  height: 170px;
+  margin-bottom: 15px;
+  margin-top: 10px;
+  background-color: rgb(253, 252, 252);
+  border-radius: 5px;
+  cursor: pointer;
+  overflow: auto;
+}
+
+.ticket:hover {
+  background-color: rgba(150, 149, 149, 0.47);
+}
+
+#tickets {
+  height: 89.5%;
+  max-height: 89.5%;
+  width: 400px;
+  max-width: 400px;
+  overflow: auto;
+  text-align: center;
+  background-image: url('../../assets/back.png');
+  display: inline-block;
+  border-right: 1px solid grey;
+  padding-left: 1.7%;
+  background-color: rgba(220, 220, 220, 0.38);
+}
+
+#menu {
+  height: 5%;
+  max-height: 5%;
+  width: 400px;
+  max-width: 400px;
+  padding: 10px;
+  justify-content: space-around;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid #848484;
+  margin-top: 2px;
+  background: white;
+}
+
+.dm-modal2 {
+  display: inline-block;
+  padding: 20px;
+  max-width: 50em;
+  background: rgb(253, 252, 252);
+  color: black;
+  border: 10px double grey;
+  text-align: left;
+}
+
+#alert_update {
+  background-color: rgba(50, 205, 7, 0.56);
+  position: absolute;
+  width: 300px;
+  z-index: 1;
+  text-align: center;
+  padding-top: 5%;
+  font-weight: bold;
+  height: 130px;
+  display: none;
+  top: -50px;
+  border-radius: 5px;
+}
+
+#avatar_client {
+  border-radius: 100%;
+  width: 100px;
+  height: 100px;
+}
+
+.i_t:hover{
+  fill: black;
+  background: inherit;
+}
+
+.manager {
+  position: relative;
+  //left: 110px;
+  right: 50px;
+  font-size: 14px;
+}
+
+.subject {
+  font-weight: bold;
+  color: #3b3737;
+  width: 200px;
+  max-width: 200px;
+  text-align: center;
+  margin-left: 20%;
+}
+
+.product {
+  position: relative;
+  right: 133px;
+  bottom: 30px;
+}
+
+.product2 {
+  position: relative;
+  right: 153px;
+  bottom: 170px;
+  height: 0px;
+}
+
+.status_category {
+  justify-content: space-around;
+  position: relative;
+  display: flex;
+  font-size: 14px;
+  margin-top: -30px;
+}
+
+.status_category2 {
+  justify-content: space-around;
+  position: relative;
+  display: flex;
+  font-size: 14px;
+}
+
+.client_product {
+  margin-top: 5px;
+}
+
+.create_at {
+  position: relative;
+  left: 50px;
+  font-size: 14px;
+}
+
+.aa {
+  background: white !important;
+}

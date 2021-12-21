@@ -1,0 +1,10 @@
+<p><h3>Приветствуем, <%= @user.name %>!</h3></p>
+<p>Пользователь <%= @creator.name %> <%= @creator.surname %> добавил Вас в CRM компании <%= @creator.company.name %>.</p>
+<p>Для завершения регистрации перейдите по ссылке.</p>
+
+<p>
+  <a href="<%= confirm_email_registration_url(@user.confirm_token) %>">
+    Подтвердить регистрацию YouCrm
+  </a>
+</p>
+<p> С любовью, YouCRM ❤</p>

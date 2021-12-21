@@ -1,0 +1,96 @@
+<%= stylesheet_link_tag 'profile', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+<div id="profile">
+  <div id="alert"></div>
+  <form name="userForm" class="feedback-form-1" id="userForm" onsubmit="send_form();return false">
+    <div id="sections">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <div id="left_section">
+        <span><%= @current_user.role.name %> из <%= @company.name %></span><br>
+        <span>activate</span><br>
+        <% if @current_user.avatar.attached? %>
+          <a href="#win1">
+          <img src="<%= @current_user.avatar.url %>" id="img">
+          </a>
+        <% else %>
+          <a href="#win1">
+          <img src="../assets/avatar1.jpeg" id="img" href="#win1">
+          </a>
+        <% end %>
+      </div>
+      <div id="right_section">
+        <input type="text" name="name" value="<%= @current_user.name %>" placeholder="Имя"
+               class="some-input" required  maxlength="50">
+        <input type="text" name="surname" value="<%= @current_user.surname %>" placeholder="Фамилия"
+               class="some-input" required  maxlength="50"><br>
+        <input type="text" name="mood" value="<%= @current_user.mood %>" id="mood" placeholder="Статус"
+               class="some-input" maxlength="50">
+        <img src="../assets/emoji.svg" onclick="show_emojis('emoji')">
+        <br>
+        <%time = ((Time.current - @current_user.created_at)/60/60/24).round - 1 %>
+        <% if time < 30 && time_m = 0 %>
+          <span>в crm более <%= time %> days</span><br>
+        <% elsif time < 365 %>
+          <span>в crm более <%= time/30 %> month</span><br>
+        <% else  %>
+          <span>в crm более <%= time/30/365 %> years</span><br>
+        <% end %>
+        <textarea class="some-input" name="info" placeholder="О себе...." maxlength="300" cols="30"
+                  rows="5" id="some-input"><%= @current_user.info&.strip %></textarea>
+        <br>
+        <img src="../assets/gmail.svg" class="some-img"><input type="text" value="<%= @current_user.email %>"
+                                                               class="some-input" readonly title="email"><br>
+        <% if @current_user.contacts.present? %>
+          <% JSON.parse(@current_user.contacts).each do |contact| %>
+            <% if contact.last.present? %>
+              <img src="../assets/<%= @contacts.include?(contact.first) ? contact.first : 'another' %>.svg"
+                   title="<%= contact.first %>" class="some-img">
+              <input type="text"  value="<%= contact.last %>" class="some-input" readonly><br>
+            <% end %>
+          <% end %>
+        <% end %>
+        <input type="text" list="contact" placeholder="Контакты" name="contact" autocomplete="off" class="text-input"/>
+        <datalist id="contact">
+          <% @contacts.each do |contact| %>
+            <option ><%= contact %></option>
+          <% end %>
+        </datalist>
+        <input type="text" name="value" maxlength="30" class="text-input" placeholder="Значение">
+        <div class="submit submit-with-social" id="am_but">
+          <button name="submit_login" id="menu3" class="log" type="submit">
+            <span class="menu_text" id="menu_text3">Сохранить<b></b><b></b></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div id="emoji" class="hidden"></div>
+</div>
+<!--------------------------------------------------------------------------------------------------------------------->
+<div class="dm-overlay" id="win1">
+  <div class="dm-table">
+    <div class="dm-cell">
+      <div class="dm-modal">
+        <a href="#close" class="close"></a>
+        <div>
+          <form method="post" action="/update_avatar" enctype="multipart/form-data">
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            <div class="example-1">
+              <div class="form-group">
+                <label class="label">
+                  <i class="material-icons">attach_file</i>
+                  <span class="title" id="file">Выбрать файл</span>
+                  <input type="file"name="avatar" id="avatar" onchange="alert_about_choise(this)">
+                </label>
+              </div>
+            </div>
+            <input type="submit" value="Изменить" id="but_avatar">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
+<script src="../assets/profile.js"></script>

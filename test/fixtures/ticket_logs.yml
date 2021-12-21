@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ticket_id: 1
+  message: MyString
+  loggable_type: MyString
+  version_id: 1
+  manager_id: 1
+  value: MyString
+  previos_value: MyString
+
+two:
+  ticket_id: 1
+  message: MyString
+  loggable_type: MyString
+  version_id: 1
+  manager_id: 1
+  value: MyString
+  previos_value: MyString

@@ -1,0 +1,161 @@
+.one-task {
+  color: black;
+  display: inline-block;
+  border-radius: 20px;
+  margin-top: 20px;
+  width: 300px;
+  max-width: 300px;
+  max-height: 230px;
+  height: 230px;
+  background: #ecbcc438;
+  box-shadow: 0 0 7px;
+  text-align: center;
+  padding: 30px 15px;
+  margin-left: 40px;
+  font-size: 20px;
+}
+
+.subject-task {
+  border-bottom: 1px solid black;
+}
+
+.body-task {
+  overflow: auto;
+  border: 1px solid black;
+  width: 250px;
+  max-height: 90px;
+  max-width: 250px;
+  height: 90px;
+  margin-left: 25px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  text-align: left;
+  padding: 7px;
+}
+
+.tag-task {
+  border-radius: 20px;
+  background: #8c8b8b3b;
+  box-shadow: 0 0 7px;
+  border: 1px solid black;
+  width: 150px;
+  height: 35px;
+  max-height: 35px;
+  overflow-x: auto;
+  text-align: center;
+  margin-left: 25%;
+  margin-top: 20px;
+}
+
+.name-task {
+  text-align: center;
+  margin-top: 17px;
+}
+
+.button-task {
+  border: none;
+  background: inherit;
+  opacity: 60%;
+  position: relative;
+  left: 115px;
+  bottom: 277px;
+}
+
+.button-task:hover {
+  opacity: 100%;
+}
+
+.one-task2 {
+  background: #7f4e1e1f;
+  color: black;
+  border-radius: 20px;
+  margin-top: 20px;
+  width: 300px;
+  height: 410px;
+  max-height: 410px;
+  box-shadow: 0 0 10px;
+  margin-left: 40%;
+  margin-bottom: 30px;
+}
+
+#navigations {
+  text-align: center;
+}
+
+.new_task {
+  text-align: center;
+}
+
+.hr-shadow {
+  margin: 30px 320px;
+  padding: 0;
+  height: 10px;
+  border: none;
+  border-top: 1px solid #333;
+  box-shadow: 0 10px 10px -10px #8c8b8b inset;
+}
+
+.active_but {
+  background: inherit;
+  border: none;
+  font-size: 24px;
+  font-family: "Open Sans", sans-serif !important;
+  opacity: 60%;
+  cursor: pointer;
+}
+
+.active_but:hover {
+  opacity: 100%;
+  border-bottom: 1px solid black;
+}
+
+.textInput3 {
+  margin: 0;
+  border: 1px solid #1c1c1c;
+  border-bottom-width: 3px;
+  border-right-width: 2px;
+  background: #fff;
+  color: #1c1c1c;
+  border-radius: 5px;
+  outline: 0;
+  width: 200px;
+  height: 33px;
+}
+
+.i_active {
+  opacity: 100%;
+  border-bottom: 1px solid black;
+}
+
+.p {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#taskForm {
+  padding-top: 23px;
+}
+
+#min_tasks {
+  text-align: center;
+}
+
+#select_user, #select_tag {
+  margin-bottom: 20px;
+}
+
+#area-body {
+  width: 184px;
+  margin-top: 10px;
+}
+
+#date-input {
+  width: 204px;
+  height: 35px;
+}
+
+#select-input {
+  width: 206px;
+  height: 34px;
+  margin-bottom: 13px;
+}

@@ -1,13 +1,14 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  email: MyString
-  surname: MyString
+  name: Нина
+  email: testa@mail.ru
+  surname: Гендина
+  password_digest: 123456
   company_id: 1
 
 two:
-  name: MyString
-  email: MyString
-  surname: MyString
+  name: MyString2
+  email: MyString2
+  surname: MyString2
   company_id: 1

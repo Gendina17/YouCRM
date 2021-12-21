@@ -39,9 +39,10 @@
         <p>
           <input type="email" name="email" class="textInput required" placeholder="Почта" required maxlength="50">
         </p>
-        <p>
-          <input type="password" name="password" class="textInput" placeholder="Пароль"
+        <p class="password">
+          <input type="password" name="password" class="textInput" placeholder="Пароль" id="password-input"
                  autocomplete="new-password" required maxlength="50" minlength="6">
+          <a href="#" class="password-control" onclick="return show_hide_password(this);"></a>
         </p>
       </div>
       <div class="submit submit-with-social">
@@ -49,7 +50,7 @@
           <span class="menu_text" id="menu_text3">Войти<b></b><b></b></span>
         </button>
       </div>
-      <a onclick="password_block();" id="link_password">Не помню пароль</a>
+      <a onclick="password_block();" id="link_password" href="##">Не помню пароль</a>
     </form>
   </div>
 </div>
@@ -95,9 +96,10 @@
         <p>
           <input type="email" name="email" class="textInput" placeholder="Почта" required maxlength="50">
         </p>
-        <p>
-          <input type="password" name="password" class="textInput" placeholder="Пароль"
-                 autocomplete="new-password" minlength="6" required maxlength="50">
+        <p class="password">
+          <input type="password" name="password" class="textInput" placeholder="Пароль" id="password-input"
+                 autocomplete="new-password" required maxlength="50" minlength="6">
+          <a href="#" class="password-control" onclick="return show_hide_password(this);"></a>
         </p>
         <p>
           <input type="password" name="password_confirmation" class="textInput"
@@ -118,126 +120,4 @@
     </form>
   </div>
 </div>
-
-<script>
-    function hidden_block() {
-        document.getElementById('block_main').style.display = 'none';
-        document.getElementById('block_registration').classList.remove("hidden");
-    }
-
-    function hidden_block2() {
-        document.getElementById('block_main').style.display = 'none';
-        document.getElementById('create_room').classList.remove("hidden");
-    }
-
-    function password_notification() {
-        document.getElementById('heading_pas').innerText = "Письмо для восстановления пароля отправлено вам на почту";
-    }
-
-    function password_block() {
-        document.getElementById('block_registration').style.display = 'none';
-        document.getElementById('block_password').classList.remove("hidden");
-        document.getElementById('block_password').style.display = 'block';
-    }
-
-    function hidden_block3() {
-        document.getElementById('block_password').style.display = 'none';
-        document.getElementById('block_registration').style.display = 'block';
-    }
-
-    document.forms.authForm.onsubmit = function (e){
-        e.preventDefault();
-
-        var company = document.forms.authForm.company.value;
-        var email = document.forms.authForm.email.value;
-        var password = document.forms.authForm.password.value;
-        var token = document.forms.authForm.authenticity_token.value;
-
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/authorization");
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-        body = 'company=' + encodeURIComponent(company) +
-            '&email=' + encodeURIComponent(email) +
-            '&password=' + encodeURIComponent(password) +
-            '&authenticity_token=' + encodeURIComponent(token);
-
-        xhr.onreadystatechange = function (){
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                document.getElementById('error').innerText = xhr.responseText;
-                document.getElementById('error').style.padding = "5px";
-                document.getElementById('block_registration').style.height = "400px";
-                document.getElementById('block_registration').style.maxHeight = "400px";
-            }
-        }
-        xhr.send(body)
-    };
-
-    document.forms.passForm.onsubmit = function (e){
-        e.preventDefault();
-
-        var company = document.forms.passForm.company.value;
-        var email = document.forms.passForm.email.value;
-        var token = document.forms.passForm.authenticity_token.value
-
-        var xhr = new XMLHttpRequest();
-
-        var params = 'company=' + encodeURIComponent(company) +
-            '&email=' + encodeURIComponent(email) +
-            '&authenticity_token=' + encodeURIComponent(token);
-
-        xhr.open("GET", "/send_password?" + params)
-
-        xhr.onreadystatechange = function (){
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                document.getElementById('pass_error').innerText = xhr.responseText;
-                document.getElementById('pass_error').style.padding = "5px";
-                document.getElementById('block_password').style.height = "360px";
-                document.getElementById('block_password').style.maxHeight = "360px";
-            }
-        }
-        xhr.send()
-    };
-
-    document.forms.regForm.onsubmit = function (e){
-        e.preventDefault();
-
-        var company = document.forms.regForm.company.value;
-        var email = document.forms.regForm.email.value;
-        var name = document.forms.regForm.name.value;
-        var surname = document.forms.regForm.surname.value;
-        var password = document.forms.regForm.password.value;
-        var password_confirmation = document.forms.regForm.password_confirmation.value;
-        var token = document.forms.regForm.authenticity_token.value
-
-        if (password != password_confirmation)
-        {
-            document.getElementById('reg_error').innerText = "Введенные пароли не совпадают"
-            document.getElementById('create_room').style.height = "530px";
-            document.getElementById('create_room').style.maxHeight = "530px";
-            return
-        }
-
-        var xhr = new XMLHttpRequest();
-
-        xhr.open("POST", "/create_room")
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-        body = 'company=' + encodeURIComponent(company) +
-            '&email=' + encodeURIComponent(email) +
-            '&name=' + encodeURIComponent(name) +
-            '&surname=' + encodeURIComponent(surname) +
-            '&password_confirmation=' + encodeURIComponent(password_confirmation) +
-            '&password=' + encodeURIComponent(password) +
-            '&authenticity_token=' + encodeURIComponent(token);
-
-        xhr.onreadystatechange = function (){
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                document.getElementById('reg_error').innerText = xhr.responseText;
-                document.getElementById('create_room').style.height = "590px";
-                document.getElementById('create_room').style.maxHeight = "590px";
-            }
-        }
-        xhr.send(body)
-    };
-</script>
+<script src="../assets/identification.js"></script>

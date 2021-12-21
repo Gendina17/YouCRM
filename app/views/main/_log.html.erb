@@ -1,0 +1,109 @@
+<%= stylesheet_link_tag 'log', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+<div id="log" class="hidden">
+  <input type="hidden" id="id_fot_templates">
+  <div id="actions">
+    <div id="email_button"></div>
+    <form id="noteForm" name="noteForm" onsubmit="create_note();return false">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <textarea rows="4" placeholder="Оставить заметку..." name="body" class="textInput" required maxlength="300"></textarea>
+      <button type="submit" id="note_but" title="Отпрвить">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#848484" class="bi bi-pencil" viewBox="0 0 16 16">
+          <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1
+           .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0
+           1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5
+           12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+        </svg>
+      </button>
+      <button id="note_but2"  title="Очистить" onclick="document.forms.noteForm.body.value = ''" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#848484" class="bi bi-eraser" viewBox="0 0 16 16">
+          <path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828l6.879-6.879zm2.121.707a1 1 0 0 0-1.414 0L4.16 7.547l5.293 5.293 4.633-4.633a1 1 0 0 0 0-1.414l-3.879-3.879zM8.746 13.547 3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293l.16-.16z"/>
+        </svg>
+      </button>
+      <input type="hidden" id="ticket_id_for_note" name="id">
+    </form>
+  </div>
+  <div id="div_but_log_not">
+    <button class="bb i_active" onclick="set_focus(this);" id="bb_1">Лог тикета</button>
+    <button class="bb" onclick="set_focus(this);" id="bb_2">Заметки</button>
+  </div>
+  <div id="logs"></div>
+  <div id="notes" class="hidden">
+    <ul id="notes2"></ul>
+  </div>
+</div>
+<div class="dm-overlay" id="win1010">
+  <div class="dm-table">
+    <div class="dm-cell">
+      <div class="dm-modal2" id="block_emails">
+        <a href="#close" class="close"></a>
+        <div class="info">
+          <div>
+            <div id="block_show_emails"></div>
+            <div id="block_send_email">
+              <form name="mailForm" onsubmit="send_client_mail();return false">
+                <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                <p>
+                  <input id="subject_input" class="textInput inputs_subject" name="subject" type="text" required maxlength="40" placeholder="Тема письма">
+                  <input class="textInput but_input" type="button" value="Использовать шаблон" onclick="remove_hidden()">
+                </p>
+                <p>
+                  <textarea id="subject_body" rows="4" class="textInput inputs_email" name="body" required maxlength="500" placeholder="Письмо..."></textarea>
+                </p>
+                <input type="hidden" name="id" id="input_email_for_id">
+                <div class="submit submit-with-social">
+                  <button name="submit_login" type="submit" id="menu4" class="log">
+                    <span class="menu_text" id="menu_text40">Отправить<b></b><b></b></span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="dm-overlay" id="win2020">
+  <div class="dm-table">
+    <div class="dm-cell">
+      <div class="dm-modal2" id="block_calendar">
+        <a href="#close" class="close"></a>
+        <div class="info" id="calendar_block">
+          <%= month_calendar(attribute: :starts_at, end_attribute: :end_date) do |date| %>
+            <%= date.day %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="dm-overlay" id="win3030">
+  <div class="dm-table">
+    <div class="dm-cell">
+      <div class="dm-modal2" id="template_block">
+        <a class="close" onclick="add_hidden()"></a>
+        <div class="info">
+          <div>
+            <div>Имеющиеся шаблоны:</div>
+            <br>
+            <% @email_templates.each do |template| %>
+              <div class="template">
+                <a class="one_template" onclick="show_template('<%= template.id %>')"><%= template.name %></a>
+                <span id="tmp_<%= template.id %>" class="hidden"><%= template.body.html_safe %></span>
+              </div>
+              <br>
+            <% end %>
+          </div>
+          <div style="width: 55%; height: 100%">
+            <input type="hidden" id="for_value">
+            <div id="show_templates"></div>
+            <br>
+            <a class="one_template" style="float: right" onclick="template_selection()">Выбрать</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="../assets/log.js"></script>
